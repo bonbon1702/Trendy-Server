@@ -11,6 +11,7 @@ namespace Services;
 
 use Core\BaseService;
 use Core\GoogleMapHelper;
+use Core\Helper;
 use Repositories\PostRepository;
 use Services\ShopService;
 use Repositories\UploadRepository;
@@ -53,26 +54,28 @@ class PostService implements BaseService{
         $upload = $this->uploadRepository->get($upload_id);
 
         $post = $this->postRepository->create(array(
+            'name' => Helper::get_rand_alphanumeric(8),
             'user_id' => $user_id,
             'image_url' => $upload->image_url,
             'image_url_editor' => $upload->image_url_editor,
             'caption' => $caption,
         ));
+        if ($points) {
+            foreach ($points as $v) {
+                $result = $this->googleMapHelper->findCoordinate($v['address']);
 
-        foreach ($points as $v){
-            $result = $this->googleMapHelper->findCoordinate($v['address']);
-
-            $shop = $this->shopService->checkCoordinates($result);
+                $shop = $this->shopService->checkCoordinates($result);
 
 
-            $this->tagPictureService->create(array(
-                'post_id' => $post->id,
-                'name' => $v['name'],
-                'price' => $v['price'],
-                'top' => $v['top'],
-                'left' => $v['left'],
-                'shop_id' => $shop->id
-            ));
+                $this->tagPictureService->create(array(
+                    'post_id' => $post->id,
+                    'name' => $v['name'],
+                    'price' => $v['price'],
+                    'top' => $v['top'],
+                    'left' => $v['left'],
+                    'shop_id' => $shop->id
+                ));
+            }
         }
     }
 

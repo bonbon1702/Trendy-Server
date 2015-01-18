@@ -21,7 +21,11 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('upload', 'UploadController',
 		array('only' => array('store')));
 	Route::resource('shop', 'ShopController',
-		array('only' => array('create', 'store')));
+		array('only' => array('index', 'store', 'destroy')));
+	Route::resource('home', 'HomeController',
+		array('only' => array('index', 'store', 'destroy')));
+	Route::resource('user', 'UserController',
+		array('only' => array('index', 'store', 'destroy')));
 
 });
 

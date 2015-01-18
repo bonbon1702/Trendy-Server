@@ -41,6 +41,11 @@ class PostController extends \BaseController
     public function index()
     {
         //
+        $post = $this->postRepository->all();
+        return Response::json(array(
+            'success' => true,
+            'post' => $post
+        ));
     }
 
     /**
@@ -82,11 +87,6 @@ class PostController extends \BaseController
     public function show($id)
     {
         //
-        $user = $this->userRepository->getRecent();
-
-        return View::make('Postpage.post', array(
-            'user' => $user
-        ));
     }
 
     /**
@@ -123,6 +123,9 @@ class PostController extends \BaseController
     public function destroy($id)
     {
         //
+        return Response::json(array(
+            'success' => true,
+        ));
     }
 
     public function editor()

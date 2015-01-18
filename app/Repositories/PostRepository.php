@@ -69,6 +69,7 @@ class PostRepository implements BaseRepository{
     public function delete($id)
     {
         // TODO: Implement delete() method.
+        $this->get($id)->delete();
     }
 
     public function deleteWhere($column, $value)
