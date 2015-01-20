@@ -15,14 +15,24 @@ use Repositories\CommentRepository;
 class CommentService implements BaseService{
 
     private $commentRepository;
-    function __construct(CommentRepository $commentRepository)
+
+    private $userRepository;
+
+    function __construct(CommentRepository $commentRepository, UserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->commentRepository = $commentRepository;
+        $this->userRepository = $userRepository;
     }
     public function create(array $data)
     {
         // TODO: Implement create() method.
+        $content = $data['content'];
+        $user_id = $this->userRepository->getRecent()->id;
+        $this->commentRepository->create(array(
+            'user_id' => $user_id,
+            'content' => $content,
+        ));
     }
 
     public function update($model, array $data)
