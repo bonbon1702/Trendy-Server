@@ -54,13 +54,9 @@ class UploadRepository implements BaseRepository{
         return $upload;
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
-        if (!empty($data)){
-            $upload = $model->update($data);
-        }
-        return $upload;
     }
 
     public function delete($id)

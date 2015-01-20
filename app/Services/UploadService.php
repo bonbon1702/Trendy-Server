@@ -30,12 +30,9 @@ class UploadService implements BaseService{
         return true;
     }
 
-    public function update($model, array $data)
+    public function update(array $data)
     {
         // TODO: Implement update() method.
-        $upload = $this->uploadRepository->update($model,$data);
-
-        return true;
     }
 
     public function delete($column, $value)
