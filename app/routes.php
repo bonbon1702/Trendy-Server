@@ -23,10 +23,11 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('shop', 'ShopController',
 		array('only' => array('index', 'store', 'update','destroy')));
 	Route::resource('home', 'HomeController',
-		array('only' => array('index', 'store', 'update','destroy')));
+		array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::resource('user', 'UserController',
 		array('only' => array('index', 'store', 'update', 'destroy')));
-
+    Route::resource('follow', 'FollowController',
+        array('only' => array('index', 'store', 'update', 'destroy')));
 });
 
 App::missing(function($exception) {
