@@ -21,7 +21,7 @@ interface BaseRepository{
 
     public function create(array $data);
 
-    public function update($model, array $data);
+    public function update($column, $value, array $data);
 
     public function delete($id);
 

@@ -48,7 +48,7 @@ class TagPictureRepository implements BaseRepository{
         return $tagPicture;
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
     }

@@ -42,7 +42,7 @@ class TagRepository implements BaseRepository{
         // TODO: Implement create() method.
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
     }

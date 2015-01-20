@@ -17,16 +17,17 @@ Route::group(array('prefix' => 'api'), function() {
 	// Angular will handle both of those forms
 	// this ensures that a user can't access api/create or api/edit when there's nothing there
 	Route::resource('post', 'PostController',
-		array('only' => array('index', 'store', 'destroy')));
+		array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::resource('upload', 'UploadController',
 		array('only' => array('store')));
 	Route::resource('shop', 'ShopController',
-		array('only' => array('index', 'store', 'destroy')));
+		array('only' => array('index', 'store', 'update','destroy')));
 	Route::resource('home', 'HomeController',
-		array('only' => array('index', 'store', 'destroy')));
+		array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::resource('user', 'UserController',
-		array('only' => array('index', 'store', 'destroy')));
-
+		array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::resource('follow', 'FollowController',
+        array('only' => array('index', 'store', 'update', 'destroy')));
 });
 
 App::missing(function($exception) {

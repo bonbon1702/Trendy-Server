@@ -26,7 +26,7 @@ class AlbumService implements BaseService{
         // TODO: Implement create() method.
     }
 
-    public function update($model, array $data)
+    public function update(array $data)
     {
         // TODO: Implement update() method.
     }
