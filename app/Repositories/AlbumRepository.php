@@ -12,7 +12,8 @@ namespace Repositories;
 use Core\BaseRepository;
 use \Album;
 
-class AlbumRepository implements BaseRepository{
+class AlbumRepository implements BaseRepository
+{
     public function errors($code)
     {
         // TODO: Implement errors() method.
@@ -36,7 +37,7 @@ class AlbumRepository implements BaseRepository{
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
-        $album = Album::where($column,$value);
+        $album = Album::where($column, $value);
 
         return $album;
     }
@@ -49,7 +50,7 @@ class AlbumRepository implements BaseRepository{
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        if (!empty($data)){
+        if (!empty($data)) {
             $album = Album::create($data);
         }
 
@@ -59,7 +60,7 @@ class AlbumRepository implements BaseRepository{
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
-        if (!empty($data)){
+        if (!empty($data)) {
             $album = Album::update($data);
         }
         return $album;
@@ -74,7 +75,16 @@ class AlbumRepository implements BaseRepository{
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
-        $this->getWhere($column,$value)->delete();
+        $this->getWhere($column, $value)->delete();
     }
 
+    public function getAlbumContent($userId, $albumName)
+    {
+        return Album:: where('album_name', '=', $albumName)->where('user_id', '=', $userId)->get();
+    }
+
+    public function getAlbumOfUser($userId)
+    {
+        return Album:: where('user_id', '=', $userId)->groupBy('album_name')->select('album_name')->get();
+    }
 }

@@ -31,12 +31,6 @@ class AlbumController extends \BaseController {
 	public function create()
 	{
 		//
-        $data = Input::all();
-        $this->albumService->create($data);
-
-        return Response::json(array(
-            'success' => true
-        ));
 	}
 
 	/**
@@ -48,6 +42,13 @@ class AlbumController extends \BaseController {
 	public function store()
 	{
 		//
+        $data = Input::all();
+        $album = $this->albumService->create($data);
+
+        return Response::json(array(
+            'success' => true,
+            'album' => $album
+        ));
 	}
 
 	/**
@@ -60,6 +61,12 @@ class AlbumController extends \BaseController {
 	public function show($id)
 	{
 		//
+        //$data = Input::all();
+        $album = $this->albumService->getListAlbumOfUser($id);
+        return Response::json(array(
+            'success' => true,
+            'album' => $album
+        ));
 	}
 
 	/**
@@ -88,14 +95,24 @@ class AlbumController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /album/{id}
+	 * DELETE /album/{name}
 	 *
-	 * @param  int  $id
+	 * @param  int  $name
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($name)
 	{
 		//
+        $this->albumService->delete('album_name',$name);
 	}
+
+    public function getAlbum($id, $name){
+        $album = $this->albumService->albumContent($id, $name);
+
+        return Response::json(array(
+            'success' => true,
+            'album' => $album
+        ));
+    }
 
 }

@@ -26,6 +26,8 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'destroy')));
 	Route::resource('user', 'UserController',
 		array('only' => array('index', 'store', 'destroy')));
+    Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
+    Route::resource('album', 'AlbumController');
 
 });
 

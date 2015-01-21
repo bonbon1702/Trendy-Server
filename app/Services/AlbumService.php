@@ -46,15 +46,23 @@ class AlbumService implements BaseService{
     public function update(array $data)
     {
         // TODO: Implement update() method.
-        if ($this->AlbumRepository->update($model,$data))
+        //if ($this->albumRepository->update($model,$data))
             return true;
     }
 
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
-        if ($this->AlbumRepository->delete($column,$value))
-            return true;
+        $this->albumRepository->delete($column,$value);
+    }
+
+    public function getListAlbumOfUser($id){
+       // $user_id = $this->userRepository->getRecent()->id;
+        return $this->albumRepository->getAlbumOfUser($id);
+    }
+
+    public function albumContent($id, $albumName){
+        return $this->albumRepository->getAlbumContent($id, $albumName);
     }
 
 }
