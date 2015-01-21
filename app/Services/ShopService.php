@@ -63,4 +63,10 @@ class ShopService implements BaseService{
         return $shop;
 
     }
+
+    public function searchShop($type){
+        $shop = $this->shopRepository->search($type);
+
+        return $shop;
+    }
 }

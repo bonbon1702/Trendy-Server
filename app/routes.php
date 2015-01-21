@@ -19,7 +19,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('post', 'PostController',
 		array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::resource('upload', 'UploadController',
-		array('only' => array('store')));
+		array('only' => array('store', 'update', 'show')));
 	Route::resource('shop', 'ShopController',
 		array('only' => array('index', 'store', 'update','destroy')));
 	Route::resource('home', 'HomeController',

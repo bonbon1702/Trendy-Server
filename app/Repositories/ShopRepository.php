@@ -68,7 +68,9 @@ class ShopRepository implements BaseRepository{
 
     public function search($type){
         $shop =  Shop::where('address', 'LIKE', '%'.$type.'%' )->get();
-
+        // $shop = Shop::whereRaw('MATCH(name,address) AGAINST (?)', array(
+        //         $type
+        //     ));
         return $shop;
     }
 }

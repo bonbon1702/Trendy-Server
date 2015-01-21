@@ -57,6 +57,10 @@ class UploadRepository implements BaseRepository{
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
+        $this->getWhere($column, $value)
+                            ->update($data);
+        $upload = $this->getWhere($column,$value);
+        return $upload;
     }
 
     public function delete($id)
