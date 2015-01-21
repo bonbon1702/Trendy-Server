@@ -91,4 +91,10 @@ class PostService implements BaseService{
     {
         // TODO: Implement delete() method.
     }
+
+    public function allPost(){
+        $posts = $this->postRepository->all();
+
+        return $posts;
+    }
 }

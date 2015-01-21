@@ -41,10 +41,10 @@ class PostController extends \BaseController
     public function index()
     {
         //
-        $post = $this->postRepository->all();
+        $posts = $this->postService->allPost();
         return Response::json(array(
             'success' => true,
-            'post' => $post
+            'posts' => $posts
         ));
     }
 
