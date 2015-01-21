@@ -10,6 +10,7 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use \Comment;
 
 class CommentRepository implements BaseRepository{
     public function errors($code)
@@ -56,7 +57,8 @@ class CommentRepository implements BaseRepository{
     {
         // TODO: Implement update() method.
         if (!empty($data)){
-            $comment = Comment::update($data);
+            $comment = $this->getWhere($column,$value)
+                ->update($data);
         }
         return $comment;
     }
@@ -71,6 +73,10 @@ class CommentRepository implements BaseRepository{
     {
         // TODO: Implement deleteWhere() method.
         $this->getWhere($column,$value)->delete();
+    }
+
+    public function whereTypeComment($typeComment, $typeId){
+        return Comment::where('type_comment', $typeComment)->where('type_id', $typeId)->get();
     }
 
 }

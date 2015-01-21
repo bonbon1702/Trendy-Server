@@ -11,6 +11,9 @@ namespace Services;
 
 use Core\BaseService;
 use Repositories\CommentRepository;
+use Repositories\UserRepository;
+use Repositories\PostRepository;
+use Repositories\ShopRepository;
 
 class CommentService implements BaseService{
 
@@ -18,30 +21,58 @@ class CommentService implements BaseService{
 
     private $userRepository;
 
-    function __construct(CommentRepository $commentRepository, UserRepository $userRepository)
+    private $postRepository;
+
+    private $shopRepository;
+
+    function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository)
     {
         // TODO: Implement __construct() method.
         $this->commentRepository = $commentRepository;
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
+        $this->shopRepository = $shopRepository;
     }
     public function create(array $data)
     {
         // TODO: Implement create() method.
         $content = $data['content'];
+        $type_comment = $data['type_comment'];
+        $type_id = $data['type_id'];
         $user_id = $this->userRepository->getRecent()->id;
-        $this->commentRepository->create(array(
+        $comment = $this->commentRepository->create(array(
             'user_id' => $user_id,
+            'type_comment' => $type_comment,
+            'type_id' => $type_id,
             'content' => $content,
         ));
+        return true;
     }
 
     public function update(array $data)
     {
         // TODO: Implement update() method.
+        $this->commentRepository->update('id', $data['id'], $data);
     }
 
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
+    }
+
+    public function deleteComment($id)
+    {
+        $this->commentRepository->delete($id);
+        return true;
+    }
+
+    public function showCommentByPostId($id){
+        $comment = $this->commentRepository->whereTypeComment(0,$id);
+        return $comment;
+    }
+
+    public function showCommentByShopId($id){
+        $comment = $this->commentRepository->whereTypeComment(1,$id);
+        return $comment;
     }
 }
