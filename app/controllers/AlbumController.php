@@ -107,7 +107,7 @@ class AlbumController extends \BaseController {
 	}
 
     public function getAlbum($id, $name){
-        $album = $this->albumService->albumContent($id, $name);
+        $album = $this->albumService->getAlbumContent($id, $name);
 
         return Response::json(array(
             'success' => true,

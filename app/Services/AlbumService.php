@@ -61,7 +61,7 @@ class AlbumService implements BaseService{
         return $this->albumRepository->getAlbumOfUser($id);
     }
 
-    public function albumContent($id, $albumName){
+    public function getAlbumContent($id, $albumName){
         return $this->albumRepository->getAlbumContent($id, $albumName);
     }
 
