@@ -11,7 +11,10 @@
 |
 */
 
-Route::group(array('prefix' => 'api'), function() {
+Route::group(array('prefix' => 'api'), /**
+     *
+     */
+    function() {
 
 	// since we will be using this just for CRUD, we won't need create and edit
 	// Angular will handle both of those forms
@@ -28,6 +31,8 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'update', 'destroy')));
     Route::resource('follow', 'FollowController',
         array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::any('follower', 'FollowController@FollowerByUser');
+    Route::any('following', 'FollowController@FollowingByUser');
 });
 
 App::missing(function($exception) {
