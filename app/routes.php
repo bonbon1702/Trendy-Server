@@ -26,7 +26,7 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'destroy')));
 	Route::resource('user', 'UserController',
 		array('only' => array('index', 'store', 'destroy')));
-
+    Route::resource('album','AlbumController');
 });
 
 App::missing(function($exception) {
