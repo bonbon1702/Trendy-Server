@@ -37,6 +37,7 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'destroy'));
     Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
     Route::resource('album', 'AlbumController');
+	Route::any('shop/searchShop/{type}', 'ShopController@searchShop');
 
 });
 

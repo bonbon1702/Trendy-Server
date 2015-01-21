@@ -60,9 +60,13 @@ class ShopController extends BaseController
     public function store()
     {
         //
-        $data = Input::all();
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 
-        $results = $this->shopService->searchShop($data['type']);
+    public function searchShop($type){
+        $results = $this->shopService->searchShop($type);
 
         return Response::json(array(
             'success' => true,
