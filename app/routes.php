@@ -28,6 +28,16 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'update', 'destroy')));
     Route::resource('follow', 'FollowController',
         array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::resource('comment', 'CommentController',
+        array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::any('comment/showPost/{id}', 'CommentController@showPost');
+    Route::any('comment/showShop/{id}', 'CommentController@showShop');
+    Route::any('follower', 'FollowController@FollowerByUser');
+    Route::any('following', 'FollowController@FollowingByUser');
+		array('only' => array('index', 'store', 'destroy')));
+    Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
+    Route::resource('album', 'AlbumController');
+
 });
 
 App::missing(function($exception) {
