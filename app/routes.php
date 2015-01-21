@@ -19,7 +19,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('post', 'PostController',
 		array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::resource('upload', 'UploadController',
-		array('only' => array('store')));
+		array('only' => array('store', 'update', 'show')));
 	Route::resource('shop', 'ShopController',
 		array('only' => array('index', 'store', 'update','destroy')));
 	Route::resource('home', 'HomeController',
@@ -28,6 +28,10 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'update', 'destroy')));
     Route::resource('follow', 'FollowController',
         array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::resource('comment', 'CommentController',
+        array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::any('comment/showPost/{id}', 'CommentController@showPost');
+    Route::any('comment/showShop/{id}', 'CommentController@showShop');
     Route::any('follower', 'FollowController@FollowerByUser');
     Route::any('following', 'FollowController@FollowingByUser');
 		array('only' => array('index', 'store', 'destroy'));

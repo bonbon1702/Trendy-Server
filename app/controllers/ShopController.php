@@ -2,8 +2,8 @@
 
 use Services\UserService;
 use Repositories\UserRepository;
-use Repositories\ShopRepository;
 use Core\GoogleMapHelper;
+use Services\ShopService;
 
 class ShopController extends BaseController
 {
@@ -18,14 +18,14 @@ class ShopController extends BaseController
 
     private $googleMapHelper;
 
-    private $shopRepository;
+    private $shopService;
 
-    public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopRepository $shopRepository)
+    public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopService $shopService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->googleMapHelper = $googleMapHelper;
-        $this->shopRepository = $shopRepository;
+        $this->shopService = $shopService;
     }
 
     public function showShop($name)
@@ -62,9 +62,10 @@ class ShopController extends BaseController
         //
         $data = Input::all();
 
-        $results = $this->shopRepository->search($data['type']);
+        $results = $this->shopService->searchShop($data['type']);
 
         return Response::json(array(
+            'success' => true,
             'data' => $results
         ));
     }

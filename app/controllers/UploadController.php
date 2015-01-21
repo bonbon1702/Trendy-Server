@@ -1,14 +1,16 @@
 <?php
 
 use Repositories\UploadRepository;
+use Repositories\UserRepository;
+use Services\UploadService;
 
 class UploadController extends \BaseController {
 
-	protected $uploadRepository;
+	private $uploadService;
 
-	function __construct(UploadRepository $uploadRepository)
+	function __construct(UploadService $uploadService)
 	{
-		$this->uploadRepository = $uploadRepository;
+		$this->uploadService = $uploadService;
 	}
 
 	/**
@@ -42,36 +44,33 @@ class UploadController extends \BaseController {
 	public function store()
 	{
 		//
-		$data = Input::all();
+		$img = $_FILES['file']['tmp_name'];
 
-		$img = Image::make($data['img']);
-		$image_name = $data['name'];
-		$upload = $this->uploadRepository->getWhere('name',$image_name);
-		$image_name_editor = \Core\Helper::get_rand_alphanumeric(8);
-		$image_url = 'assets/images/' .$image_name_editor . '.jpg';
-
-		$img->save($image_url);
-
-		$this->uploadRepository->update($upload,array(
-			'image_url_editor' => $image_url
+		$upload = $this->uploadService->create(array(
+			'img' => $img
 		));
 
-
 		return Response::json(array(
-			'success' => true
+			'success' => true,
+			'upload' => $upload
 		));
 	}
 
 	/**
 	 * Display the specified resource.
-	 * GET /upload/{id}
+	 * GET /upload/{name}
 	 *
-	 * @param  int  $id
+	 * @param  String  $name
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($name)
 	{
 		//
+		$upload = $this->uploadService->getUploadImage($name);
+		return Response::json(array(
+			'success' => true,
+			'upload' => $upload
+		));
 	}
 
 	/**
@@ -88,14 +87,22 @@ class UploadController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 * PUT /upload/{id}
+	 * PUT /upload/{name}
 	 *
-	 * @param  int  $id
+	 * @param  int  $name
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($name)
 	{
 		//
+		$data = Input::all();
+		$data['name'] = $name;
+		$upload = $this->uploadService->update($data);
+
+		return Response::json(array(
+			'success' => true,
+			'upload' => $upload
+		));
 	}
 
 	/**
