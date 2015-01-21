@@ -34,7 +34,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::any('comment/showShop/{id}', 'CommentController@showShop');
     Route::any('follower', 'FollowController@FollowerByUser');
     Route::any('following', 'FollowController@FollowingByUser');
-		array('only' => array('index', 'store', 'destroy')));
+		array('only' => array('index', 'store', 'destroy'));
     Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
     Route::resource('album', 'AlbumController');
 
