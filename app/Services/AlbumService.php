@@ -43,7 +43,7 @@ class AlbumService implements BaseService{
         return true;
     }
 
-    public function update($model, array $data)
+    public function update(array $data)
     {
         // TODO: Implement update() method.
         if ($this->AlbumRepository->update($model,$data))

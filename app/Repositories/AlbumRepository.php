@@ -56,7 +56,7 @@ class AlbumRepository implements BaseRepository{
         return $album;
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
         if (!empty($data)){

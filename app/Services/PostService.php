@@ -79,9 +79,12 @@ class PostService implements BaseService{
         }
     }
 
-    public function update($model, array $data)
+    public function update(array $data)
     {
         // TODO: Implement update() method.
+        $update = $this->postRepository->update('name', $data['name'], $data);
+
+        // next...
     }
 
     public function delete($column, $value)

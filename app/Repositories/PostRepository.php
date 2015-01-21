@@ -57,11 +57,12 @@ class PostRepository implements BaseRepository{
         return $post;
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
         if (!empty($data)){
-            $post = Post::update($data);
+            $post = $this->getWhere($column,$value)
+                            ->update($data);
         }
         return $post;
     }

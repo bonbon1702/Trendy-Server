@@ -61,16 +61,11 @@ class UserRepository implements BaseRepository
             $user = $this->getWhere('email', $data['email'])->first();
 
             if (!$user) {
-                $img = \Image::make($data['picture_profile']);
-
-                $img->resize(50,50);
-
-                $image_name = 'assets/images/' .strstr($data['email'], '@', true) . '_profile_picture.jpg';
-                $img->save($image_name);
                 $user = User::create(array(
                     'email' => $data['email'],
                     'username' => $data['username'],
-                    'picture_profile' => $image_name,
+                    'picture_profile' => $data['avatar'],
+                    'sw_id' => $data['sw_id'],
                     'gender' => $data['gender'],
                     'delete_flag' => 0,
                     'role_id' => 1
@@ -82,7 +77,7 @@ class UserRepository implements BaseRepository
         return true;
     }
 
-    public function update($model, array $data)
+    public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
     }

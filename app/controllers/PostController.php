@@ -111,6 +111,13 @@ class PostController extends \BaseController
     public function update($id)
     {
         //
+        $data = Input::all();
+
+        $this->postService->update($data);
+
+        return Response::json(array(
+            'success' => true
+        ));
     }
 
     /**
