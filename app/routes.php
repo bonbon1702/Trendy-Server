@@ -11,10 +11,7 @@
 |
 */
 
-Route::group(array('prefix' => 'api'), /**
-     *
-     */
-    function() {
+Route::group(array('prefix' => 'api'), function() {
 
 	// since we will be using this just for CRUD, we won't need create and edit
 	// Angular will handle both of those forms
@@ -33,6 +30,10 @@ Route::group(array('prefix' => 'api'), /**
         array('only' => array('index', 'store', 'update', 'destroy')));
     Route::any('follower', 'FollowController@FollowerByUser');
     Route::any('following', 'FollowController@FollowingByUser');
+		array('only' => array('index', 'store', 'destroy')));
+    Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
+    Route::resource('album', 'AlbumController');
+
 });
 
 App::missing(function($exception) {
