@@ -21,7 +21,7 @@ class AlbumService implements BaseService
 
     private $postRepository;
 
-    function __construct(AlbumRepository $albumRepository, PostRepository $postRepository)
+    function __construct(AlbumRepository $albumRepository, PostRepository $postRepository, UserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->albumRepository = $albumRepository;

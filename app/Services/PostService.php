@@ -114,6 +114,9 @@ class PostService implements BaseService
     public function allPost()
     {
         $posts = $this->postRepository->all();
+        foreach ($posts as $v){
+            $v['user'] = $v->user;
+        }
 
         return $posts;
     }

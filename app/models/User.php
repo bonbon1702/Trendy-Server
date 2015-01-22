@@ -45,4 +45,8 @@ class User extends \Eloquent implements UserInterface, RemindableInterface{
 	public function upload(){
 		return $this->hasMany('Upload');
 	}
+
+	public function post(){
+		return $this->hasMany('Post');
+	}
 }
