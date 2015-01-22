@@ -29,10 +29,8 @@ class TagContentService implements BaseService{
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $user_id = $this->userRepository->getRecent()->id;
         $content = $data['content'];
         $tagContent = $this->tagContentRepository->create(array(
-            'user_id' => $user_id,
             'content' => $content,
         ));
         return true;
