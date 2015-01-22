@@ -74,7 +74,7 @@ class UserRepository implements BaseRepository
 
             Auth::login($user);
         }
-        return true;
+        return $user;
     }
 
     public function update($column, $value, array $data)

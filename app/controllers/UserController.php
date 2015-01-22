@@ -29,9 +29,19 @@ class UserController extends BaseController
     public function store(){
         $data = Input::all();
 
-        $this->userService->create($data);
+        $user = $this->userService->create($data);
         return Response::json(array(
-            'success' => true
+            'success' => true,
+            'user' => $user
+        ));
+    }
+
+    public function getLoginUser(){
+        $user = $this->userRepository->getRecent();
+
+        return Response::json(array(
+            'success' => true,
+            'user' => $user
         ));
     }
 
