@@ -12,9 +12,11 @@ namespace Services;
 use Core\BaseService;
 use Repositories\TagRepository;
 
-class TagService implements BaseService{
+class TagService implements BaseService
+{
 
     private $tagRepository;
+
     function __construct(TagRepository $tagRepository)
     {
         $this->tagRepository = $tagRepository;
@@ -23,16 +25,27 @@ class TagService implements BaseService{
     public function create(array $data)
     {
         // TODO: Implement create() method.
+        $postId = $data['post_id'];
+        return $this->tagRepository->create(array(
+            'post_id' => $postId
+        ));
     }
 
     public function update(array $data)
     {
         // TODO: Implement update() method.
+        return $this->tagRepository->update('post_id', $data['post_id'], $data);
     }
 
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
+        return $this->tagRepository->deleteWhere('post_id',$value);
     }
 
+    public function listAllTag()
+    {
+        $tag = $this->tagRepository->all();
+        return $tag;
+    }
 }

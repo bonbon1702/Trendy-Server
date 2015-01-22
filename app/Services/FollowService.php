@@ -37,7 +37,7 @@ class FollowService implements BaseService{
     public function update(array $data)
     {
         // TODO: Implement update() method.
-        $this->followRepository->update('id',$data['id'],$data);
+        return $this->followRepository->update('id',$data['id'],$data);
     }
 
     public function delete($column, $value)

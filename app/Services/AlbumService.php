@@ -12,8 +12,10 @@ namespace Services;
 use Core\BaseService;
 use Repositories\AlbumRepository;
 use Repositories\PostRepository;
+use Repositories\UserRepository;
 
-class AlbumService implements BaseService{
+class AlbumService implements BaseService
+{
 
     private $albumRepository;
 
@@ -24,13 +26,14 @@ class AlbumService implements BaseService{
         // TODO: Implement __construct() method.
         $this->albumRepository = $albumRepository;
         $this->postRepository = $postRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function create(array $data)
     {
         // TODO: Implement create() method.
         $post_id = $data['postId'];
-//        $user_id = $this->userRepository->getRecent()->id;
+        $user_id = $this->userRepository->getRecent()->id;
         $album_name = $data['aName'];
         $post = $this->postRepository->get($post_id);
         if ($post) {
@@ -47,21 +50,23 @@ class AlbumService implements BaseService{
     {
         // TODO: Implement update() method.
         //if ($this->albumRepository->update($model,$data))
-            return true;
+        return true;
     }
 
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
-        $this->albumRepository->delete($column,$value);
+        $this->albumRepository->delete($column, $value);
     }
 
-    public function getListAlbumOfUser($id){
-       // $user_id = $this->userRepository->getRecent()->id;
+    public function getListAlbumOfUser($id)
+    {
+        // $user_id = $this->userRepository->getRecent()->id;
         return $this->albumRepository->getAlbumOfUser($id);
     }
 
-    public function getAlbumContent($id, $albumName){
+    public function albumContent($id, $albumName)
+    {
         return $this->albumRepository->getAlbumContent($id, $albumName);
     }
 

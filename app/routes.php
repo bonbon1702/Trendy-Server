@@ -38,6 +38,11 @@ Route::group(array('prefix' => 'api'), function() {
     Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
     Route::resource('album', 'AlbumController');
 	Route::any('shop/searchShop/{type}', 'ShopController@searchShop');
+	Route::any('user/getLoginUser', 'UserController@getLoginUser');
+	Route::resource('tag', 'TagController',
+		array('only' => array('index', 'store', 'update', 'destroy')));
+    Route::resource('tagContent', 'TagContentController',
+        array('only' => array('index', 'store', 'update', 'destroy')));
 
 });
 

@@ -18,7 +18,8 @@ use Repositories\UploadRepository;
 use Repositories\UserRepository;
 use Services\TagPictureService;
 
-class PostService implements BaseService{
+class PostService implements BaseService
+{
 
     private $postRepository;
 
@@ -32,7 +33,9 @@ class PostService implements BaseService{
 
     private $shopService;
 
-    function __construct(PostRepository $postRepository,UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService)
+    private $albumService;
+
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -41,14 +44,22 @@ class PostService implements BaseService{
         $this->tagPictureService = $tagPictureService;
         $this->googleMapHelper = $googleMapHelper;
         $this->shopService = $shopService;
+        $this->albumService = $albumService;
     }
 
     public function create(array $data)
     {
         // TODO: Implement create() method.
         $upload_id = $data['uploadId'];
-        $caption =  $data['caption'];
-        $points = $data['points'];
+
+        $caption = null;
+        $points = array();
+        $album_name = null;
+
+        if ($data['caption']) $caption = $data['caption'];
+        if (!empty($data['points'])) $points = $data['points'];
+        if ($data['album']) $album_name = $data['album'];
+
         $user_id = $this->userRepository->getRecent()->id;
 
         $upload = $this->uploadRepository->get($upload_id);
@@ -60,6 +71,14 @@ class PostService implements BaseService{
             'image_url_editor' => $upload->image_url_editor,
             'caption' => $caption,
         ));
+
+        if ($album_name) {
+            $this->albumService->create(array(
+                'postId' => $post->id,
+                'aName' => $album_name
+            ));
+        }
+
         if ($points) {
             foreach ($points as $v) {
                 $result = $this->googleMapHelper->findCoordinate($v['address']);
@@ -92,7 +111,8 @@ class PostService implements BaseService{
         // TODO: Implement delete() method.
     }
 
-    public function allPost(){
+    public function allPost()
+    {
         $posts = $this->postRepository->all();
 
         return $posts;
