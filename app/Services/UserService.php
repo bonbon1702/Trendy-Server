@@ -16,9 +16,12 @@ class UserService implements BaseService
 
     private $userRepository;
 
-    function __construct(UserRepository $userRepository)
+    function __construct(UserRepository $userRepository, FollowService $followService, PostService $postService, AlbumService $albumService)
     {
         $this->userRepository = $userRepository;
+        $this->followService = $followService;
+        $this->postService = $postService;
+        $this->albumService = $albumService;
     }
 
 
@@ -39,4 +42,12 @@ class UserService implements BaseService
         // TODO: Implement deleteWhere() method.
     }
 
+    public function getUserInfo($id){
+        $user = $this->userRepository->get($id);
+        $user['album'] = $user->album;
+        $user['following'] = $this->followService->FollowingByUser($user->id);
+        $user['follower'] = $this->followService->FollowerByUser($id);
+        $user['posts'] = $user->posts;
+        return $user;
+    }
 }

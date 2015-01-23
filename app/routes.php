@@ -43,7 +43,7 @@ Route::group(array('prefix' => 'api'), function() {
 		array('only' => array('index', 'store', 'update', 'destroy')));
     Route::resource('tagContent', 'TagContentController',
         array('only' => array('index', 'store', 'update', 'destroy')));
-
+	Route::any('user/getUser/{id}', 'UserController@getUser');
 });
 
 App::missing(function($exception) {

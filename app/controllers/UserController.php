@@ -45,4 +45,11 @@ class UserController extends BaseController
         ));
     }
 
+    public function getUser($id){
+        $user = $this->userService->getUserInfo($id);
+        return Response::json(array(
+            'success' => true,
+            'user' => $user
+        ));
+    }
 }

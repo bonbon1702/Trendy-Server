@@ -43,20 +43,20 @@ class FollowService implements BaseService{
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
-        return $this->followRepository->deleteWhere($column,$value);
+        $this->followRepository->deleteWhere($column,$value);
     }
 
-    public function FollowingByUser()
+    public function FollowingByUser($id)
     {
         // TODO: Implement delete() method.
        // $user_id = $this->userRepository->getRecent()->id;
 
-        return $this->followRepository->getWhere('user_id',7)->get();
+        return $this->followRepository->getWhere('follower_id',$id)->get();
     }
 
-    public function FollowerByUser(){
+    public function FollowerByUser($id){
 
         // TODO: Implement delete() method.
-        return $this->followRepository->getWhere('follower_id',1)->get();
+        return $this->followRepository->getWhere('user_id',$id)->get();
     }
 }
