@@ -50,7 +50,7 @@ class PostService implements BaseService
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $upload_id = $data['uploadId'];
+        $upload_name = $data['name'];
 
         $caption = null;
         $points = array();
@@ -62,7 +62,7 @@ class PostService implements BaseService
 
         $user_id = $this->userRepository->getRecent()->id;
 
-        $upload = $this->uploadRepository->get($upload_id);
+        $upload = $this->uploadRepository->getWhere('name', $upload_name);
 
         $post = $this->postRepository->create(array(
             'name' => Helper::get_rand_alphanumeric(8),

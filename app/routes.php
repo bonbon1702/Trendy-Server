@@ -44,6 +44,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::resource('tagContent', 'TagContentController',
         array('only' => array('index', 'store', 'update', 'destroy')));
 	Route::any('user/getUser/{id}', 'UserController@getUser');
+	Route::any('uploadEditor', 'UploadController@uploadEditor');
 });
 
 App::missing(function($exception) {

@@ -34,14 +34,15 @@ class UploadService implements BaseService{
         $user = $this->userRepository->getRecent();
         $img = $data['img'];
         if ($user && $img){
-            $image = Image::make($img);
+//            $image = Image::make($img);
             $image_name = Helper::get_rand_alphanumeric(8);
-            $image_url = 'assets/images/' .$image_name.'.jpg';
-
-            $image->save($image_url);
+//            $image_url = 'assets/images/' .$image_name.'.jpg';
+//
+//            $image->save($image_url);
+            \Cloudy::upload($img, $image_name);
             $upload = $this->uploadRepository->create(array(
                 'user_id' => $user->id,
-                'image_url' => url() .'/'.$image_url,
+                'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
                 'name' => $image_name
             ));
         }

@@ -117,4 +117,17 @@ class UploadController extends \BaseController {
 		//
 	}
 
+	public function uploadEditor(){
+		$data = Input::all();
+
+		$this->uploadService->update(array(
+			'img' => $data['image'],
+			'name' => $data['name']
+		));
+		return Response::json(array(
+			'success' => true,
+			'data' => $data
+		));
+	}
+
 }
