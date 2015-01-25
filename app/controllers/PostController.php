@@ -87,6 +87,11 @@ class PostController extends \BaseController
     public function show($id)
     {
         //
+        $post = $this->postService->getPostDetails($id);
+        return Response::json(array(
+            'success' => true,
+            'post' => $post
+        ));
     }
 
     /**

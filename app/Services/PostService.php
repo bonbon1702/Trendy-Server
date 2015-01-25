@@ -35,7 +35,9 @@ class PostService implements BaseService
 
     private $albumService;
 
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService)
+    private $commentService;
+
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -45,6 +47,7 @@ class PostService implements BaseService
         $this->googleMapHelper = $googleMapHelper;
         $this->shopService = $shopService;
         $this->albumService = $albumService;
+        $this->commentService = $commentService;
     }
 
     public function create(array $data)
@@ -119,5 +122,12 @@ class PostService implements BaseService
         }
 
         return $posts;
+    }
+
+    public function getPostDetails($id){
+        $post = $this->postRepository->get($id);
+        $post['user'] = $post->user;
+        $post['comments'] = $this->commentService->showCommentByPostId($id);
+        return $post;
     }
 }

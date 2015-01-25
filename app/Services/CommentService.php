@@ -68,6 +68,9 @@ class CommentService implements BaseService{
 
     public function showCommentByPostId($id){
         $comment = $this->commentRepository->whereTypeComment(0,$id);
+        foreach ($comment as $v){
+            $v['user'] = $v->user;
+        }
         return $comment;
     }
 
