@@ -16,35 +16,25 @@ Route::group(array('prefix' => 'api'), function() {
 	// since we will be using this just for CRUD, we won't need create and edit
 	// Angular will handle both of those forms
 	// this ensures that a user can't access api/create or api/edit when there's nothing there
-	Route::resource('post', 'PostController',
-		array('only' => array('index', 'store', 'update', 'destroy')));
-	Route::resource('upload', 'UploadController',
-		array('only' => array('store', 'update', 'show')));
-	Route::resource('shop', 'ShopController',
-		array('only' => array('index', 'store', 'update','destroy')));
-	Route::resource('home', 'HomeController',
-		array('only' => array('index', 'store', 'update', 'destroy')));
-	Route::resource('user', 'UserController',
-		array('only' => array('index', 'store', 'update', 'destroy')));
-    Route::resource('follow', 'FollowController',
-        array('only' => array('index', 'store', 'update', 'destroy')));
-    Route::resource('comment', 'CommentController',
-        array('only' => array('index', 'store', 'update', 'destroy')));
-    Route::any('comment/showPost/{id}', 'CommentController@showPost');
-    Route::any('comment/showShop/{id}', 'CommentController@showShop');
-    Route::any('follower', 'FollowController@FollowerByUser');
-    Route::any('following', 'FollowController@FollowingByUser');
-		array('only' => array('index', 'store', 'destroy'));
-    Route::any('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
+	Route::resource('post', 'PostController');
+	Route::post('uploadEditor', 'UploadController@uploadEditor');
+	Route::resource('upload', 'UploadController');
+	Route::post('shop/searchShop/{type}', 'ShopController@searchShop');
+	Route::resource('shop', 'ShopController');
+	Route::resource('home', 'HomeController');
+	Route::get('user/getUser/{id}', 'UserController@getUser');
+	Route::get('user/getLoginUser', 'UserController@getLoginUser');
+	Route::resource('user', 'UserController');
+	Route::get('follower', 'FollowController@FollowerByUser');
+	Route::get('following', 'FollowController@FollowingByUser');
+    Route::resource('follow', 'FollowController');
+	Route::get('comment/showPost/{id}', 'CommentController@showPost');
+	Route::get('comment/showShop/{id}', 'CommentController@showShop');
+    Route::resource('comment', 'CommentController');
+    Route::get('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
     Route::resource('album', 'AlbumController');
-	Route::any('shop/searchShop/{type}', 'ShopController@searchShop');
-	Route::any('user/getLoginUser', 'UserController@getLoginUser');
-	Route::resource('tag', 'TagController',
-		array('only' => array('index', 'store', 'update', 'destroy')));
-    Route::resource('tagContent', 'TagContentController',
-        array('only' => array('index', 'store', 'update', 'destroy')));
-	Route::any('user/getUser/{id}', 'UserController@getUser');
-	Route::any('uploadEditor', 'UploadController@uploadEditor');
+	Route::resource('tag', 'TagController');
+    Route::resource('tagContent', 'TagContentController');
 });
 
 App::missing(function($exception) {
