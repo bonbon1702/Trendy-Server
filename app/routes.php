@@ -19,7 +19,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('post', 'PostController');
 	Route::post('uploadEditor', 'UploadController@uploadEditor');
 	Route::resource('upload', 'UploadController');
-	Route::post('shop/searchShop/{type}', 'ShopController@searchShop');
+	Route::get('shop/searchShop/{type}', 'ShopController@searchShop');
 	Route::resource('shop', 'ShopController');
 	Route::resource('home', 'HomeController');
 	Route::get('user/getUser/{id}', 'UserController@getUser');
