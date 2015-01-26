@@ -35,6 +35,11 @@ Route::group(array('prefix' => 'api'), function() {
     Route::resource('album', 'AlbumController');
 	Route::resource('tag', 'TagController');
     Route::resource('tagContent', 'TagContentController');
+	Route::get('like/likePost/{id}', 'LikeController@likePost');
+	Route::get('like/likeShop/{id}', 'LikeController@likeShop');
+	Route::get('like/countLikePost/{id}', 'LikeController@countLikePost');
+	Route::get('like/countLikeShop/{id}', 'LikeController@countLikeShop');
+	Route::resource('like', 'LikeController');
 });
 
 App::missing(function($exception) {
