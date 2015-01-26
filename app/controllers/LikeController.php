@@ -129,4 +129,22 @@ class LikeController extends \BaseController
         ));
     }
 
+    public function checkLikePost($id){
+        $type = $this->likeService->check(0, $id);
+
+        return Response::json(array(
+            'success' => true,
+            'like' => $type
+        ));
+    }
+
+    public function checkLikeShop($id){
+        $type = $this->likeService->check(1, $id);
+
+        return Response::json(array(
+            'success' => true,
+            'like' => $type
+        ));
+    }
+
 }

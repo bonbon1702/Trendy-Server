@@ -64,4 +64,18 @@ class LikeService implements BaseService
 
         return $count;
     }
+
+    public function check($type_like, $type_id){
+        $user_id = $this->userRepository->getRecent()->id;
+
+        $like = $this->likeRepository->getUserLike($user_id,$type_like,$type_id);
+
+        if ($like){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
 }

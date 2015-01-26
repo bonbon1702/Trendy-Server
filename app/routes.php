@@ -39,6 +39,8 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('like/likeShop/{id}', 'LikeController@likeShop');
 	Route::get('like/countLikePost/{id}', 'LikeController@countLikePost');
 	Route::get('like/countLikeShop/{id}', 'LikeController@countLikeShop');
+	Route::get('like/checkLikePost/{id}', 'LikeController@checkLikePost');
+	Route::get('like/checkLikeShop/{id}', 'LikeController@checkLikeShop');
 	Route::resource('like', 'LikeController');
 });
 
