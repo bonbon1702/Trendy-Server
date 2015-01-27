@@ -9,14 +9,16 @@
 use Repositories\FollowRepository;
 use Services\FollowService;
 
-class FollowController extends \BaseController{
+class FollowController extends \BaseController
+{
 
     private $followService;
     private $followRepository;
 
-    public function __construct(FollowService $followService,FollowRepository $followRepository){
-        $this->followService=$followService;
-        $this->followRepository=$followRepository;
+    public function __construct(FollowService $followService, FollowRepository $followRepository)
+    {
+        $this->followService = $followService;
+        $this->followRepository = $followRepository;
     }
 
 
@@ -25,12 +27,14 @@ class FollowController extends \BaseController{
      * GET/following
      * @return Response
      */
-    public function FollowingByUser(){
-        $follow=$this->followService->FollowingByUser();
+    public function FollowingByUser($id)
+    {
+
+        $follow = $this->followService->FollowingByUser($id);
 
         return Response::json(array(
-            'success'=>'true',
-            'follow'=>$follow
+            'success' => 'true',
+            'follow' => $follow
         ));
     }
 
@@ -40,25 +44,28 @@ class FollowController extends \BaseController{
      * GET/follower
      * @return Response
      */
-    public function FollowerByUser(){
-        $follow=$this->followService->FollowerByUser();
+    public function FollowerByUser($id)
+    {
+        $follow = $this->followService->FollowerByUser($id);
 
         return Response::json(array(
-            'success'=>'true',
-            'follow'=>$follow
+            'success' => 'true',
+            'follow' => $follow
         ));
     }
+
     /**
      * Display all follow
      * POST/follow
      *
      * @return Response
      */
-    public function  store(){
-        $data=Input::all();
+    public function  store()
+    {
+        $data = Input::all();
         $this->followService->create($data);
         return Response::json(array(
-            'success'=>true
+            'success' => true
         ));
     }
 
@@ -70,11 +77,11 @@ class FollowController extends \BaseController{
      */
     public function update($id)
     {
-        $data=Input::all();
+        $data = Input::all();
         $data['id'] = $id;
         $this->followService->update($data);
         return Response::json(array(
-            'success'=>true
+            'success' => true
         ));
     }
 
@@ -87,8 +94,8 @@ class FollowController extends \BaseController{
      */
     public function destroy($id)
     {
-        $data=Input::all();
-        $this->followService->delete('id',$id);
+        $data = Input::all();
+        $this->followService->delete('id', $id);
         return Response::json(array(
             'success' => true
         ));
