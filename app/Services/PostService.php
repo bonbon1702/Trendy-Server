@@ -120,18 +120,23 @@ class PostService implements BaseService
     public function allPost()
     {
         $posts = $this->postRepository->all();
-        foreach ($posts as $v){
+        foreach ($posts as $v) {
             $v['user'] = $v->user;
         }
 
         return $posts;
     }
 
-    public function getPostDetails($id){
+    public function getPostDetails($id)
+    {
         $post = $this->postRepository->get($id);
         $post['user'] = $post->user;
         $post['comments'] = $this->commentService->showCommentByPostId($id);
-        $post['like'] = $this->likeService->countLike(0,$id);
+        $post['like'] = $this->likeService->countLike(0, $id);
+        $post['tag_picture'] = $post->tagPicture;
+        foreach ($post['tag_picture'] as $v) {
+            $v['shop'] = $v->shop;
+        }
         return $post;
     }
 }
