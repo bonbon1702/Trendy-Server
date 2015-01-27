@@ -12,7 +12,8 @@ namespace Services;
 use Core\BaseService;
 use Repositories\FollowRepository;
 
-class FollowService implements BaseService{
+class FollowService implements BaseService
+{
 
     private $followRepository;
 
@@ -25,11 +26,11 @@ class FollowService implements BaseService{
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $userId=$data['user_id'];
-        $followerId=$data['follower_id'];
+        $userId = $data['user_id'];
+        $followerId = $data['follower_id'];
         $this->followRepository->create(array(
-            'user_id'=>$userId,
-            'follower_id'=>$followerId,
+            'user_id' => $userId,
+            'follower_id' => $followerId,
         ));
 
     }
@@ -37,26 +38,22 @@ class FollowService implements BaseService{
     public function update(array $data)
     {
         // TODO: Implement update() method.
-        return $this->followRepository->update('id',$data['id'],$data);
+        return $this->followRepository->update('id', $data['id'], $data);
     }
 
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
-        $this->followRepository->deleteWhere($column,$value);
+        $this->followRepository->deleteWhere($column, $value);
     }
 
     public function FollowingByUser($id)
     {
-        // TODO: Implement delete() method.
-       // $user_id = $this->userRepository->getRecent()->id;
-
-        return $this->followRepository->getWhere('follower_id',$id)->get();
+        return $this->followRepository->getWhere('follower_id', $id)->get();
     }
 
-    public function FollowerByUser($id){
-
-        // TODO: Implement delete() method.
-        return $this->followRepository->getWhere('user_id',$id)->get();
+    public function FollowerByUser($id)
+    {
+        return $this->followRepository->getWhere('user_id', $id)->get();
     }
 }
