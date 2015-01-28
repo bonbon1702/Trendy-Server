@@ -147,4 +147,14 @@ class PostService implements BaseService
         }
         return $post;
     }
+
+    public function getPostPaging($id){
+        $posts = $this->postRepository->getRecent()->take(8)->skip($id)->get();
+
+        foreach ($posts as $v) {
+            $v['user'] = $v->user;
+        }
+
+        return $posts;
+    }
 }

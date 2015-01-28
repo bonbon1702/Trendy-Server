@@ -23,7 +23,7 @@ class PostController extends \BaseController
 
     private $uploadRepository;
 
-    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService,UploadRepository $uploadRepository)
+    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService, UploadRepository $uploadRepository)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
@@ -137,6 +137,15 @@ class PostController extends \BaseController
         //
         return Response::json(array(
             'success' => true,
+        ));
+    }
+
+    public function getPost($id)
+    {
+        $posts = $this->postService->getPostPaging($id);
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
         ));
     }
 
