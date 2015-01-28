@@ -55,8 +55,6 @@ class ShopService implements BaseService{
 
 
         $shop = $this->shopRepository->create(array(
-            'lat' => $lat,
-            'long' => $long,
             'address' => $address
         ));
 

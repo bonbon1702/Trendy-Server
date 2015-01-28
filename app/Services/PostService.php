@@ -69,12 +69,21 @@ class PostService implements BaseService
         $user_id = $this->userRepository->getRecent()->id;
 
         $upload = $this->uploadRepository->getWhere('name', $upload_name);
+        $image_url_editor = null;
+
+        if ($data['url']){
+            $image_name = Helper::get_rand_alphanumeric(8);
+            \Cloudy::upload($data['url'], $image_name);
+            $image_url_editor = 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name;
+        } else {
+            $image_url_editor = $upload->image_url;
+        }
 
         $post = $this->postRepository->create(array(
             'name' => Helper::get_rand_alphanumeric(8),
             'user_id' => $user_id,
             'image_url' => $upload->image_url,
-            'image_url_editor' => $upload->image_url_editor,
+            'image_url_editor' => $image_url_editor,
             'caption' => $caption,
         ));
 
@@ -90,7 +99,6 @@ class PostService implements BaseService
                 $result = $this->googleMapHelper->findCoordinate($v['address']);
 
                 $shop = $this->shopService->checkCoordinates($result);
-
 
                 $this->tagPictureService->create(array(
                     'post_id' => $post->id,
