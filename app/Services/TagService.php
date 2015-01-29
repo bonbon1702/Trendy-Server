@@ -26,8 +26,10 @@ class TagService implements BaseService
     {
         // TODO: Implement create() method.
         $postId = $data['post_id'];
+        $tagContentId = $data['tag_content_id'];
         return $this->tagRepository->create(array(
-            'post_id' => $postId
+            'post_id' => $postId,
+            'tag_content_id' => $tagContentId
         ));
     }
 

@@ -39,7 +39,11 @@ class PostService implements BaseService
 
     private $likeService;
 
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService)
+    private $tagContentService;
+
+    private $tagService;
+
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -51,6 +55,8 @@ class PostService implements BaseService
         $this->albumService = $albumService;
         $this->commentService = $commentService;
         $this->likeService = $likeService;
+        $this->tagContentService = $tagContentService;
+        $this->tagService = $tagService;
     }
 
     public function create(array $data)
@@ -61,10 +67,12 @@ class PostService implements BaseService
         $caption = null;
         $points = array();
         $album_name = null;
+        $tags = array();
 
         if ($data['caption']) $caption = $data['caption'];
         if (!empty($data['points'])) $points = $data['points'];
         if ($data['album']) $album_name = $data['album'];
+        if (!empty($data['tags'])) $tags = $data['tags'];
 
         $user_id = $this->userRepository->getRecent()->id;
 
@@ -107,6 +115,18 @@ class PostService implements BaseService
                     'top' => $v['top'],
                     'left' => $v['left'],
                     'shop_id' => $shop->id
+                ));
+            }
+        }
+
+        if ($tags){
+            foreach ($tags as $v){
+                $tagContent = $this->tagContentService->create(array(
+                    'content' => $v['text']
+                ));
+                $this->tagService->create(array(
+                    'post_id' => $post->id,
+                    'tag_content_id' => $tagContent->id
                 ));
             }
         }

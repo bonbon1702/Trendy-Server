@@ -74,4 +74,12 @@ class TagContentRepository implements BaseRepository{
         // TODO: Implement deleteWhere() method.
         $this->getWhere($column,$value)->delete();
     }
+
+    public function search($type){
+        $tagContent =  TagContent::where('content', 'LIKE', '%'.$type.'%' )->get();
+        // $shop = Shop::whereRaw('MATCH(name,address) AGAINST (?)', array(
+        //         $type
+        //     ));
+        return $tagContent;
+    }
 }

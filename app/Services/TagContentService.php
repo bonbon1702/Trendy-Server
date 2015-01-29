@@ -30,10 +30,15 @@ class TagContentService implements BaseService{
     {
         // TODO: Implement create() method.
         $content = $data['content'];
-        $tagContent = $this->tagContentRepository->create(array(
-            'content' => $content,
-        ));
-        return true;
+        $check = $this->tagContentRepository->getWhere('content', $content);
+        if ($check->count()){
+            return $check->first();
+        } else {
+            $tagContent = $this->tagContentRepository->create(array(
+                'content' => $content,
+            ));
+            return $tagContent;
+        }
     }
 
     public function update(array $data)
@@ -53,5 +58,10 @@ class TagContentService implements BaseService{
         return true;
     }
 
+    public function searchTag($type){
+        $tag = $this->tagContentRepository->search($type);
+
+        return $tag;
+    }
 
 }

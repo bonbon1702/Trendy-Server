@@ -31,10 +31,11 @@ class TagContentController extends \BaseController {
     public function store() {
         $data = Input::all();
 
-        $this->tagContentService->create($data);
+        $result = $this->tagContentService->create($data);
 
         return Response::json(array(
-            'success' => true
+            'success' => true,
+            're' => $result
         ));
     }
 
@@ -52,6 +53,15 @@ class TagContentController extends \BaseController {
         $this->tagContentService->deleteTagContent($id);
         return Response::json(array(
             'success' => true,
+        ));
+    }
+
+    public function show($id){
+        $tag = $this->tagContentService->searchTag($id);
+
+        return Response::json(array(
+            'success' => true,
+            'tag' => $tag
         ));
     }
 } 
