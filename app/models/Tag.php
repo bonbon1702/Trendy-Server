@@ -11,7 +11,7 @@ class Tag extends \Eloquent {
 		return $this->belongsTo('Post','post_id');
 	}
 
-	public function tagLinkContent(){
-		return $this->hasMany('TagLinkContent');
+	public function tagContent(){
+		return $this->belongsTo('TagContent','tag_content_id');
 	}
 }

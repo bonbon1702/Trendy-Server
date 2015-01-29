@@ -165,6 +165,10 @@ class PostService implements BaseService
         foreach ($post['tag_picture'] as $v) {
             $v['shop'] = $v->shop;
         }
+        $post['tag'] = $post->tag;
+        foreach ($post['tag'] as $v){
+            $v['content'] = $v->tagContent;
+        }
         return $post;
     }
 

@@ -7,7 +7,7 @@ class TagContent extends \Eloquent {
 
 	protected $table = 'tag_content';
 
-	public function tagLinkContent(){
-		return $this->hasMany('TagLinkContent');
+	public function tag(){
+		return $this->hasMany('Tag');
 	}
 }
