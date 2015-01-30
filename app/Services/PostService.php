@@ -173,7 +173,7 @@ class PostService implements BaseService
     }
 
     public function getPostPaging($id){
-        $posts = $this->postRepository->getRecent()->take(8)->skip($id)->get();
+        $posts = $this->postRepository->getRecent()->orderBy('id', 'DESC')->take(8)->skip($id)->get();
 
         foreach ($posts as $v) {
             $v['user'] = $v->user;

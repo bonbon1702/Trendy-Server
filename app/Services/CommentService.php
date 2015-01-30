@@ -46,7 +46,8 @@ class CommentService implements BaseService{
             'type_id' => $type_id,
             'content' => $content,
         ));
-        return true;
+        $comment['user'] = $comment->user;
+        return $comment;
     }
 
     public function update(array $data)

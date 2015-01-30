@@ -47,10 +47,11 @@ class CommentController extends \BaseController {
     public function store() {
         $data = Input::all();
 
-        $this->commentService->create($data);
+        $comment = $this->commentService->create($data);
 
         return Response::json(array(
-            'success' => true
+            'success' => true,
+            'comment' => $comment
         ));
     }
 
