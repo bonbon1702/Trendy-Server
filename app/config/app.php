@@ -125,7 +125,8 @@ return array(
 		'Toin0u\Geotools\GeotoolsServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 		'Teepluss\Cloudinary\CloudinaryServiceProvider',
-		'Intervention\Image\ImageServiceProvider'
+		'Intervention\Image\ImageServiceProvider',
+		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
 	),
 
 	/*

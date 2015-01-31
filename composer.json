@@ -10,7 +10,8 @@
 		"toin0u/geotools-laravel": "0.2.*",
 		"way/generators": "~2.0",
 		"intervention/image": "~2.0",
-		"teepluss/cloudinary": "dev-master"
+		"teepluss/cloudinary": "dev-master",
+	  	"xethron/migrations-generator": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
