@@ -27,6 +27,11 @@ class User extends \Eloquent implements UserInterface, RemindableInterface
 
     protected $guarded = array();
 
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
     public function role()
     {
         return $this->belongsTo('RoleUser', 'role_id');
