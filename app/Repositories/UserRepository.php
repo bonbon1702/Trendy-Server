@@ -85,10 +85,13 @@ class UserRepository implements BaseRepository
     public function delete($id)
     {
         // TODO: Implement delete() method.
+        $this->get($id)->delete();
     }
 
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
+        $this->getWhere($column, $value)->delete();
+
     }
 }
