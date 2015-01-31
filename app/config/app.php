@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'x10dhZ2Mks5AkWBwKltsqovUpeqBiWv7',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -125,7 +125,8 @@ return array(
 		'Toin0u\Geotools\GeotoolsServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 		'Teepluss\Cloudinary\CloudinaryServiceProvider',
-		'Intervention\Image\ImageServiceProvider'
+		'Intervention\Image\ImageServiceProvider',
+		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
 	),
 
 	/*

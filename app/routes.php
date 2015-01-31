@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/', function()
+{
+	return View::make('hello');
+});
+
 Route::group(array('prefix' => 'api'), function() {
 
 	// since we will be using this just for CRUD, we won't need create and edit
