@@ -1,0 +1,45 @@
+build:
+  type: php
+  version: 5.4
+  stability: production
+  exec:
+    - "composer install --prefer-source"
+  before_deploy:
+    - "php artisan migrate"
+  after_deploy:
+    - "php artisan cache:clear"
+    - "rm -f app/storage/views/*"
+  lib_dir: vendor
+  reuse_libs: true
+
+web1:
+  name: trendy-server
+  type: php
+  version: 5.4
+  stability: production
+  network_dirs:
+    storage1:
+      - app/storage/cache
+      - app/storage/logs
+      - app/storage/meta
+      - app/storage/sessions
+      - app/storage/views
+  httpd_document_root: public
+  php_extensions:
+    - mbstring
+    - mcrypt
+    - pdo_mysql
+    - redis
+    - zip
+    - xcache
+
+cache1:
+  name: sessions
+  type: redis
+
+database1:
+  type: mysql
+
+storage1:
+  name: filestore
+  type: nfs
