@@ -40,9 +40,12 @@ class UserService implements BaseService
     public function delete($column, $value)
     {
         // TODO: Implement deleteWhere() method.
+        $this->userRepository->deleteWhere($column, $value);
+
     }
 
-    public function getUserInfo($id){
+    public function getUserInfo($id)
+    {
         $user = $this->userRepository->get($id);
         $user['album'] = $user->album;
         $user['following'] = $this->followService->FollowingByUser($user->id);

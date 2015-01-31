@@ -26,7 +26,8 @@ class UserController extends BaseController
         $this->userService = $userService;
     }
 
-    public function store(){
+    public function store()
+    {
         $data = Input::all();
 
         $user = $this->userService->create($data);
@@ -36,7 +37,8 @@ class UserController extends BaseController
         ));
     }
 
-    public function getLoginUser(){
+    public function getLoginUser()
+    {
         $user = $this->userRepository->getRecent();
 
         return Response::json(array(
@@ -45,7 +47,17 @@ class UserController extends BaseController
         ));
     }
 
-    public function getUser($id){
+    public function  deleteLogoutUser($id)
+    {
+        $this->userService->delete('id', $id);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function getUser($id)
+    {
         $user = $this->userService->getUserInfo($id);
         return Response::json(array(
             'success' => true,

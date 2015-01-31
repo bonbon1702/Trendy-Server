@@ -30,6 +30,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('home', 'HomeController');
 	Route::get('user/getUser/{id}', 'UserController@getUser');
 	Route::get('user/getLoginUser', 'UserController@getLoginUser');
+	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');
 	Route::resource('user', 'UserController');
 	Route::get('follower', 'FollowController@FollowerByUser');
 	Route::get('following', 'FollowController@FollowingByUser');
