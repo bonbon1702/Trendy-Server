@@ -31,9 +31,8 @@ class UploadService implements BaseService{
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $user = $this->userRepository->getRecent();
         $img = $data['img'];
-        if ($user && $img){
+        if ($img){
 //            $image = Image::make($img);
             $image_name = Helper::get_rand_alphanumeric(8);
 //            $image_url = 'assets/images/' .$image_name.'.jpg';
@@ -41,7 +40,6 @@ class UploadService implements BaseService{
 //            $image->save($image_url);
             \Cloudy::upload($img, $image_name);
             $upload = $this->uploadRepository->create(array(
-                'user_id' => $user->id,
                 'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
                 'name' => $image_name
             ));

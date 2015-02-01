@@ -74,7 +74,7 @@ class PostService implements BaseService
         if ($data['album']) $album_name = $data['album'];
         if (!empty($data['tags'])) $tags = $data['tags'];
 
-        $user_id = $this->userRepository->getRecent()->id;
+        $user_id = $data['user_id'];
 
         $upload = $this->uploadRepository->getWhere('name', $upload_name);
         $image_url_editor = null;
