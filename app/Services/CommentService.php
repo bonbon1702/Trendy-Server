@@ -39,7 +39,7 @@ class CommentService implements BaseService{
         $content = $data['content'];
         $type_comment = $data['type_comment'];
         $type_id = $data['type_id'];
-        $user_id = $this->userRepository->getRecent()->id;
+        $user_id = $data['user_id'];
         $comment = $this->commentRepository->create(array(
             'user_id' => $user_id,
             'type_comment' => $type_comment,

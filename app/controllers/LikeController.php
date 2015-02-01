@@ -93,17 +93,17 @@ class LikeController extends \BaseController
         //
     }
 
-    public function likePost($id)
+    public function likePost($id, $type, $user_id)
     {
-        $this->likeService->likeOrDislike(0, $id);
+        $this->likeService->likeOrDislike(0, $id, $type, $user_id);
         return Response::json(array(
             'success' => true
         ));
     }
 
-    public function likeShop($id)
+    public function likeShop($id, $type, $user_id)
     {
-        $this->likeService->likeOrDislike(1, $id);
+        $this->likeService->likeOrDislike(1, $id, $type, $user_id);
         return Response::json(array(
             'success' => true
         ));
@@ -128,23 +128,4 @@ class LikeController extends \BaseController
             'like' => $count
         ));
     }
-
-    public function checkLikePost($id){
-        $type = $this->likeService->check(0, $id);
-
-        return Response::json(array(
-            'success' => true,
-            'like' => $type
-        ));
-    }
-
-    public function checkLikeShop($id){
-        $type = $this->likeService->check(1, $id);
-
-        return Response::json(array(
-            'success' => true,
-            'like' => $type
-        ));
-    }
-
 }

@@ -42,12 +42,9 @@ class LikeService implements BaseService
         // TODO: Implement delete() method.
     }
 
-    public function likeOrDislike($type_like, $type_id){
-        $user_id = $this->userRepository->getRecent()->id;
-
-        $like = $this->likeRepository->getUserLike($user_id,$type_like,$type_id);
-        if ($like){
-            $this->likeRepository->delete($like->id);
+    public function likeOrDislike($type_like, $type_id, $type, $user_id){
+        if ($type == 0){
+            $this->likeRepository->getUserLike($user_id,$type_like, $type_id)->delete();
         } else {
             $this->likeRepository->create(array(
                 'user_id' => $user_id,
@@ -60,22 +57,9 @@ class LikeService implements BaseService
     }
 
     public function countLike($type_like, $type_id){
-        $count = $this->likeRepository->getLike($type_like, $type_id)->count();
+        $count = $this->likeRepository->getLike($type_like, $type_id)->get();
 
         return $count;
-    }
-
-    public function check($type_like, $type_id){
-        $user_id = $this->userRepository->getRecent()->id;
-
-        $like = $this->likeRepository->getUserLike($user_id,$type_like,$type_id);
-
-        if ($like){
-            return false;
-        } else {
-            return true;
-        }
-
     }
 
 }
