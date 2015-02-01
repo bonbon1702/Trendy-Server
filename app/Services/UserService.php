@@ -28,7 +28,28 @@ class UserService implements BaseService
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        return $this->userRepository->create($data);
+        if (!empty($data)) {
+
+            $user = $this->userRepository->getWhere('email', $data['email'])->first();
+
+            if (!$user) {
+                $user = $this->userRepository->create(array(
+                    'email' => $data['email'],
+                    'username' => $data['username'],
+                    'picture_profile' => $data['avatar'],
+                    'sw_id' => $data['sw_id'],
+                    'gender' => $data['gender'],
+                    'delete_flag' => 0,
+                    'role_id' => 1,
+                    'remember_token' => $data['remember_token']
+                ));
+            } else {
+                $user = $this->userRepository->update('email', $data['email'], array(
+                    'remember_token' => $data['remember_token']
+                ));
+            }
+        }
+        return $user;
     }
 
     public function update(array $data)

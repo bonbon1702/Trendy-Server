@@ -56,30 +56,17 @@ class UserRepository implements BaseRepository
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        if (!empty($data)) {
-
-            $user = $this->getWhere('email', $data['email'])->first();
-
-            if (!$user) {
-                $user = User::create(array(
-                    'email' => $data['email'],
-                    'username' => $data['username'],
-                    'picture_profile' => $data['avatar'],
-                    'sw_id' => $data['sw_id'],
-                    'gender' => $data['gender'],
-                    'delete_flag' => 0,
-                    'role_id' => 1
-                ));
-            }
-
-            Auth::login($user);
-        }
-        return $user;
+        return User::create($data);
     }
 
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
+        if (!empty($data)){
+            $user = $this->getWhere($column,$value)
+                ->update($data);
+        }
+        return $user;
     }
 
     public function delete($id)
