@@ -11,6 +11,7 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use Follow as Follow;
+use User as User;
 
 class FollowRepository implements BaseRepository
 {
@@ -63,7 +64,7 @@ class FollowRepository implements BaseRepository
     {
         // TODO: Implement update() method.
         if (!empty($data)) {
-            $follow = $this->getWhere($column,$value)->update($data);
+            $follow = $this->getWhere($column, $value)->update($data);
         }
         return $follow;
     }
@@ -80,4 +81,9 @@ class FollowRepository implements BaseRepository
         $this->getWhere($column, $value)->delete();
     }
 
+
+    public function joinUserAndFollow()
+    {
+        return User::join('follow', 'users.id', '=' , 'follow.user_id');
+    }
 }
