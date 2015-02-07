@@ -50,13 +50,13 @@ class FollowService implements BaseService
 
     public function FollowingByUser($id)
     {
-        return $this->followRepository->joinUserAndFollow()
+        return $this->followRepository->joinFollowingByUser()
             ->where('follower_id', '=' , $id)->get();
     }
 
     public function FollowerByUser($id)
     {
-        return $this->followRepository->joinUserAndFollow()
+        return $this->followRepository->joinFollowerByUser()
             ->where('user_id', '=' , $id)->get();
     }
 }

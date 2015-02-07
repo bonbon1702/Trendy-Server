@@ -82,8 +82,12 @@ class FollowRepository implements BaseRepository
     }
 
 
-    public function joinUserAndFollow()
+    public function joinFollowingByUser()
     {
         return User::join('follow', 'users.id', '=' , 'follow.user_id');
+    }
+    public function joinFollowerByUser()
+    {
+        return User::join('follow', 'users.id', '=' , 'follow.follower_id');
     }
 }
