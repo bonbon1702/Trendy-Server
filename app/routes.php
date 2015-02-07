@@ -15,13 +15,8 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
-Route::get('set', function(){
-	Session::put('session', 'works');
-});
 
-Route::get('get', function(){
-	return Session::get('session');
-});
+Route::get('countZScore','HomeController@zScore');
 
 Route::group(array('prefix' => 'api'), function() {
 
