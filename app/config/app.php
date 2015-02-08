@@ -127,7 +127,8 @@ return array(
 		'Teepluss\Cloudinary\CloudinaryServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
-	),
+        'Indatus\Dispatcher\ServiceProvider',
+    ),
 
 	/*
 	|--------------------------------------------------------------------------

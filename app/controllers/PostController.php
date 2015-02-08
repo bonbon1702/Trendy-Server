@@ -140,9 +140,12 @@ class PostController extends \BaseController
         ));
     }
 
-    public function getPost($id)
+    public function getPost($order_by, $id)
     {
-        $posts = $this->postService->getPostPaging($id);
+        if ($order_by == 'trend'){
+            $posts = $this->postService->getPostPaging('zScore', $id);
+        }
+
         return Response::json(array(
             'success' => true,
             'posts' => $posts

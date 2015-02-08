@@ -135,7 +135,7 @@ class PostService implements BaseService
     public function update(array $data)
     {
         // TODO: Implement update() method.
-        $update = $this->postRepository->update('name', $data['name'], $data);
+        $update = $this->postRepository->update('id', $data['id'], $data);
 
         // next...
     }
@@ -172,8 +172,8 @@ class PostService implements BaseService
         return $post;
     }
 
-    public function getPostPaging($id){
-        $posts = $this->postRepository->getRecent()->orderBy('id', 'DESC')->take(8)->skip($id)->get();
+    public function getPostPaging($order_by, $id){
+        $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
 
         foreach ($posts as $v) {
             $v['user'] = $v->user;

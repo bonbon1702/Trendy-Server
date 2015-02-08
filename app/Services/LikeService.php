@@ -20,10 +20,13 @@ class LikeService implements BaseService
 
     private $userRepository;
 
-    function __construct(LikeRepository $likeRepository, UserRepository $userRepository)
+    private $historyService;
+
+    function __construct(LikeRepository $likeRepository, UserRepository $userRepository, HistoryService $historyService)
     {
         $this->likeRepository = $likeRepository;
         $this->userRepository = $userRepository;
+        $this->historyService = $historyService;
     }
 
     public function create(array $data)
@@ -50,6 +53,11 @@ class LikeService implements BaseService
                 'user_id' => $user_id,
                 'type_like' => $type_like,
                 'type_id' => $type_id
+            ));
+            $this->historyService->create(array(
+                'user_id' => $user_id,
+                'type_action' => 'like',
+                'action_id' => $type_id
             ));
         }
 

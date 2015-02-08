@@ -89,4 +89,9 @@ class User extends \Eloquent implements UserInterface, RemindableInterface
     {
         return $this->hasMany('Favorite');
     }
+
+    public function history()
+    {
+        return $this->hasMany('History');
+    }
 }

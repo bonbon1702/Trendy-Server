@@ -25,13 +25,16 @@ class CommentService implements BaseService{
 
     private $shopRepository;
 
-    function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository)
+    private $historyService;
+
+    function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository,HistoryService $historyService)
     {
         // TODO: Implement __construct() method.
         $this->commentRepository = $commentRepository;
         $this->userRepository = $userRepository;
         $this->postRepository = $postRepository;
         $this->shopRepository = $shopRepository;
+        $this->historyService = $historyService;
     }
     public function create(array $data)
     {
@@ -47,6 +50,11 @@ class CommentService implements BaseService{
             'content' => $content,
         ));
         $comment['user'] = $comment->user;
+        $this->historyService->create(array(
+            'user_id' => $user_id,
+            'type_action' => 'comment',
+            'action_id' => $type_id
+        ));
         return $comment;
     }
 
