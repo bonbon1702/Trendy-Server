@@ -43,7 +43,7 @@ class ZScoreCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler->everyMinutes(40);
+		return $scheduler->everyHours(15);
 	}
 
 	/**
