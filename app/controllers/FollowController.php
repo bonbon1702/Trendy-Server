@@ -27,7 +27,7 @@ class FollowController extends \BaseController
      * GET/following
      * @return Response
      */
-    public function FollowingByUser($id)
+    public function followingByUser($id)
     {
 
         $follow = $this->followService->FollowingByUser($id);
@@ -44,7 +44,7 @@ class FollowController extends \BaseController
      * GET/follower
      * @return Response
      */
-    public function FollowerByUser($id)
+    public function followerByUser($id)
     {
         $follow = $this->followService->FollowerByUser($id);
 
@@ -63,6 +63,7 @@ class FollowController extends \BaseController
     public function  store()
     {
         $data = Input::all();
+
         $this->followService->create($data);
         return Response::json(array(
             'success' => true
@@ -92,10 +93,10 @@ class FollowController extends \BaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function deleteFollowing()
     {
         $data = Input::all();
-        $this->followService->delete('id', $id);
+        $this->followService->deleteFollowing($data);
         return Response::json(array(
             'success' => true
         ));

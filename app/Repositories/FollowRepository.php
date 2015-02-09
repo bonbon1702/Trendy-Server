@@ -44,7 +44,9 @@ class FollowRepository implements BaseRepository
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $follow = new Follow();
 
+        return $follow;
     }
 
     /**
