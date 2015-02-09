@@ -45,6 +45,9 @@ class AlbumRepository implements BaseRepository
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $album = new Album();
+        
+        return $album;
     }
 
     public function create(array $data)
@@ -77,15 +80,5 @@ class AlbumRepository implements BaseRepository
     {
         // TODO: Implement deleteWhere() method.
         $this->getWhere($column, $value)->delete();
-    }
-
-    public function getAlbumContent($userId, $albumName)
-    {
-        return Album:: where('album_name', '=', $albumName)->where('user_id', '=', $userId)->get();
-    }
-
-    public function getAlbumOfUser($userId)
-    {
-        return Album:: where('user_id', '=', $userId)->groupBy('album_name')->select('album_name')->get();
     }
 }
