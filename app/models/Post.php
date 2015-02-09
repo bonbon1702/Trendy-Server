@@ -7,8 +7,8 @@ class Post extends Eloquent {
 
 	protected $table = 'post';
 
-	public function album(){
-		return $this->hasMany('Album');
+	public function albums(){
+        return $this->belongsToMany('Album','post_album', 'post_id', 'album_id');
 	}
 
 	public function tag(){

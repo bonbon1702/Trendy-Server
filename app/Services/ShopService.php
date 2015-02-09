@@ -63,8 +63,22 @@ class ShopService implements BaseService{
     }
 
     public function searchShop($type){
-        $shop = $this->shopRepository->search($type);
+        $shop = $this->shopRepository->getRecent()
+                        ->where('address', 'LIKE', '%'.$type.'%')->get();
 
         return $shop;
+    }
+
+    public function checkExist($address){
+        $check = $this->shopRepository->getWhere('address', $address);
+        if ($check)
+            return $check;
+        else {
+            $shop = $this->shopRepository->create(array(
+                'address' => $address
+            ));
+
+            return $shop;
+        }
     }
 }

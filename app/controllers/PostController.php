@@ -142,8 +142,10 @@ class PostController extends \BaseController
 
     public function getPost($order_by, $id)
     {
-        if ($order_by == 'trend'){
+        if ($order_by == 'trend') {
             $posts = $this->postService->getPostPaging('zScore', $id);
+        } else if ($order_by == 'new') {
+            $posts = $this->postService->getPostPaging('created_at', $id);
         }
 
         return Response::json(array(

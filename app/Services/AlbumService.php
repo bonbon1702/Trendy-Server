@@ -32,18 +32,14 @@ class AlbumService implements BaseService
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $post_id = $data['postId'];
-        $user_id = $this->userRepository->getRecent()->id;
-        $album_name = $data['aName'];
-        $post = $this->postRepository->get($post_id);
-        if ($post) {
-            $this->albumRepository->create(array(
-                'album_name' => $album_name,
-                'user_id' => 12,
-                'post_id' => $post_id,
-            ));
-        }
-        return true;
+        $user_id = $data['user_id'];
+        $album_name = $data['album_name'];
+
+        $album = $this->albumRepository->create(array(
+            'album_name' => $album_name,
+            'user_id' => $user_id,
+        ));
+        return $album;
     }
 
     public function update(array $data)

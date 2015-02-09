@@ -39,6 +39,9 @@ class ShopRepository implements BaseRepository{
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $shop = new Shop();
+
+        return $shop;
     }
 
     public function create(array $data)
@@ -64,13 +67,5 @@ class ShopRepository implements BaseRepository{
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
-    }
-
-    public function search($type){
-        $shop =  Shop::where('address', 'LIKE', '%'.$type.'%' )->get();
-        // $shop = Shop::whereRaw('MATCH(name,address) AGAINST (?)', array(
-        //         $type
-        //     ));
-        return $shop;
     }
 }
