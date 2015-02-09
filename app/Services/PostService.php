@@ -12,6 +12,7 @@ namespace Services;
 use Core\BaseService;
 use Core\GoogleMapHelper;
 use Core\Helper;
+use Repositories\PostAlbumRepository;
 use Repositories\PostRepository;
 use Services\ShopService;
 use Repositories\UploadRepository;
@@ -43,7 +44,9 @@ class PostService implements BaseService
 
     private $tagService;
 
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService)
+    private $postAlbumRepository;
+
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -57,6 +60,7 @@ class PostService implements BaseService
         $this->likeService = $likeService;
         $this->tagContentService = $tagContentService;
         $this->tagService = $tagService;
+        $this->postAlbumRepository = $postAlbumRepository;
     }
 
     public function create(array $data)
@@ -87,6 +91,13 @@ class PostService implements BaseService
             $image_url_editor = $upload->image_url;
         }
 
+        if ($album_name) {
+            $album = $this->albumService->create(array(
+                'album_name' => $album_name,
+                'user_id' => $user_id
+            ));
+        }
+
         $post = $this->postRepository->create(array(
             'name' => Helper::get_rand_alphanumeric(8),
             'user_id' => $user_id,
@@ -95,18 +106,16 @@ class PostService implements BaseService
             'caption' => $caption,
         ));
 
-        if ($album_name) {
-            $this->albumService->create(array(
-                'postId' => $post->id,
-                'aName' => $album_name
+        if ($album_name && $post){
+            $this->postAlbumRepository->create(array(
+                'post_id' => $post->id,
+                'album_id' => $album->id
             ));
         }
 
         if ($points) {
             foreach ($points as $v) {
-                $result = $this->googleMapHelper->findCoordinate($v['address']);
-
-                $shop = $this->shopService->checkCoordinates($result);
+                $shop = $this->shopService->checkExist($v['address']);
 
                 $this->tagPictureService->create(array(
                     'post_id' => $post->id,

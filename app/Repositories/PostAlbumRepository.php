@@ -1,18 +1,23 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: tuan
- * Date: 1/8/2015
- * Time: 10:25 AM
+ * User: nghia
+ * Date: 2/9/15
+ * Time: 4:33 PM
  */
 
 namespace Repositories;
 
 
 use Core\BaseRepository;
-use \Shop;
+use \PostAlbum;
 
-class ShopRepository implements BaseRepository{
+class PostAlbumRepository implements BaseRepository{
+
+    function __construct()
+    {
+    }
+
     public function errors($code)
     {
         // TODO: Implement errors() method.
@@ -31,27 +36,21 @@ class ShopRepository implements BaseRepository{
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
-        $shop = Shop::where($column,$value)->first();
-
-        return $shop;
     }
 
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
-        $shop = new Shop();
-
-        return $shop;
     }
 
     public function create(array $data)
     {
         // TODO: Implement create() method.
         if (!empty($data)){
-            $shop = Shop::create($data);
+            $post_album = PostAlbum::create($data);
         }
 
-        return $shop;
+        return $post_album;
     }
 
     public function update($column, $value, array $data)
@@ -68,4 +67,6 @@ class ShopRepository implements BaseRepository{
     {
         // TODO: Implement deleteWhere() method.
     }
+
+
 }
