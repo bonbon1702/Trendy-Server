@@ -35,8 +35,9 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::post('user/getLoginUser', 'UserController@getLoginUser');
 	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');
 	Route::resource('user', 'UserController');
-	Route::get('follower/{user_id}', 'FollowController@FollowerByUser');
-	Route::get('following/{follower_id}', 'FollowController@FollowingByUser');
+	Route::get('follower/{user_id}', 'FollowController@followerByUser');
+	Route::get('following/{follower_id}', 'FollowController@followingByUser');
+	Route::delete('following/delete', 'FollowController@deleteFollowing');
     Route::resource('follow', 'FollowController');
 	Route::get('comment/showPost/{id}', 'CommentController@showPost');
 	Route::get('comment/showShop/{id}', 'CommentController@showShop');

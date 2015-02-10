@@ -47,16 +47,23 @@ class FollowService implements BaseService
         $this->followRepository->deleteWhere($column, $value);
     }
 
+    public function deleteFollowing(array $data)
+    {
+        $user_id = $data['user_id'];
+        $follower_id = $data['follower_id'];
+        return $this->followRepository->getRecent()->where('follower_id', '=', $user_id)->where('user_id', '=', $follower_id)->delete();
+
+    }
 
     public function FollowingByUser($id)
     {
         return $this->followRepository->joinFollowingByUser()
-            ->where('follower_id', '=' , $id)->get();
+            ->where('follower_id', '=', $id)->get();
     }
 
     public function FollowerByUser($id)
     {
         return $this->followRepository->joinFollowerByUser()
-            ->where('user_id', '=' , $id)->get();
+            ->where('user_id', '=', $id)->get();
     }
 }
