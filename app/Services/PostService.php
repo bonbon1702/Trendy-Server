@@ -66,23 +66,10 @@ class PostService implements BaseService
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        $upload_name = $data['name'];
-
-        $caption = null;
-        $points = array();
-        $album_name = null;
-        $tags = array();
-
-        if ($data['caption']) $caption = $data['caption'];
-        if (!empty($data['points'])) $points = $data['points'];
-        if ($data['album']) $album_name = $data['album'];
-        if (!empty($data['tags'])) $tags = $data['tags'];
-
-        $user_id = $data['user_id'];
-
-        $upload = $this->uploadRepository->getWhere('name', $upload_name);
+        $upload = $this->uploadRepository->getWhere('name', $data['name']);
         $image_url_editor = null;
 
+        //check if user editor image
         if ($data['url']){
             $image_name = Helper::get_rand_alphanumeric(8);
             \Cloudy::upload($data['url'], $image_name);
@@ -91,30 +78,28 @@ class PostService implements BaseService
             $image_url_editor = $upload->image_url;
         }
 
-        if ($album_name) {
-            $album = $this->albumService->create(array(
-                'album_name' => $album_name,
-                'user_id' => $user_id
-            ));
-        }
-
         $post = $this->postRepository->create(array(
             'name' => Helper::get_rand_alphanumeric(8),
-            'user_id' => $user_id,
+            'user_id' => $data['user_id'],
             'image_url' => $upload->image_url,
             'image_url_editor' => $image_url_editor,
-            'caption' => $caption,
+            'caption' => $data['caption'] ? $data['caption'] : '',
         ));
 
-        if ($album_name && $post){
+        if ($data['album'] && $post){
+            $album = $this->albumService->create(array(
+                'album_name' => $data['album'],
+                'user_id' => $data['user_id']
+            ));
+
             $this->postAlbumRepository->create(array(
                 'post_id' => $post->id,
                 'album_id' => $album->id
             ));
         }
 
-        if ($points) {
-            foreach ($points as $v) {
+        if (!empty($data['points'])) {
+            foreach ($data['points'] as $v) {
                 $shop = $this->shopService->checkExist($v['address']);
 
                 $this->tagPictureService->create(array(
@@ -128,8 +113,8 @@ class PostService implements BaseService
             }
         }
 
-        if ($tags){
-            foreach ($tags as $v){
+        if ($data['tags']){
+            foreach ($data['tags'] as $v){
                 $tagContent = $this->tagContentService->create(array(
                     'content' => $v['text']
                 ));

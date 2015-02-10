@@ -19,12 +19,4 @@ class HomeController extends BaseController {
 	{
 		return View::make('hello');
 	}
-
-	public function zScore(){
-		$album = Album::create(array(
-			'album_name' => 'test',
-			'user_id' => 12,
-			'post_id' => 12,
-		));
-	}
 }

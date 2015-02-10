@@ -30,6 +30,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('shop/searchShop/{type}', 'ShopController@searchShop');
 	Route::resource('shop', 'ShopController');
 	Route::resource('home', 'HomeController');
+    Route::get('searchAllPage/{type}','UserController@searchAllPage');
 	Route::get('user/getUser/{id}', 'UserController@getUser');
 	Route::post('user/getLoginUser', 'UserController@getLoginUser');
 	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');

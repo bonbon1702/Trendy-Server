@@ -74,4 +74,11 @@ class UserService implements BaseService
         $user['posts'] = $user->posts;
         return $user;
     }
+
+    public function searchFullText($type){
+        $users = $this->userRepository->getRecent()
+            ->where('username', 'LIKE', '%'.$type.'%')->get();
+
+        return $users;
+    }
 }

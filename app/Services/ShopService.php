@@ -75,10 +75,18 @@ class ShopService implements BaseService{
             return $check;
         else {
             $shop = $this->shopRepository->create(array(
-                'address' => $address
+                'address' => $address,
+                'image' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg'
             ));
 
             return $shop;
         }
+    }
+
+    public function searchFullText($type){
+        $shop = $this->shopRepository->getRecent()
+            ->where('name', 'LIKE', '%'.$type.'%')->get();
+
+        return $shop;
     }
 }

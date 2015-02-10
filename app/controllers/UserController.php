@@ -8,6 +8,8 @@
 
 use Repositories\UserRepository;
 use Services\UserService;
+use Services\ShopService;
+use Services\FollowService;
 
 class UserController extends BaseController
 {
@@ -20,10 +22,16 @@ class UserController extends BaseController
      */
     private $userService;
 
-    public function __construct(UserRepository $userRepository, UserService $userService)
+    private $shopService;
+
+    private $followService;
+
+    public function __construct(UserRepository $userRepository, UserService $userService, ShopService $shopService, FollowService $followService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
+        $this->shopService = $shopService;
+        $this->followService = $followService;
     }
 
     public function store()
@@ -63,6 +71,36 @@ class UserController extends BaseController
         return Response::json(array(
             'success' => true,
             'user' => $user
+        ));
+    }
+
+    public function searchAllPage($type)
+    {
+        $user = $this->userService->searchFullText($type);
+        $shop = $this->shopService->searchFullText($type);
+
+        $results = array();
+        foreach ($user as $v) {
+            $count_follower = $this->followService->FollowerByUser($v->id)->count();
+            $results[] = array(
+                'name' => $v->username,
+                'image' => $v->picture_profile,
+                'sub' => $count_follower . ' Follower',
+                'url' => 'user/' .$v->id
+            );
+        }
+
+        foreach ($shop as $v) {
+            $results[] = array(
+                'name' => $v->name,
+                'image' => $v->image_url,
+                'sub' => $v->address,
+                'url' => 'shop/' . $v->id
+            );
+        }
+        return Response::json(array(
+            'success' => true,
+            'results' => $results
         ));
     }
 }

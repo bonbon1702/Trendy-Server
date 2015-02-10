@@ -49,7 +49,7 @@ class UserRepository implements BaseRepository
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
-        $user = Auth::user();
+        $user = new User();
         return $user;
     }
 
