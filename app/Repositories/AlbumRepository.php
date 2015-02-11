@@ -81,4 +81,9 @@ class AlbumRepository implements BaseRepository
         // TODO: Implement deleteWhere() method.
         $this->getWhere($column, $value)->delete();
     }
+
+    public function joinPostAndAlbumAndPostAlbum(){
+        return Album::join('post_album', 'album.id', '=' , 'post_album.album_id')->join('post','post_album.post_id','=','post.id');
+    }
+
 }

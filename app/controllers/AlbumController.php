@@ -106,8 +106,8 @@ class AlbumController extends \BaseController {
         $this->albumService->delete('album_name',$name);
 	}
 
-    public function getAlbum($id, $name){
-        $album = $this->albumService->getAlbumContent($id, $name);
+    public function getAlbumDetail($id){
+        $album = $this->albumService->getAlbumDetail($id);
 
         return Response::json(array(
             'success' => true,

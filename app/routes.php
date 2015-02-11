@@ -42,7 +42,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('comment/showPost/{id}', 'CommentController@showPost');
 	Route::get('comment/showShop/{id}', 'CommentController@showShop');
     Route::resource('comment', 'CommentController');
-    Route::get('album/albumContent/{id}/{name}', 'AlbumController@getAlbum');
+    Route::get('album/albumDetail/{id}', 'AlbumController@getAlbumDetail');
     Route::resource('album', 'AlbumController');
 	Route::resource('tag', 'TagController');
     Route::resource('tagContent', 'TagContentController');

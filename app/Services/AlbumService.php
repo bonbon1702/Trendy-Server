@@ -61,9 +61,12 @@ class AlbumService implements BaseService
         return $this->albumRepository->getAlbumOfUser($id);
     }
 
-    public function albumContent($id, $albumName)
+    public function getAlbumDetail($id)
     {
-        return $this->albumRepository->getAlbumContent($id, $albumName);
+        return $this->albumRepository->joinPostAndAlbumAndPostAlbum()
+                                        ->where('album_id', '=', $id)
+                                            ->select('post_id','name', 'image_url_editor','caption','post.created_at','post.updated_at')
+                                                ->get();
     }
 
 }

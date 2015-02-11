@@ -69,6 +69,9 @@ class UserService implements BaseService
     {
         $user = $this->userRepository->get($id);
         $user['album'] = $user->album;
+        foreach($user['album'] as $v){
+            $v['album_detail']=$this->albumService->getAlbumDetail($v->id);
+        }
         $user['following'] = $this->followService->FollowingByUser($user->id);
         $user['follower'] = $this->followService->FollowerByUser($id);
         $user['posts'] = $user->posts;
