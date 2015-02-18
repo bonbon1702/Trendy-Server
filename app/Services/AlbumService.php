@@ -34,7 +34,6 @@ class AlbumService implements BaseService
         // TODO: Implement create() method.
         $user_id = $data['user_id'];
         $album_name = $data['album_name'];
-
         $album = $this->albumRepository->create(array(
             'album_name' => $album_name,
             'user_id' => $user_id,
@@ -57,16 +56,23 @@ class AlbumService implements BaseService
 
     public function getListAlbumOfUser($id)
     {
-        // $user_id = $this->userRepository->getRecent()->id;
         return $this->albumRepository->getAlbumOfUser($id);
     }
 
-    public function getAlbumDetail($id)
+    public function getAlbumDetail($album_name,$user_id)
     {
         return $this->albumRepository->joinPostAndAlbumAndPostAlbum()
-                                        ->where('album_id', '=', $id)
-                                            ->select('post_id','name', 'image_url_editor','caption','post.created_at','post.updated_at')
-                                                ->get();
+                                        ->select('post_id', 'name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
+                                            ->where('album_name', $album_name)
+                                                ->where('album.user_id','=',$user_id)
+                                                    ->get();
+    }
+
+    public function getAlbum($userId)
+    {
+        return $this->albumRepository->getRecent()
+                                        ->where('user_id', '=', $userId)
+                                            ->groupBy('album_name')->get();
     }
 
 }
