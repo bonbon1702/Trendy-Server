@@ -12,12 +12,11 @@ namespace Services;
 use Core\BaseService;
 use Core\GoogleMapHelper;
 use Core\Helper;
+use Repositories\AlbumRepository;
 use Repositories\PostAlbumRepository;
 use Repositories\PostRepository;
-use Services\ShopService;
 use Repositories\UploadRepository;
 use Repositories\UserRepository;
-use Services\TagPictureService;
 
 class PostService implements BaseService
 {
@@ -46,7 +45,9 @@ class PostService implements BaseService
 
     private $postAlbumRepository;
 
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository)
+    private $albumRespository;
+
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -61,6 +62,7 @@ class PostService implements BaseService
         $this->tagContentService = $tagContentService;
         $this->tagService = $tagService;
         $this->postAlbumRepository = $postAlbumRepository;
+        $this->albumRespository = $albumRepository;
     }
 
     public function create(array $data)
@@ -70,7 +72,7 @@ class PostService implements BaseService
         $image_url_editor = null;
 
         //check if user editor image
-        if ($data['url']){
+        if ($data['url']) {
             $image_name = Helper::get_rand_alphanumeric(8);
             \Cloudy::upload($data['url'], $image_name);
             $image_url_editor = 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name;
@@ -86,7 +88,7 @@ class PostService implements BaseService
             'caption' => $data['caption'] ? $data['caption'] : '',
         ));
 
-        if ($data['album'] && $post){
+        if ($data['album'] && $post) {
             $album = $this->albumService->create(array(
                 'album_name' => $data['album'],
                 'user_id' => $data['user_id']
@@ -113,8 +115,8 @@ class PostService implements BaseService
             }
         }
 
-        if ($data['tags']){
-            foreach ($data['tags'] as $v){
+        if ($data['tags']) {
+            foreach ($data['tags'] as $v) {
                 $tagContent = $this->tagContentService->create(array(
                     'content' => $v['text']
                 ));
@@ -137,6 +139,8 @@ class PostService implements BaseService
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
+        $this->postRepository->deleteWhere($column, $value);
+
     }
 
     public function allPost()
@@ -170,13 +174,14 @@ class PostService implements BaseService
             $v['shop'] = $v->shop;
         }
         $post['tag'] = $post->tag;
-        foreach ($post['tag'] as $v){
+        foreach ($post['tag'] as $v) {
             $v['content'] = $v->tagContent;
         }
         return $post;
     }
 
-    public function getPostPaging($order_by, $id){
+    public function getPostPaging($order_by, $id)
+    {
         $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
 
         foreach ($posts as $v) {
@@ -184,5 +189,11 @@ class PostService implements BaseService
         }
 
         return $posts;
+    }
+
+    public function deletePost($id)
+    {
+        $this->postRepository->delete($id);
+        $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
     }
 }

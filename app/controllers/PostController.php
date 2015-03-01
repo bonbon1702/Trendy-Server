@@ -1,10 +1,10 @@
 <?php
 
-use Services\UserService;
-use Repositories\UserRepository;
 use Repositories\PostRepository;
-use Services\PostService;
 use Repositories\UploadRepository;
+use Repositories\UserRepository;
+use Services\PostService;
+use Services\UserService;
 
 class PostController extends \BaseController
 {
@@ -134,9 +134,19 @@ class PostController extends \BaseController
      */
     public function destroy($id)
     {
-        //
+        $this->postService->delete('id', $id);
+
         return Response::json(array(
             'success' => true,
+        ));
+    }
+
+    public function deletePost($id)
+    {
+//        $data = Input::all();
+        $this->postService->deletePost($id);
+        return Response::json(array(
+            'success' => true
         ));
     }
 

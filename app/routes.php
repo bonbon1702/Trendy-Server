@@ -25,6 +25,7 @@ Route::group(array('prefix' => 'api'), function() {
 	// this ensures that a user can't access api/create or api/edit when there's nothing there
 	Route::get('post/getPost/order/{order_by}/paging/{id}', 'PostController@getPost');
 	Route::resource('post', 'PostController');
+	Route::delete('post/delete/{id}', 'PostController@deletePost');
 	Route::post('uploadEditor', 'UploadController@uploadEditor');
 	Route::resource('upload', 'UploadController');
 	Route::get('shop/searchShop/{type}', 'ShopController@searchShop');

@@ -10,9 +10,10 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
-use \PostAlbum;
+use PostAlbum;
 
-class PostAlbumRepository implements BaseRepository{
+class PostAlbumRepository implements BaseRepository
+{
 
     function __construct()
     {
@@ -41,12 +42,14 @@ class PostAlbumRepository implements BaseRepository{
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $post_album = new PostAlbum();
+        return $post_album;
     }
 
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        if (!empty($data)){
+        if (!empty($data)) {
             $post_album = PostAlbum::create($data);
         }
 

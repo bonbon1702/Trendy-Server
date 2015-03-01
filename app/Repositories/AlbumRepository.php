@@ -83,7 +83,8 @@ class AlbumRepository implements BaseRepository
     }
 
     public function joinPostAndAlbumAndPostAlbum(){
-        return Album::join('post_album', 'album.id', '=' , 'post_album.album_id')->join('post','post_album.post_id','=','post.id');
+        return Album::join('post_album', 'album.id', '=' , 'post_album.album_id')
+                        ->join('post','post_album.post_id','=','post.id');
     }
 
 }
