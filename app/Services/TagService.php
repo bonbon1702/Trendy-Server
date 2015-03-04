@@ -12,16 +12,30 @@ namespace Services;
 use Core\BaseService;
 use Repositories\TagRepository;
 
+/**
+ * Class TagService
+ * @package Services
+ */
 class TagService implements BaseService
 {
 
+    /**
+     * @var TagRepository
+     */
     private $tagRepository;
 
+    /**
+     * @param TagRepository $tagRepository
+     */
     function __construct(TagRepository $tagRepository)
     {
         $this->tagRepository = $tagRepository;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -33,18 +47,30 @@ class TagService implements BaseService
         ));
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
         return $this->tagRepository->update('post_id', $data['post_id'], $data);
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @return mixed
+     */
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
         return $this->tagRepository->deleteWhere('post_id',$value);
     }
 
+    /**
+     * @return mixed
+     */
     public function listAllTag()
     {
         $tag = $this->tagRepository->all();

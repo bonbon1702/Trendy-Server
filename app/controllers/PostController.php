@@ -6,6 +6,9 @@ use Repositories\UserRepository;
 use Services\PostService;
 use Services\UserService;
 
+/**
+ * Class PostController
+ */
 class PostController extends \BaseController
 {
     /**
@@ -17,12 +20,28 @@ class PostController extends \BaseController
      */
     private $userService;
 
+    /**
+     * @var PostRepository
+     */
     private $postRepository;
 
+    /**
+     * @var PostService
+     */
     private $postService;
 
+    /**
+     * @var UploadRepository
+     */
     private $uploadRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param UserService $userService
+     * @param PostRepository $postRepository
+     * @param PostService $postService
+     * @param UploadRepository $uploadRepository
+     */
     public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService, UploadRepository $uploadRepository)
     {
         $this->userRepository = $userRepository;
@@ -141,6 +160,10 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function deletePost($id)
     {
 //        $data = Input::all();
@@ -150,6 +173,11 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $order_by
+     * @param $id
+     * @return mixed
+     */
     public function getPost($order_by, $id)
     {
         if ($order_by == 'trend') {

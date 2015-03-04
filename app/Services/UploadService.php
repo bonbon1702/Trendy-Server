@@ -15,12 +15,26 @@ use Repositories\UploadRepository;
 use Repositories\UserRepository;
 use \Image;
 
+/**
+ * Class UploadService
+ * @package Services
+ */
 class UploadService implements BaseService{
 
+    /**
+     * @var UploadRepository
+     */
     private $uploadRepository;
 
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * @param UploadRepository $uploadRepository
+     * @param UserRepository $userRepository
+     */
     function __construct(UploadRepository $uploadRepository, UserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
@@ -28,6 +42,10 @@ class UploadService implements BaseService{
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -47,6 +65,10 @@ class UploadService implements BaseService{
         return $upload;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
@@ -62,11 +84,19 @@ class UploadService implements BaseService{
         return $upload;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function getUploadImage($name){
         $upload = $this->uploadRepository->getWhere('name', $name);
 

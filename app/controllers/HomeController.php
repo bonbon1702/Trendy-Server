@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HomeController
+ */
 class HomeController extends BaseController {
 
 	/*
@@ -15,6 +18,9 @@ class HomeController extends BaseController {
 	|
 	*/
 
+	/**
+	 * @return mixed
+     */
 	public function showWelcome()
 	{
 		return View::make('hello');

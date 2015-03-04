@@ -14,6 +14,10 @@ use Geocoder\Provider\GoogleMapsProvider;
 use League\Geotools\Geotools;
 use League\Geotools\Coordinate\Coordinate;
 
+/**
+ * Class GoogleMapHelper
+ * @package Core
+ */
 class GoogleMapHelper {
     /**
      * @var geocoder
@@ -30,6 +34,11 @@ class GoogleMapHelper {
      */
     private $geoTools;
 
+    /**
+     * @param CurlHttpAdapter $adapter
+     * @param Geocoder $geoCoder
+     * @param Geotools $geoTools
+     */
     public function __construct(CurlHttpAdapter $adapter, Geocoder $geoCoder, Geotools $geoTools)
     {
         $this->adapter = $adapter;
@@ -38,6 +47,9 @@ class GoogleMapHelper {
         $this->registerProviders();
     }
 
+    /**
+     *
+     */
     protected function registerProviders(){
         $this->geoCoder->registerProviders(array(
             new GoogleMapsProvider($this->adapter),
@@ -59,6 +71,11 @@ class GoogleMapHelper {
         return $results;
     }
 
+    /**
+     * @param $latitude
+     * @param $longitude
+     * @return array|null
+     */
     public function findAddress($latitude, $longitude){
         $results = null;
 

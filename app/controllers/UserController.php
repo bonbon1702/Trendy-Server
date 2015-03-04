@@ -11,6 +11,9 @@ use Services\UserService;
 use Services\ShopService;
 use Services\FollowService;
 
+/**
+ * Class UserController
+ */
 class UserController extends BaseController
 {
     /**
@@ -22,10 +25,22 @@ class UserController extends BaseController
      */
     private $userService;
 
+    /**
+     * @var ShopService
+     */
     private $shopService;
 
+    /**
+     * @var FollowService
+     */
     private $followService;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param UserService $userService
+     * @param ShopService $shopService
+     * @param FollowService $followService
+     */
     public function __construct(UserRepository $userRepository, UserService $userService, ShopService $shopService, FollowService $followService)
     {
         $this->userRepository = $userRepository;
@@ -34,6 +49,9 @@ class UserController extends BaseController
         $this->followService = $followService;
     }
 
+    /**
+     * @return mixed
+     */
     public function store()
     {
         $data = Input::all();
@@ -45,6 +63,9 @@ class UserController extends BaseController
         ));
     }
 
+    /**
+     * @return mixed
+     */
     public function getLoginUser()
     {
         $data = Input::all();
@@ -56,6 +77,10 @@ class UserController extends BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function  deleteLogoutUser($id)
     {
         $this->userService->delete('id', $id);
@@ -65,6 +90,10 @@ class UserController extends BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getUser($id)
     {
         $user = $this->userService->getUserInfo($id);
@@ -74,6 +103,10 @@ class UserController extends BaseController
         ));
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function searchAllPage($type)
     {
         $user = $this->userService->searchFullText($type);

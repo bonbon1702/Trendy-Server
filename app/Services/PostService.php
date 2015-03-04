@@ -18,35 +18,93 @@ use Repositories\PostRepository;
 use Repositories\UploadRepository;
 use Repositories\UserRepository;
 
+/**
+ * Class PostService
+ * @package Services
+ */
 class PostService implements BaseService
 {
 
+    /**
+     * @var PostRepository
+     */
     private $postRepository;
 
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * @var UploadRepository
+     */
     private $uploadRepository;
 
+    /**
+     * @var TagPictureService
+     */
     private $tagPictureService;
 
+    /**
+     * @var GoogleMapHelper
+     */
     private $googleMapHelper;
 
+    /**
+     * @var ShopService
+     */
     private $shopService;
 
+    /**
+     * @var AlbumService
+     */
     private $albumService;
 
+    /**
+     * @var CommentService
+     */
     private $commentService;
 
+    /**
+     * @var LikeService
+     */
     private $likeService;
 
+    /**
+     * @var TagContentService
+     */
     private $tagContentService;
 
+    /**
+     * @var TagService
+     */
     private $tagService;
 
+    /**
+     * @var PostAlbumRepository
+     */
     private $postAlbumRepository;
 
+    /**
+     * @var AlbumRepository
+     */
     private $albumRespository;
 
+    /**
+     * @param PostRepository $postRepository
+     * @param UserRepository $userRepository
+     * @param UploadRepository $uploadRepository
+     * @param TagPictureService $tagPictureService
+     * @param GoogleMapHelper $googleMapHelper
+     * @param ShopService $shopService
+     * @param AlbumService $albumService
+     * @param CommentService $commentService
+     * @param LikeService $likeService
+     * @param TagContentService $tagContentService
+     * @param TagService $tagService
+     * @param PostAlbumRepository $postAlbumRepository
+     * @param AlbumRepository $albumRepository
+     */
     function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository)
     {
         // TODO: Implement __construct() method.
@@ -65,6 +123,9 @@ class PostService implements BaseService
         $this->albumRespository = $albumRepository;
     }
 
+    /**
+     * @param array $data
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -128,6 +189,9 @@ class PostService implements BaseService
         }
     }
 
+    /**
+     * @param array $data
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
@@ -136,6 +200,10 @@ class PostService implements BaseService
         // next...
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
@@ -143,6 +211,9 @@ class PostService implements BaseService
 
     }
 
+    /**
+     * @return mixed
+     */
     public function allPost()
     {
         $posts = $this->postRepository->all();
@@ -163,6 +234,10 @@ class PostService implements BaseService
         return $posts;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getPostDetails($id)
     {
         $post = $this->postRepository->get($id);
@@ -180,6 +255,11 @@ class PostService implements BaseService
         return $post;
     }
 
+    /**
+     * @param $order_by
+     * @param $id
+     * @return mixed
+     */
     public function getPostPaging($order_by, $id)
     {
         $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
@@ -191,6 +271,9 @@ class PostService implements BaseService
         return $posts;
     }
 
+    /**
+     * @param $id
+     */
     public function deletePost($id)
     {
         $this->postRepository->delete($id);

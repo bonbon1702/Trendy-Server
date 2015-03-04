@@ -1,11 +1,20 @@
 <?php
 use Services\LikeService;
 
+/**
+ * Class LikeController
+ */
 class LikeController extends \BaseController
 {
 
+    /**
+     * @var LikeService
+     */
     private $likeService;
 
+    /**
+     * @param LikeService $likeService
+     */
     function __construct(LikeService $likeService)
     {
         $this->likeService = $likeService;
@@ -93,6 +102,12 @@ class LikeController extends \BaseController
         //
     }
 
+    /**
+     * @param $id
+     * @param $type
+     * @param $user_id
+     * @return mixed
+     */
     public function likePost($id, $type, $user_id)
     {
         $this->likeService->likeOrDislike(0, $id, $type, $user_id);
@@ -101,6 +116,12 @@ class LikeController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @param $type
+     * @param $user_id
+     * @return mixed
+     */
     public function likeShop($id, $type, $user_id)
     {
         $this->likeService->likeOrDislike(1, $id, $type, $user_id);
@@ -110,6 +131,10 @@ class LikeController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function countLikePost($id)
     {
         $count = $this->likeService->countLike(0, $id);
@@ -120,6 +145,10 @@ class LikeController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function countLikeShop($id)
     {
         $count = $this->likeService->countLike(1, $id);

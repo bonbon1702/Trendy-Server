@@ -11,11 +11,24 @@ namespace Services;
 use Core\BaseService;
 use Repositories\UserRepository;
 
+/**
+ * Class UserService
+ * @package Services
+ */
 class UserService implements BaseService
 {
 
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param FollowService $followService
+     * @param PostService $postService
+     * @param AlbumService $albumService
+     */
     function __construct(UserRepository $userRepository, FollowService $followService, PostService $postService, AlbumService $albumService)
     {
         $this->userRepository = $userRepository;
@@ -25,6 +38,10 @@ class UserService implements BaseService
     }
 
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -52,12 +69,19 @@ class UserService implements BaseService
         return $user;
     }
 
+    /**
+     * @param array $data
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
     }
 
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function delete($column, $value)
     {
         // TODO: Implement deleteWhere() method.
@@ -65,6 +89,10 @@ class UserService implements BaseService
 
     }
 
+    /**
+     * @param $id
+     * @return null
+     */
     public function getUserInfo($id)
     {
         $user = $this->userRepository->get($id);
@@ -78,6 +106,10 @@ class UserService implements BaseService
         return $user;
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function searchFullText($type){
         $users = $this->userRepository->getRecent()
             ->where('username', 'LIKE', '%'.$type.'%')->get();

@@ -95,24 +95,29 @@ class AlbumController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /album/{name}
+	 * DELETE /album/{album_name}
 	 *
-	 * @param  int  $name
+	 * @param  string  $album_name
 	 * @return Response
 	 */
-	public function destroy($name)
+	public function destroy($album_name)
 	{
-		//
-        $this->albumService->delete('album_name',$name);
+        $this->albumService->delete('album_name',$album_name);
+		return Response::json(array(
+			'success' => true,
+		));
 	}
 
-    public function getAlbumDetail($id){
-        $album = $this->albumService->getAlbumDetail($id);
-
-        return Response::json(array(
-            'success' => true,
-            'album' => $album
-        ));
-    }
+	/**
+	 * @param $album_name
+	 * @return mixed
+     */
+	public function deleteAlbum($album_name)
+	{
+		$this->albumService->deleteAlbum($album_name);
+		return Response::json(array(
+			'success' => true
+		));
+	}
 
 }

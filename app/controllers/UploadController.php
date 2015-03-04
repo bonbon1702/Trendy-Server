@@ -4,10 +4,19 @@ use Repositories\UploadRepository;
 use Repositories\UserRepository;
 use Services\UploadService;
 
+/**
+ * Class UploadController
+ */
 class UploadController extends \BaseController {
 
+	/**
+	 * @var UploadService
+     */
 	private $uploadService;
 
+	/**
+	 * @param UploadService $uploadService
+     */
 	function __construct(UploadService $uploadService)
 	{
 		$this->uploadService = $uploadService;
@@ -117,6 +126,9 @@ class UploadController extends \BaseController {
 		//
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function uploadEditor(){
 		$data = Input::all();
 

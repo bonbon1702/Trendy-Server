@@ -14,20 +14,50 @@ use Repositories\ShopRepository;
 use Services\ShopService;
 use Services\NotificationService;
 
+/**
+ * Class CommentController
+ */
 class CommentController extends \BaseController {
 
+    /**
+     * @var PostRepository
+     */
     private $postRepository;
 
+    /**
+     * @var PostService
+     */
     private $postService;
 
+    /**
+     * @var CommentRepository
+     */
     private $commentRepository;
 
+    /**
+     * @var CommentService
+     */
     private $commentService;
 
+    /**
+     * @var ShopRepository
+     */
     private $shopRepository;
 
+    /**
+     * @var ShopService
+     */
     private $shopService;
 
+    /**
+     * @param PostRepository $postRepository
+     * @param CommentRepository $commentRepository
+     * @param PostService $postService
+     * @param CommentService $commentService
+     * @param ShopRepository $shopRepository
+     * @param ShopService $shopService
+     */
+    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService) {
     private $notificationService;
 
     public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService) {
@@ -40,6 +70,9 @@ class CommentController extends \BaseController {
         $this->notificationService = $notificationService;
     }
 
+    /**
+     * @return mixed
+     */
     public function index() {
         $comment = $this->commentRepository->all();
         return Response::json(array(
@@ -48,6 +81,9 @@ class CommentController extends \BaseController {
         ));
     }
 
+    /**
+     * @return mixed
+     */
     public function store() {
         $data = Input::all();
 
@@ -60,6 +96,10 @@ class CommentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function update($id) {
         $data = Input::all();
         $data['id'] = $id;
@@ -70,6 +110,10 @@ class CommentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id) {
         $this->commentService->deleteComment($id);
         return Response::json(array(
@@ -77,6 +121,10 @@ class CommentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function showPost($id) {
         $comment = $this->commentService->showCommentByPostId($id);
         return Response::json(array(
@@ -85,6 +133,10 @@ class CommentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function showShop($id) {
         $comment = $this->commentService->showCommentByShopId($id);
 

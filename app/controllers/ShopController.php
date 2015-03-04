@@ -5,6 +5,9 @@ use Repositories\UserRepository;
 use Core\GoogleMapHelper;
 use Services\ShopService;
 
+/**
+ * Class ShopController
+ */
 class ShopController extends BaseController
 {
     /**
@@ -16,10 +19,22 @@ class ShopController extends BaseController
      */
     private $userService;
 
+    /**
+     * @var GoogleMapHelper
+     */
     private $googleMapHelper;
 
+    /**
+     * @var ShopService
+     */
     private $shopService;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param UserService $userService
+     * @param GoogleMapHelper $googleMapHelper
+     * @param ShopService $shopService
+     */
     public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopService $shopService)
     {
         $this->userRepository = $userRepository;
@@ -28,6 +43,10 @@ class ShopController extends BaseController
         $this->shopService = $shopService;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function showShop($name)
     {
         $user = $this->userRepository->getRecent();
@@ -65,6 +84,10 @@ class ShopController extends BaseController
         ));
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function searchShop($type){
         $results = $this->shopService->searchShop($type);
 

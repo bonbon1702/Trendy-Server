@@ -13,10 +13,21 @@ use Core\BaseService;
 use Core\GoogleMapHelper;
 use Repositories\ShopRepository;
 
+/**
+ * Class ShopService
+ * @package Services
+ */
 class ShopService implements BaseService{
 
+    /**
+     * @var ShopRepository
+     */
     private $shopRepository;
 
+    /**
+     * @param ShopRepository $shopRepository
+     * @param GoogleMapHelper $googleMapHelper
+     */
     function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper)
     {
         // TODO: Implement __construct() method.
@@ -24,22 +35,36 @@ class ShopService implements BaseService{
         $this->googleMapHelper = $googleMapHelper;
     }
 
+    /**
+     * @param array $data
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
 
     }
 
+    /**
+     * @param array $data
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
     }
 
+    /**
+     * @param $result
+     * @return mixed
+     */
     public function checkCoordinates($result){
         $lat = $result[0]->getLatitude();
         $long = $result[0]->getLongitude();
@@ -62,6 +87,10 @@ class ShopService implements BaseService{
 
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function searchShop($type){
         $shop = $this->shopRepository->getRecent()
                         ->where('address', 'LIKE', '%'.$type.'%')->get();
@@ -69,6 +98,10 @@ class ShopService implements BaseService{
         return $shop;
     }
 
+    /**
+     * @param $address
+     * @return mixed
+     */
     public function checkExist($address){
         $check = $this->shopRepository->getWhere('address', $address);
         if ($check)
@@ -83,6 +116,10 @@ class ShopService implements BaseService{
         }
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function searchFullText($type){
         $shop = $this->shopRepository->getRecent()
             ->where('name', 'LIKE', '%'.$type.'%')->get();
