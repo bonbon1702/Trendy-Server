@@ -49,6 +49,8 @@ class CommentController extends \BaseController {
      */
     private $shopService;
 
+    private $notificationService;
+
     /**
      * @param PostRepository $postRepository
      * @param CommentRepository $commentRepository
@@ -57,8 +59,8 @@ class CommentController extends \BaseController {
      * @param ShopRepository $shopRepository
      * @param ShopService $shopService
      */
-    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService) {
-    private $notificationService;
+
+
 
     public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService) {
         $this->commentRepository = $commentRepository;
