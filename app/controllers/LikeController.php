@@ -104,6 +104,7 @@ class LikeController extends \BaseController
     public function likeShop($id, $type, $user_id)
     {
         $this->likeService->likeOrDislike(1, $id, $type, $user_id);
+
         return Response::json(array(
             'success' => true
         ));

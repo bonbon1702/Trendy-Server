@@ -12,6 +12,7 @@ use Repositories\PostRepository;
 use Services\PostService;
 use Repositories\ShopRepository;
 use Services\ShopService;
+use Services\NotificationService;
 
 class CommentController extends \BaseController {
 
@@ -27,13 +28,16 @@ class CommentController extends \BaseController {
 
     private $shopService;
 
-    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService) {
+    private $notificationService;
+
+    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService) {
         $this->commentRepository = $commentRepository;
         $this->commentService = $commentService;
         $this->postRepository = $postRepository;
         $this->postService = $postService;
         $this->shopRepository = $shopRepository;
         $this->shopService = $shopService;
+        $this->notificationService = $notificationService;
     }
 
     public function index() {
@@ -48,7 +52,8 @@ class CommentController extends \BaseController {
         $data = Input::all();
 
         $comment = $this->commentService->create($data);
-
+        $notification = $this->notificationService->create($data);
+        Pusherer::trigger('notification', 'comment', array( 'notification' => $notification ));
         return Response::json(array(
             'success' => true,
             'comment' => $comment

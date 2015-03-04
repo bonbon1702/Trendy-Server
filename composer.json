@@ -12,7 +12,8 @@
 		"intervention/image": "~2.0",
 		"teepluss/cloudinary": "dev-master",
 	  	"xethron/migrations-generator": "dev-master",
-        "indatus/dispatcher": "1.4.*@dev"
+        "indatus/dispatcher": "1.4.*@dev",
+        "artdarek/pusherer": "1.0.*"
     },
 	"autoload": {
 		"classmap": [

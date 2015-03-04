@@ -92,4 +92,9 @@ class Helper {
         }
         return $rand_value;
     }
+
+    function my_sort_function($a, $b)
+    {
+        return $a->id < $b->id;
+    }
 }
