@@ -1,18 +1,57 @@
 <?php
 
-class Album extends \Eloquent {
-	protected $guarded = array();
+/**
+ * Class Album
+ */
+class Album extends Eloquent
+{
+    /**
+     * @var array
+     */
+    protected $guarded = array();
 
-	public $timestamps = true;
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
 
-	protected $table = 'album';
+    /**
+     * @var string
+     */
+    protected $table = 'album';
 
-	public function user(){
-		return $this->belongsTo('User','user_id');
-	}
+    /**
+     *
+     */
+    public static function boot()
+    {
+        //execute the parent's boot method
+        parent::boot();
 
-	public function posts(){
-        return $this->belongsToMany('Album','post_album', 'post_id', 'album_id');
-	}
+        //delete your related models here, for example
+        static::deleting(function ($album) {
+            foreach ($album->posts as $post) {
+                $post->delete();
+            }
+
+        });
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function posts()
+    {
+        return $this->belongsToMany('Post', 'post_album', 'post_id', 'album_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function user()
+    {
+        return $this->belongsTo('User', 'user_id');
+    }
 
 }

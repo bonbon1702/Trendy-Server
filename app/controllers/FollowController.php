@@ -9,12 +9,25 @@
 use Repositories\FollowRepository;
 use Services\FollowService;
 
+/**
+ * Class FollowController
+ */
 class FollowController extends \BaseController
 {
 
+    /**
+     * @var FollowService
+     */
     private $followService;
+    /**
+     * @var FollowRepository
+     */
     private $followRepository;
 
+    /**
+     * @param FollowService $followService
+     * @param FollowRepository $followRepository
+     */
     public function __construct(FollowService $followService, FollowRepository $followRepository)
     {
         $this->followService = $followService;

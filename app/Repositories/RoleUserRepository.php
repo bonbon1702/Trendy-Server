@@ -12,14 +12,25 @@ namespace Repositories;
 use Core\BaseRepository;
 use \RoleUser;
 
+/**
+ * Class RoleUserRepository
+ * @package Repositories
+ */
 class RoleUserRepository implements BaseRepository
 {
 
+    /**
+     * @param $code
+     */
     public function errors($code)
     {
         // TODO: Implement errors() method.
     }
 
+    /**
+     * @param array $related
+     * @return mixed
+     */
     public function all(array $related = null)
     {
         // TODO: Implement all() method.
@@ -28,6 +39,11 @@ class RoleUserRepository implements BaseRepository
         return $role_user;
     }
 
+    /**
+     * @param $id
+     * @param array $related
+     * @return mixed
+     */
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
@@ -36,16 +52,28 @@ class RoleUserRepository implements BaseRepository
         return $role_user;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @param array $related
+     */
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
     }
 
+    /**
+     * @param array $related
+     */
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -58,6 +86,12 @@ class RoleUserRepository implements BaseRepository
         return false;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @param array $data
+     * @return bool
+     */
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
@@ -71,12 +105,19 @@ class RoleUserRepository implements BaseRepository
         return false;
     }
 
+    /**
+     * @param $id
+     */
     public function delete($id)
     {
         // TODO: Implement delete() method.
         RoleUser::where('id', $id)->delete();
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.

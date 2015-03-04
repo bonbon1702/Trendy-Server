@@ -15,18 +15,44 @@ use Repositories\UserRepository;
 use Repositories\PostRepository;
 use Repositories\ShopRepository;
 
+/**
+ * Class CommentService
+ * @package Services
+ */
 class CommentService implements BaseService{
 
+    /**
+     * @var CommentRepository
+     */
     private $commentRepository;
 
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+    /**
+     * @var PostRepository
+     */
     private $postRepository;
 
+    /**
+     * @var ShopRepository
+     */
     private $shopRepository;
 
+    /**
+     * @var HistoryService
+     */
     private $historyService;
 
+    /**
+     * @param CommentRepository $commentRepository
+     * @param UserRepository $userRepository
+     * @param PostRepository $postRepository
+     * @param ShopRepository $shopRepository
+     * @param HistoryService $historyService
+     */
     function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository,HistoryService $historyService)
     {
         // TODO: Implement __construct() method.
@@ -36,6 +62,11 @@ class CommentService implements BaseService{
         $this->shopRepository = $shopRepository;
         $this->historyService = $historyService;
     }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -58,23 +89,38 @@ class CommentService implements BaseService{
         return $comment;
     }
 
+    /**
+     * @param array $data
+     */
     public function update(array $data)
     {
         // TODO: Implement update() method.
         $this->commentRepository->update('id', $data['id'], $data);
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function deleteComment($id)
     {
         $this->commentRepository->delete($id);
         return true;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function showCommentByPostId($id){
         $comment = $this->commentRepository->whereTypeComment(0,$id);
         foreach ($comment as $v){
@@ -83,6 +129,10 @@ class CommentService implements BaseService{
         return $comment;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function showCommentByShopId($id){
         $comment = $this->commentRepository->whereTypeComment(1,$id);
         return $comment;

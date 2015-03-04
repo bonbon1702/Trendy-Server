@@ -45,6 +45,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::resource('comment', 'CommentController');
     Route::get('album/albumDetail/{id}', 'AlbumController@getAlbumDetail');
     Route::resource('album', 'AlbumController');
+	Route::delete('album/delete/{name}', 'AlbumController@deleteAlbum');
 	Route::resource('tag', 'TagController');
     Route::resource('tagContent', 'TagContentController');
 	Route::get('like/likePost/{id}/type/{type}/user/{user_id}', 'LikeController@likePost');

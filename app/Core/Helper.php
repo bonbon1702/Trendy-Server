@@ -9,7 +9,15 @@
 namespace Core;
 
 
+/**
+ * Class Helper
+ * @package Core
+ */
 class Helper {
+    /**
+     * @param $length
+     * @return null|string
+     */
     public static function get_rand_alphanumeric($length) {
         $rand_id = null;
         if ($length>0) {
@@ -23,6 +31,10 @@ class Helper {
         return $rand_id;
     }
 
+    /**
+     * @param $length
+     * @return null|string
+     */
     public static function get_rand_numbers($length) {
         $rand_id = null;
         if ($length>0) {
@@ -36,6 +48,10 @@ class Helper {
         return $rand_id;
     }
 
+    /**
+     * @param $length
+     * @return null|string
+     */
     public static function get_rand_letters($length) {
         $rand_id = null;
         if ($length>0) {
@@ -49,6 +65,10 @@ class Helper {
         return $rand_id;
     }
 
+    /**
+     * @param $num
+     * @return null|string
+     */
     public static function assign_rand_value($num) {
         $rand_value = null;
         // accepts 1 - 36

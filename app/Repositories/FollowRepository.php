@@ -13,13 +13,24 @@ use Core\BaseRepository;
 use Follow as Follow;
 use User as User;
 
+/**
+ * Class FollowRepository
+ * @package Repositories
+ */
 class FollowRepository implements BaseRepository
 {
+    /**
+     * @param $code
+     */
     public function errors($code)
     {
         // TODO: Implement errors() method.
     }
 
+    /**
+     * @param array $related
+     * @return mixed
+     */
     public function all(array $related = null)
     {
         // TODO: Implement all() method.
@@ -27,6 +38,11 @@ class FollowRepository implements BaseRepository
         return $follow;
     }
 
+    /**
+     * @param $id
+     * @param array $related
+     * @return mixed
+     */
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
@@ -34,6 +50,12 @@ class FollowRepository implements BaseRepository
         return $follow;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @param array $related
+     * @return mixed
+     */
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
@@ -41,6 +63,10 @@ class FollowRepository implements BaseRepository
         return $follow;
     }
 
+    /**
+     * @param array $related
+     * @return Follow
+     */
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
@@ -62,6 +88,12 @@ class FollowRepository implements BaseRepository
         return $follow;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @param array $data
+     * @return mixed
+     */
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
@@ -71,12 +103,19 @@ class FollowRepository implements BaseRepository
         return $follow;
     }
 
+    /**
+     * @param $id
+     */
     public function delete($id)
     {
         // TODO: Implement delete() method.
         $this->get($id)->delete();
     }
 
+    /**
+     * @param $column
+     * @param $value
+     */
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
@@ -84,10 +123,17 @@ class FollowRepository implements BaseRepository
     }
 
 
+    /**
+     * @return mixed
+     */
     public function joinFollowingByUser()
     {
         return User::join('follow', 'users.id', '=' , 'follow.user_id');
     }
+
+    /**
+     * @return mixed
+     */
     public function joinFollowerByUser()
     {
         return User::join('follow', 'users.id', '=' , 'follow.follower_id');

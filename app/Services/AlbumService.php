@@ -13,6 +13,7 @@ use Core\BaseService;
 use Repositories\AlbumRepository;
 use Repositories\PostRepository;
 use Repositories\UserRepository;
+use Repositories\PostAlbumRepository;
 
 class AlbumService implements BaseService
 {
@@ -21,12 +22,17 @@ class AlbumService implements BaseService
 
     private $postRepository;
 
-    function __construct(AlbumRepository $albumRepository, PostRepository $postRepository, UserRepository $userRepository)
+    private $userRepository;
+
+    private $postAlbumRepository;
+
+    function __construct(AlbumRepository $albumRepository, PostRepository $postRepository, UserRepository $userRepository,PostAlbumRepository $postAlbumRepository)
     {
         // TODO: Implement __construct() method.
         $this->albumRepository = $albumRepository;
         $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
+        $this->postAlbumRepository = $postAlbumRepository;
     }
 
     public function create(array $data)
@@ -51,7 +57,7 @@ class AlbumService implements BaseService
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
-        $this->albumRepository->delete($column, $value);
+        $this->albumRepository->deleteWhere($column, $value);
     }
 
     public function getListAlbumOfUser($id)
@@ -73,6 +79,18 @@ class AlbumService implements BaseService
         return $this->albumRepository->getRecent()
                                         ->where('user_id', '=', $userId)
                                             ->groupBy('album_name')->get();
+    }
+
+    public function deleteAlbum($album_name)
+    {
+        $albums =$this->albumRepository->joinPostAndAlbumAndPostAlbum()
+                                            ->select('post_id')
+                                                ->where('album_name',$album_name)
+                                                    ->get();
+        foreach($albums as $v){
+            $this->postRepository->delete($v->post_id);
+            $this->postAlbumRepository->getRecent()->where('post_id', $v->post_id)->delete();
+        }
     }
 
 }

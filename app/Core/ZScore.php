@@ -9,14 +9,32 @@
 namespace Core;
 
 
+/**
+ * Class ZScore
+ * @package Core
+ */
 class ZScore
 {
+    /**
+     * @var
+     */
     protected $day;
 
+    /**
+     * @var
+     */
     protected $interaction;
 
+    /**
+     * @var
+     */
     protected $sqr_interaction;
 
+    /**
+     * @param $day
+     * @param $interaction
+     * @param $sqr_interaction
+     */
     function __construct($day, $interaction, $sqr_interaction)
     {
         $this->day = $day;
@@ -24,6 +42,9 @@ class ZScore
         $this->sqr_interaction = $sqr_interaction;
     }
 
+    /**
+     * @return float|int
+     */
     protected function avg()
     {
         if ($this->day == 0){
@@ -31,6 +52,9 @@ class ZScore
         } else return $this->interaction / $this->day;
     }
 
+    /**
+     * @return float|int
+     */
     protected function std()
     {
         if ($this->day == 0){
@@ -41,6 +65,10 @@ class ZScore
         );
     }
 
+    /**
+     * @param $interaction_now
+     * @return float
+     */
     public function score($interaction_now){
         if ($this->std() == 0) return $interaction_now - $this->avg();
         else return (($interaction_now - $this->avg()) / $this->std());

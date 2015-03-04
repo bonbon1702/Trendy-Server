@@ -87,4 +87,6 @@ class AlbumRepository implements BaseRepository
                         ->join('post','post_album.post_id','=','post.id');
     }
 
+
+
 }

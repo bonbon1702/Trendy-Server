@@ -9,17 +9,33 @@
 use Repositories\TagContentRepository;
 use Services\TagContentService;
 
+/**
+ * Class TagContentController
+ */
 class TagContentController extends \BaseController {
 
+    /**
+     * @var TagContentRepository
+     */
     private $tagContentRepository;
 
+    /**
+     * @var TagContentService
+     */
     private $tagContentService;
 
+    /**
+     * @param TagContentService $tagContentService
+     * @param TagContentRepository $tagContentRepository
+     */
     public function __construct(TagContentService $tagContentService, TagContentRepository $tagContentRepository) {
         $this->tagContentRepository = $tagContentRepository;
         $this->tagContentService = $tagContentService;
     }
 
+    /**
+     * @return mixed
+     */
     public function index() {
         $tagContent = $this->tagContentRepository->all();
         return Response::json(array(
@@ -28,6 +44,9 @@ class TagContentController extends \BaseController {
         ));
     }
 
+    /**
+     * @return mixed
+     */
     public function store() {
         $data = Input::all();
 
@@ -39,6 +58,10 @@ class TagContentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function update($id) {
         $data = Input::all();
         $data['id'] = $id;
@@ -49,6 +72,10 @@ class TagContentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id) {
         $this->tagContentService->deleteTagContent($id);
         return Response::json(array(
@@ -56,6 +83,10 @@ class TagContentController extends \BaseController {
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id){
         $tag = $this->tagContentService->searchTag($id);
 

@@ -9,11 +9,24 @@
 use Repositories\TagRepository;
 use Services\TagService;
 
+/**
+ * Class TagController
+ */
 class TagController extends  BaseController{
 
+    /**
+     * @var TagService
+     */
     private $tagService;
+    /**
+     * @var TagRepository
+     */
     private $tagRepository;
 
+    /**
+     * @param TagService $tagService
+     * @param TagRepository $tagRepository
+     */
     public function __construct(TagService $tagService,TagRepository $tagRepository){
         $this->tagService=$tagService;
         $this->tagRepository=$tagRepository;
