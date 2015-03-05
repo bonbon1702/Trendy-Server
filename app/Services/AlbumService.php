@@ -80,8 +80,7 @@ class AlbumService implements BaseService
     public function update(array $data)
     {
         // TODO: Implement update() method.
-        //if ($this->albumRepository->update($model,$data))
-        return true;
+        return $this->albumRepository->update('id',$data['id'],array('album_name' => $data['album_name']));
     }
 
     /**

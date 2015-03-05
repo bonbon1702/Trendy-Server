@@ -90,7 +90,12 @@ class AlbumController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$data = Input::all();
+        $data['id']=$id;
+        $this->albumService->update($data);
+        return Response::json(array(
+            'success' => true
+        ));
 	}
 
 	/**
@@ -120,4 +125,11 @@ class AlbumController extends \BaseController {
 		));
 	}
 
+    public function updateAlbum(){
+        $data = Input::all();
+        $this->albumService->update($data);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 }
