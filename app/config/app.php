@@ -128,7 +128,7 @@ return array(
 		'Intervention\Image\ImageServiceProvider',
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
         'Indatus\Dispatcher\ServiceProvider',
-        'Artdarek\Pusherer\PushererServiceProvider',
+        'Artdarek\Pusherer\PushererServiceProvider'
     ),
 
 	/*

@@ -242,6 +242,7 @@ class PostService implements BaseService
     {
         $post = $this->postRepository->get($id);
         $post['user'] = $post->user;
+
         $post['comments'] = $this->commentService->showCommentByPostId($id);
         $post['like'] = $this->likeService->countLike(0, $id);
         $post['tag_picture'] = $post->tagPicture;

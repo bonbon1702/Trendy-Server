@@ -44,7 +44,7 @@ class NotificationWatchedRepository implements BaseRepository{
     {
         // TODO: Implement create() method.
         if (!empty($data)) {
-            $notification_watched = Notification_watched::create($data);
+            $notification_watched = NotificationWatched::create($data);
         }
 
         return $notification_watched;
