@@ -40,11 +40,13 @@ class LikeService implements BaseService
      * @param UserRepository $userRepository
      * @param HistoryService $historyService
      */
-    function __construct(LikeRepository $likeRepository, UserRepository $userRepository, HistoryService $historyService)
+
+    function __construct(LikeRepository $likeRepository, UserRepository $userRepository, HistoryService $historyService, NotificationService $notificationService)
     {
         $this->likeRepository = $likeRepository;
         $this->userRepository = $userRepository;
         $this->historyService = $historyService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -61,28 +63,20 @@ class LikeService implements BaseService
      */
     public function update(array $data)
     {
-        // TODO: Implement update() method.
+
     }
 
-    /**
-     * @param $column
-     * @param $value
-     */
+
     public function delete($column, $value)
     {
         // TODO: Implement delete() method.
     }
 
-    /**
-     * @param $type_like
-     * @param $type_id
-     * @param $type
-     * @param $user_id
-     * @return bool
-     */
-    public function likeOrDislike($type_like, $type_id, $type, $user_id){
-        if ($type == 0){
-            $this->likeRepository->getUserLike($user_id,$type_like, $type_id)->delete();
+
+    public function likeOrDislike($type_like, $type_id, $type, $user_id)
+    {
+        if ($type == 0) {
+            $this->likeRepository->getUserLike($user_id, $type_like, $type_id)->delete();
         } else {
             $this->likeRepository->create(array(
                 'user_id' => $user_id,
@@ -94,6 +88,13 @@ class LikeService implements BaseService
                 'type_action' => 'like',
                 'action_id' => $type_id
             ));
+            if ($type_like = 0) {
+                $notification = $this->notificationService->create(array(
+                    'type_id' => $type_id,
+                    'user_id' => $user_id
+                ));
+                Pusherer::trigger('notification', 'like', array('notification' => $notification));
+            }
         }
 
         return true;
@@ -104,7 +105,8 @@ class LikeService implements BaseService
      * @param $type_id
      * @return mixed
      */
-    public function countLike($type_like, $type_id){
+    public function countLike($type_like, $type_id)
+    {
         $count = $this->likeRepository->getLike($type_like, $type_id)->get();
 
         return $count;

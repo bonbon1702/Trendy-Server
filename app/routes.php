@@ -53,6 +53,8 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('like/countLikePost/{id}', 'LikeController@countLikePost');
 	Route::get('like/countLikeShop/{id}', 'LikeController@countLikeShop');
 	Route::resource('like', 'LikeController');
+    Route::post('notification/watchedNotification', 'NotificationController@watchedNotification');
+    Route::resource('notification', 'NotificationController');
 });
 
 App::missing(function($exception) {
