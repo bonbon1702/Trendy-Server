@@ -1,5 +1,6 @@
 <?php
 use Services\LikeService;
+use Services\NotificationService;
 
 /**
  * Class LikeController
@@ -12,12 +13,16 @@ class LikeController extends \BaseController
      */
     private $likeService;
 
+    private $notificationService;
+
     /**
      * @param LikeService $likeService
+     * @param NotificationService $notificationService
      */
-    function __construct(LikeService $likeService)
+    function __construct(LikeService $likeService, NotificationService $notificationService)
     {
         $this->likeService = $likeService;
+        $this->notificationService = $notificationService;
     }
 
 
@@ -111,6 +116,14 @@ class LikeController extends \BaseController
     public function likePost($id, $type, $user_id)
     {
         $this->likeService->likeOrDislike(0, $id, $type, $user_id);
+        if ($type == 1 && $type_like = 0){
+            $notification = $this->notificationService->create(array(
+                'type_id' => $id,
+                'user_id' => $user_id,
+                'action' => 'like'
+            ));
+            Pusherer::trigger('notification', 'like', array('notification' => $notification));
+        }
         return Response::json(array(
             'success' => true
         ));

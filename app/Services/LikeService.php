@@ -94,13 +94,6 @@ class LikeService implements BaseService
                 'type_action' => 'like',
                 'action_id' => $type_id
             ));
-            if ($type_like = 0) {
-                $notification = $this->notificationService->create(array(
-                    'type_id' => $type_id,
-                    'user_id' => $user_id
-                ));
-                Pusherer::trigger('notification', 'like', array('notification' => $notification));
-            }
         }
 
         return true;

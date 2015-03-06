@@ -61,11 +61,17 @@ class NotificationService implements BaseService
 
         $notification = $this->notificationRepository->getRecent()
             ->where('user_id', $user_id)
-            ->orWhere('id_of_user_effected', $user_id)
+            ->having('id_of_user_effected', '<>', $user_id)
             ->get();
 
-        if (count($notification) > 0) {
-            foreach ($notification as $v) {
+        $notification_eff = $this->notificationRepository->getRecent()
+            ->where('id_of_user_effected', $user_id)
+            ->having('user_id', '<>', $user_id)
+            ->groupBy('post_id')
+            ->get();
+
+        if (count($notification_eff) > 0){
+            foreach ($notification_eff as $v) {
                 $notification_effected = $this->notificationRepository->getRecent()
                     ->where('post_id', $v->post_id)
                     ->where('id_of_user_effected', '<>', $v->id_of_user_effected)
@@ -75,7 +81,9 @@ class NotificationService implements BaseService
             foreach ($notification_effected as $v) {
                 $notification[] = $v;
             }
+        }
 
+        if (count($notification) > 0) {
             foreach ($notification as $v) {
                 $check = $this->notificationWatchedRepository->getWhere('notification_id', $v->id);
 
