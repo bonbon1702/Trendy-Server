@@ -25,12 +25,15 @@ class NotificationWatchedRepository implements BaseRepository{
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
+        $notification_watch = NotificationWatched::find($id);
+
+        return $notification_watch;
     }
 
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
-        $notification_watch = NotificationWatched::where($column, $value)->get();
+        $notification_watch = NotificationWatched::where($column, $value);
 
         return $notification_watch;
     }

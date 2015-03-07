@@ -8,13 +8,15 @@
 
 use Repositories\NotificationRepository;
 use Services\NotificationService;
+use Services\NotificationWatchedService;
 
 class NotificationController extends \BaseController {
 
 
-    public function __construct(NotificationService $notificationService, NotificationRepository $notificationRepository) {
+    public function __construct(NotificationService $notificationService, NotificationRepository $notificationRepository, NotificationWatchedService $notificationWatchedService) {
         $this->notificationService = $notificationService;
         $this->notificationRepository = $notificationRepository;
+        $this->notificationWatchedService = $notificationWatchedService;
     }
 
     public function index() {
@@ -54,5 +56,12 @@ class NotificationController extends \BaseController {
     {
         $data = Input::all();
 
+        foreach ($data as $v){
+            $this->notificationWatchedService->create($v);
+        }
+
+        return Response::json(array(
+            'success' => true
+        ));
     }
 }

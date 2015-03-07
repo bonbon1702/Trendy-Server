@@ -116,7 +116,7 @@ class LikeController extends \BaseController
     public function likePost($id, $type, $user_id)
     {
         $this->likeService->likeOrDislike(0, $id, $type, $user_id);
-        if ($type == 1 && $type_like = 0){
+        if ($type == 1){
             $notification = $this->notificationService->create(array(
                 'type_id' => $id,
                 'user_id' => $user_id,
