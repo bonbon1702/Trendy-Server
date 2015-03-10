@@ -59,4 +59,11 @@ class TagPictureService implements BaseService{
     {
         // TODO: Implement delete() method.
     }
+
+    public function getPostInShopByShopId($id){
+        return $this->tagPictureRepository->joinPostAndTagPicture()
+                                            ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
+                                                ->where('shop_id','=',$id)
+                                                    ->get();
+    }
 }

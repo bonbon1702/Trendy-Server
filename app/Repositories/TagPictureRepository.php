@@ -31,6 +31,8 @@ class TagPictureRepository implements BaseRepository{
     public function all(array $related = null)
     {
         // TODO: Implement all() method.
+        $tagPicture = TagPicture::all();
+        return $tagPicture;
     }
 
     /**
@@ -40,6 +42,8 @@ class TagPictureRepository implements BaseRepository{
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
+        $tagPicture = TagPicture::find($id);
+        return $tagPicture;
     }
 
     /**
@@ -50,6 +54,8 @@ class TagPictureRepository implements BaseRepository{
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
+        $tagPicture = TagPicture::where($column,$value);
+        return $tagPicture;
     }
 
     /**
@@ -82,6 +88,11 @@ class TagPictureRepository implements BaseRepository{
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
+        if (!empty($data)){
+            $tagPicture = $this->getWhere($column,$value)
+                ->update($data);
+        }
+        return $tagPicture;
     }
 
     /**
@@ -90,6 +101,7 @@ class TagPictureRepository implements BaseRepository{
     public function delete($id)
     {
         // TODO: Implement delete() method.
+        $this->get($id)->delete();
     }
 
     /**
@@ -99,6 +111,11 @@ class TagPictureRepository implements BaseRepository{
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
+        $this->getWhere($column,$value)->delete();
+    }
+
+    public function joinPostAndTagPicture(){
+        return TagPicture::join('post', 'tag_picture.post_id', '=' , 'post.id');
     }
 
 }

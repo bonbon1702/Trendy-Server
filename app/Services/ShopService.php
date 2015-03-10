@@ -34,6 +34,8 @@ class ShopService implements BaseService
      */
     private $commentService;
 
+    private $tagPictureService;
+
 
     /**
      * @param ShopRepository $shopRepository
@@ -41,13 +43,14 @@ class ShopService implements BaseService
      * @param LikeService $likeService
      * @param CommentService $commentService
      */
-    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService)
+    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService,TagPictureService $tagPictureService)
     {
         // TODO: Implement __construct() method.
         $this->shopRepository = $shopRepository;
         $this->googleMapHelper = $googleMapHelper;
         $this->likeService = $likeService;
         $this->commentService = $commentService;
+        $this->tagPictureService= $tagPictureService;
     }
 
     /**
@@ -81,6 +84,7 @@ class ShopService implements BaseService
         $shop = $this->shopRepository->get($id);
         $shop['like'] = $this->likeService->countLike(1, $id);
         $shop['comments'] = $this->commentService->showCommentByShopId($id);
+        $shop['posts'] = $this->tagPictureService->getPostInShopByShopId($id);
         return $shop;
     }
 
