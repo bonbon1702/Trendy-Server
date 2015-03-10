@@ -10,7 +10,9 @@ namespace Services;
 
 
 use Core\BaseService;
+use Core\Helper;
 use Repositories\FollowRepository;
+use Repositories\UserRepository;
 
 /**
  * Class FollowService
@@ -24,13 +26,13 @@ class FollowService implements BaseService
      */
     private $followRepository;
 
-    /**
-     * @param FollowRepository $followRepository
-     */
-    function __construct(FollowRepository $followRepository)
+    private $userRepository;
+
+    function __construct(FollowRepository $followRepository, UserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->followRepository = $followRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -98,5 +100,22 @@ class FollowService implements BaseService
     {
         return $this->followRepository->joinFollowerByUser()
             ->where('user_id', '=', $id)->get();
+    }
+
+    public function suggestionFollow($user_id){
+        $following = $this->FollowingByUser($user_id);
+        $users = $this->userRepository->getRecent()
+            ->where('id', '<>', $user_id)->get();
+        $user_not_following = array();
+
+        foreach ($following as $v){
+            foreach ($users as $k){
+                if ($v->user_id !== $k->id){
+                    $user_not_following[] = $k;
+                }
+            }
+        }
+        Helper::prettyPrint($user_not_following);
+        return $following;
     }
 }

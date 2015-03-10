@@ -116,4 +116,10 @@ class UserService implements BaseService
 
         return $users;
     }
+
+    public function getAllUser(){
+        $users = $this->userRepository->all();
+
+        return $users;
+    }
 }

@@ -136,7 +136,7 @@ class ShopService implements BaseService
         else {
             $shop = $this->shopRepository->create(array(
                 'address' => $address,
-                'image' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg'
+                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg'
             ));
 
             return $shop;

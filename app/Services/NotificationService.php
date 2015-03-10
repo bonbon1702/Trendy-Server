@@ -103,4 +103,14 @@ class NotificationService implements BaseService
         return $results;
     }
 
+    public function userEffectedPost($post_id){
+        $user_effected_id = $this->notificationRepository->getRecent()
+            ->select('id_of_user_effected')
+            ->where('post_id', $post_id)
+            ->groupBy('id_of_user_effected')
+            ->get();
+
+        return $user_effected_id;
+    }
+
 } 
