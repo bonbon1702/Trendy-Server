@@ -4,6 +4,7 @@ use Services\UserService;
 use Repositories\UserRepository;
 use Core\GoogleMapHelper;
 use Services\ShopService;
+use Services\TagPictureService;
 
 /**
  * Class ShopController
@@ -29,18 +30,21 @@ class ShopController extends BaseController
      */
     private $shopService;
 
+    private $tagPictureService;
+
     /**
      * @param UserRepository $userRepository
      * @param UserService $userService
      * @param GoogleMapHelper $googleMapHelper
      * @param ShopService $shopService
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopService $shopService)
+    public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopService $shopService,TagPictureService $tagPictureService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->googleMapHelper = $googleMapHelper;
         $this->shopService = $shopService;
+        $this->tagPictureService=$tagPictureService;
     }
 
     /**
@@ -95,6 +99,14 @@ class ShopController extends BaseController
         return Response::json(array(
             'success' => true,
             'data' => $results
+        ));
+    }
+
+    public function getShopPaging($id,$offSet){
+        $shop= $this->tagPictureService->getPagingPostInShopByShopId($id,$offSet);
+        return Response::json(array(
+            'success' => true,
+            'shops' => $shop
         ));
     }
 }
