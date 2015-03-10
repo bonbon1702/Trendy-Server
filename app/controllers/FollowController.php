@@ -114,4 +114,14 @@ class FollowController extends \BaseController
             'success' => true
         ));
     }
+
+    public function suggestionFollow($id){
+
+        $suggests = $this->followService->suggestionFollow($id);
+
+        return Response::json(array(
+            'success' => true,
+            'suggests' => $suggests
+        ));
+    }
 } 

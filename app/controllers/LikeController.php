@@ -122,7 +122,11 @@ class LikeController extends \BaseController
                 'user_id' => $user_id,
                 'action' => 'like'
             ));
-            Pusherer::trigger('notification', 'like', array('notification' => $notification));
+            $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
+            Pusherer::trigger('real-time', 'notification', array(
+                'notification' => $notification,
+                'user_effected_id' => $user_effected_id
+            ));
         }
         return Response::json(array(
             'success' => true

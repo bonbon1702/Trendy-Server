@@ -113,8 +113,12 @@ class Helper {
         return $rand_value;
     }
 
-    function my_sort_function($a, $b)
+    public function my_sort_function($a, $b)
     {
         return $a->id < $b->id;
+    }
+
+    public static function prettyPrint($a) {
+        echo '<pre>'.print_r($a,1).'</pre>';
     }
 }
