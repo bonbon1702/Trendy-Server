@@ -17,7 +17,8 @@ use Repositories\ShopRepository;
  * Class ShopService
  * @package Services
  */
-class ShopService implements BaseService{
+class ShopService implements BaseService
+{
 
     /**
      * @var ShopRepository
@@ -25,14 +26,28 @@ class ShopService implements BaseService{
     private $shopRepository;
 
     /**
+     * @var LikeService
+     */
+    private $likeService;
+    /**
+     * @var CommentService
+     */
+    private $commentService;
+
+
+    /**
      * @param ShopRepository $shopRepository
      * @param GoogleMapHelper $googleMapHelper
+     * @param LikeService $likeService
+     * @param CommentService $commentService
      */
-    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper)
+    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService)
     {
         // TODO: Implement __construct() method.
         $this->shopRepository = $shopRepository;
         $this->googleMapHelper = $googleMapHelper;
+        $this->likeService = $likeService;
+        $this->commentService = $commentService;
     }
 
     /**
@@ -61,14 +76,24 @@ class ShopService implements BaseService{
         // TODO: Implement delete() method.
     }
 
+    public function getShopByShopId($id)
+    {
+        $shop = $this->shopRepository->get($id);
+        $shop['like'] = $this->likeService->countLike(1, $id);
+        $shop['comments'] = $this->commentService->showCommentByShopId($id);
+        return $shop;
+    }
+
+
     /**
      * @param $result
      * @return mixed
      */
-    public function checkCoordinates($result){
+    public function checkCoordinates($result)
+    {
         $lat = $result[0]->getLatitude();
         $long = $result[0]->getLongitude();
-        $address = $result[0]->getStreetNumber().' '. $result[0]->getStreetName(). ' '. $result[0]->getCounty(). ' '. $result[0]->getCountry();
+        $address = $result[0]->getStreetNumber() . ' ' . $result[0]->getStreetName() . ' ' . $result[0]->getCounty() . ' ' . $result[0]->getCountry();
         $shop_1 = $this->shopRepository->getWhere('lat', $lat);
 
         $shop_2 = $this->shopRepository->getWhere('long', $long);
@@ -91,9 +116,10 @@ class ShopService implements BaseService{
      * @param $type
      * @return mixed
      */
-    public function searchShop($type){
+    public function searchShop($type)
+    {
         $shop = $this->shopRepository->getRecent()
-                        ->where('address', 'LIKE', '%'.$type.'%')->get();
+            ->where('address', 'LIKE', '%' . $type . '%')->get();
 
         return $shop;
     }
@@ -102,7 +128,8 @@ class ShopService implements BaseService{
      * @param $address
      * @return mixed
      */
-    public function checkExist($address){
+    public function checkExist($address)
+    {
         $check = $this->shopRepository->getWhere('address', $address);
         if ($check)
             return $check;
@@ -120,9 +147,10 @@ class ShopService implements BaseService{
      * @param $type
      * @return mixed
      */
-    public function searchFullText($type){
+    public function searchFullText($type)
+    {
         $shop = $this->shopRepository->getRecent()
-            ->where('name', 'LIKE', '%'.$type.'%')->get();
+            ->where('name', 'LIKE', '%' . $type . '%')->get();
 
         return $shop;
     }

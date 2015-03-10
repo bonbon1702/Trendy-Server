@@ -31,6 +31,8 @@ class ShopRepository implements BaseRepository{
     public function all(array $related = null)
     {
         // TODO: Implement all() method.
+        $shop = Shop::all();
+        return $shop;
     }
 
     /**
@@ -40,6 +42,8 @@ class ShopRepository implements BaseRepository{
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
+        $shop = Shop::find($id);
+        return $shop;
     }
 
     /**
@@ -90,6 +94,10 @@ class ShopRepository implements BaseRepository{
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
+        if (!empty($data)) {
+            $shop = $this->getWhere($column, $value)->update($data);
+        }
+        return $shop;
     }
 
     /**
@@ -98,6 +106,7 @@ class ShopRepository implements BaseRepository{
     public function delete($id)
     {
         // TODO: Implement delete() method.
+        $this->get($id)->delete();
     }
 
     /**
@@ -107,5 +116,6 @@ class ShopRepository implements BaseRepository{
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.
+        $this->getWhere($column, $value)->delete();
     }
 }

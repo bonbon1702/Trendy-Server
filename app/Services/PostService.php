@@ -279,5 +279,6 @@ class PostService implements BaseService
     {
         $this->postRepository->delete($id);
         $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
+        $this->commentService->deleteCommentInPost($id);
     }
 }

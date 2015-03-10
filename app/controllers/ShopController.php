@@ -47,12 +47,13 @@ class ShopController extends BaseController
      * @param $name
      * @return mixed
      */
-    public function showShop($name)
+    public function show($id)
     {
-        $user = $this->userRepository->getRecent();
+        $shop = $this->shopService->getShopByShopId($id);
 
-        return View::make('Shoppage.shop', array(
-            'user' => $user
+        return Response::json(array(
+            'success' => true,
+            'shop' => $shop
         ));
     }
 

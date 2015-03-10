@@ -126,4 +126,8 @@ class CommentRepository implements BaseRepository{
         return Comment::where('type_comment', $typeComment)->where('type_id', $typeId)->get();
     }
 
+    public  function deleteCommentInPost($typeId){
+        return Comment::where('type_comment', 0)->where('type_id', $typeId)->delete();
+    }
+
 }

@@ -135,6 +135,13 @@ class CommentService implements BaseService{
      */
     public function showCommentByShopId($id){
         $comment = $this->commentRepository->whereTypeComment(1,$id);
+        foreach ($comment as $v){
+            $v['user'] = $v->user;
+        }
         return $comment;
+    }
+
+    public function deleteCommentInPost($id){
+        return $this->commentRepository->deleteCommentInPost($id);
     }
 }
