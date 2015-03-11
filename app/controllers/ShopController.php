@@ -30,8 +30,6 @@ class ShopController extends BaseController
      */
     private $shopService;
 
-    private $tagPictureService;
-
     /**
      * @param UserRepository $userRepository
      * @param UserService $userService
@@ -107,6 +105,19 @@ class ShopController extends BaseController
         return Response::json(array(
             'success' => true,
             'shops' => $shop
+        ));
+    }
+
+    /**
+     * @param
+     * @return mixed
+     */
+    public function getShopList(){
+        $results = $this->shopService->getShopList();
+
+        return Response::json(array(
+            'success' => true,
+            'data' => $results
         ));
     }
 }

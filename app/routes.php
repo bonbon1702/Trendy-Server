@@ -37,8 +37,9 @@ Route::group(array('prefix' => 'api'), function() {
 
     //ShopController
 	Route::get('shop/searchShop/{type}', 'ShopController@searchShop');
-	Route::resource('shop', 'ShopController');
+    Route::get('getShopList', 'ShopController@getShopList');
     Route::get('shop/getShop/{id}/paging/{offSet}','ShopController@getShopPaging');
+	Route::resource('shop', 'ShopController');
 
 
     //UserController

@@ -159,4 +159,15 @@ class ShopService implements BaseService
 
         return $shop;
     }
+
+    /**
+     * @param
+     * @return mixed
+     */
+    public function getShopList()
+    {
+        $shop = $this->shopRepository->getRecent()
+            ->where('name', 'LIKE', '%%')->get();
+        return $shop;
+    }
 }
