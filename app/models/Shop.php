@@ -25,4 +25,10 @@ class Shop extends \Eloquent {
 	public function tagPicture(){
 		return $this->hasMany('TagPicture');
 	}
+    /**
+     * @return mixed
+     */
+    public function shopDetail(){
+        return $this->hasMany('ShopDetail');
+    }
 }

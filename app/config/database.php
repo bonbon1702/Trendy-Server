@@ -58,7 +58,7 @@ return array(
 			'port'		=> isset($_SERVER['DATABASE1_PORT']) ? $_SERVER['DATABASE1_PORT'] : '',
 			'database'  => isset($_SERVER['DATABASE1_NAME']) ? $_SERVER['DATABASE1_NAME'] : 'socialnw',
 			'username'  => isset($_SERVER['DATABASE1_USER']) ? $_SERVER['DATABASE1_USER'] : 'root',
-			'password'  => isset($_SERVER['DATABASE1_PASS']) ? $_SERVER['DATABASE1_PASS'] : '1234',
+			'password'  => isset($_SERVER['DATABASE1_PASS']) ? $_SERVER['DATABASE1_PASS'] : '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

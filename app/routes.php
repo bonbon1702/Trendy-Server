@@ -42,6 +42,10 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::resource('shop', 'ShopController');
 
 
+    //ShopDetailController
+    Route::resource('shop_detail', 'ShopDetailController');
+
+
     //UserController
     Route::get('searchAllPage/{type}','UserController@searchAllPage');
 	Route::get('user/getUser/{id}', 'UserController@getUser');
