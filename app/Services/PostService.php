@@ -13,6 +13,7 @@ use Core\BaseService;
 use Core\GoogleMapHelper;
 use Core\Helper;
 use Repositories\AlbumRepository;
+use Repositories\FollowRepository;
 use Repositories\PostAlbumRepository;
 use Repositories\PostRepository;
 use Repositories\UploadRepository;
@@ -91,6 +92,11 @@ class PostService implements BaseService
     private $albumRespository;
 
     /**
+     * @var FollowService
+     */
+    private $followService;
+
+    /**
      * @param PostRepository $postRepository
      * @param UserRepository $userRepository
      * @param UploadRepository $uploadRepository
@@ -105,7 +111,7 @@ class PostService implements BaseService
      * @param PostAlbumRepository $postAlbumRepository
      * @param AlbumRepository $albumRepository
      */
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository)
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -121,6 +127,8 @@ class PostService implements BaseService
         $this->tagService = $tagService;
         $this->postAlbumRepository = $postAlbumRepository;
         $this->albumRespository = $albumRepository;
+        $this->followService = $followService;
+        $this->followRepository = $followRepository;
     }
 
     /**
@@ -261,12 +269,23 @@ class PostService implements BaseService
      * @param $id
      * @return mixed
      */
-    public function getPostPaging($order_by, $id)
+    public function getPostPaging($order_by, $id, $user_id)
     {
-        $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+        if ($order_by == "zScore"){
+            $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
 
-        foreach ($posts as $v) {
-            $v['user'] = $v->user;
+            foreach ($posts as $v) {
+                $v['user'] = $v->user;
+            }
+        } elseif ($order_by == "created_at") {
+            $posts =  $this->followRepository->getRecent()
+                        ->where('follower_id', $user_id)
+                        ->join('post', 'follow.user_id', '=' , 'post.user_id')
+                        ->orderBy('post.' . $order_by, 'DESC')->take(8)->skip($id)->get();
+
+            foreach ($posts as $v) {
+                $v['user'] = $v->user;
+            }
         }
 
         return $posts;

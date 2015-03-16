@@ -178,12 +178,12 @@ class PostController extends \BaseController
      * @param $id
      * @return mixed
      */
-    public function getPost($order_by, $id)
+    public function getPost($order_by, $id, $user_id)
     {
         if ($order_by == 'trend') {
-            $posts = $this->postService->getPostPaging('zScore', $id);
+            $posts = $this->postService->getPostPaging('zScore', $id, $user_id);
         } else if ($order_by == 'new') {
-            $posts = $this->postService->getPostPaging('created_at', $id);
+            $posts = $this->postService->getPostPaging('created_at', $id, $user_id);
         }
 
         return Response::json(array(
