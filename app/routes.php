@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+
 });
 
 Route::get('countZScore','HomeController@zScore');
@@ -58,7 +58,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('follower/{user_id}', 'FollowController@followerByUser');
 	Route::get('following/{follower_id}', 'FollowController@followingByUser');
 	Route::delete('following/delete', 'FollowController@deleteFollowing');
-    Route::get('follow/suggestionFollow/{id}', 'FollowController@suggestionFollow');
+    Route::get('follow/suggestionFollow/{id}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
     Route::resource('follow', 'FollowController');
 
 

@@ -115,9 +115,14 @@ class FollowController extends \BaseController
         ));
     }
 
-    public function suggestionFollow($id){
+    public function suggestionFollow($id, $type, $userId){
+        $suggests = array();
+        if ($type == 'popular'){
+            $suggests = $this->followService->popularFollow($userId);
+        }elseif ($type == 'itemToItem'){
+            $suggests = $this->followService->itemToItemFollow($id,$userId);
+        }
 
-        $suggests = $this->followService->suggestionFollow($id);
 
         return Response::json(array(
             'success' => true,

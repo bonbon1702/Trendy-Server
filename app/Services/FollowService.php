@@ -11,6 +11,7 @@ namespace Services;
 
 use Core\BaseService;
 use Core\Helper;
+use Core\ItemToItem;
 use Repositories\FollowRepository;
 use Repositories\UserRepository;
 
@@ -102,20 +103,79 @@ class FollowService implements BaseService
             ->where('user_id', '=', $id)->get();
     }
 
-    public function suggestionFollow($user_id){
-        $following = $this->FollowingByUser($user_id);
+    public function itemToItemFollow($id, $user_id){
         $users = $this->userRepository->getRecent()
-            ->where('id', '<>', $user_id)->get();
-        $user_not_following = array();
+                    ->select('users.id')
+                    ->get();
+        $matrix = array();
+        foreach ($users as $v){
+            $matrix[$v->id] = array();
+            foreach ($users as $v1){
+                $check = $this->followRepository->getRecent()
+                    ->where('follower_id', $v->id)
+                    ->where('user_id', $v1->id)
+                    ->get();
 
-        foreach ($following as $v){
-            foreach ($users as $k){
-                if ($v->user_id !== $k->id){
-                    $user_not_following[] = $k;
+                if (count($check) > 0) {
+                    $matrix[$v->id][$v1->id] = 1;
+                } else {
+                    $matrix[$v->id][$v1->id] = 0;
                 }
             }
         }
-        Helper::prettyPrint($user_not_following);
-        return $following;
+        $itemToItem = new ItemToItem();
+        $itemToItem->insert($matrix);
+        $results = $itemToItem->predict($id);
+
+
+        $suggestions = array();
+        foreach ($results as $k =>$v){
+            $user = $this->userRepository->get($k);
+            $user['cosine'] = $v;
+            $suggestions[] = $user;
+        }
+
+        usort($suggestions, function ($item1, $item2) {
+            $result = 0;
+            if ($item1['cosine'] < $item2['cosine']) {
+                $result = 1;
+            } else if ($item1['cosine'] > $item2['cosine']) {
+                $result = -1;
+            }
+            return $result;
+        });
+
+        $suggestions = array_slice($suggestions, 0, 3);
+
+        return $suggestions;
+    }
+
+    public function popularFollow($user_id){
+        $following = $this->FollowingByUser($user_id);
+
+        $users =  $this->userRepository->getRecent()
+            ->select('users.id','users.username', 'users.picture_profile')
+            ->leftJoin('follow', 'users.id', '=' , 'follow.user_id')
+            ->where('users.id', '<>', $user_id)
+            ->groupBy('users.id')
+            ->get();
+        foreach($users as $v){
+            $v['number_follow'] =  $this->followRepository->getRecent()
+                        ->where('user_id', $v->id)
+                        ->count();
+        }
+
+        foreach ($following as $f){
+            foreach ($users as $k => $u) {
+                if ($f->user_id == $u->id) unset($users[$k]);
+            }
+        }
+        $users = $users->toArray();
+        usort($users, function ($item1, $item2) {
+            return $item2['number_follow'] - $item1['number_follow'];
+        });
+
+        $suggestions = array_slice($users, 0, 3);
+        return $suggestions;
     }
 }
