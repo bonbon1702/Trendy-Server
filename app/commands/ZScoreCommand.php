@@ -63,10 +63,11 @@ class ZScoreCommand extends ScheduledCommand {
 
             $like_count = $this->historyService->actionCount('like', $v->id, $start_day, $end_day);
 
-
             $comment_count = $this->historyService->actionCount('comment', $v->id, $start_day, $end_day);
 
-            $interaction_now = $like_count + $comment_count * 2;
+            $favorite_count = $this->historyService->actionCount('favorite', $v->id, $start_day, $end_day);
+
+            $interaction_now = $like_count + $comment_count * 2 + $favorite_count * 3;
 
 
             $score = $zScore->score($interaction_now);

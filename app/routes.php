@@ -30,6 +30,9 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::delete('post/delete/{id}', 'PostController@deletePost');
 	Route::resource('post', 'PostController');
 
+    //FavoriteController
+    Route::get('favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'FavoriteController@favoritePost');
+    Route::resource('favorite', 'FavoriteController');
 
     //UploadController
 	Route::post('uploadEditor', 'UploadController@uploadEditor');

@@ -52,18 +52,11 @@ class CommentController extends \BaseController {
         $data = Input::all();
 
         $comment = $this->commentService->create($data);
-//        Pusherer::trigger('real-time', 'comment-post', array(
-//            'comment' => $comment,
-//        ));
 
         $data['action'] = 'comment';
 
         $notification = $this->notificationService->create($data);
         $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
-//        Pusherer::trigger('real-time', 'notification', array(
-//            'notification' => $notification,
-//            'user_effected_id' => $user_effected_id
-//        ));
 
         Event::fire(NotificationEventHandler::EVENT, array(
             'notification' => $notification,

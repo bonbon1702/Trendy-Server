@@ -20,9 +20,12 @@ class FavoriteService implements BaseService
 {
     private $favoriteRepository;
 
-    function __construct(FavoriteRepository $favoriteRepository)
+    private $historyService;
+
+    function __construct(FavoriteRepository $favoriteRepository, HistoryService $historyService)
     {
         $this->favoriteRepository = $favoriteRepository;
+        $this->historyService = $historyService;
     }
 
     public function create(array $data)
@@ -32,6 +35,12 @@ class FavoriteService implements BaseService
             'user_id' => $data['user_id'],
             'post_id' => $data['post_id']
         ));
+        $this->historyService->create(array(
+            'user_id' => $data['user_id'],
+            'type_action' => 'favorite',
+            'action_id' => $data['post_id']
+        ));
+        return $favorite;
     }
 
     public function update(array $data)

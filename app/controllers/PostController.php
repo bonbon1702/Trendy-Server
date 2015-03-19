@@ -196,19 +196,4 @@ class PostController extends \BaseController
         ));
     }
 
-    public function favoritePost($user_id, $post_id, $type){
-        if ($type == 'favorite'){
-            $favorite = $this->favoriteService->create(array(
-                'user_id' => $user_id,
-                'post_id' => $post_id
-            ));
-        } elseif ($type == 'unFavorite'){
-            $this->favoriteService->unFavorite($user_id,$post_id);
-        }
-
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
 }
