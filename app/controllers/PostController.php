@@ -5,6 +5,7 @@ use Repositories\UploadRepository;
 use Repositories\UserRepository;
 use Services\PostService;
 use Services\UserService;
+use Services\FavoriteService;
 
 /**
  * Class PostController
@@ -35,6 +36,8 @@ class PostController extends \BaseController
      */
     private $uploadRepository;
 
+    private $favoriteService;
+
     /**
      * @param UserRepository $userRepository
      * @param UserService $userService
@@ -42,13 +45,14 @@ class PostController extends \BaseController
      * @param PostService $postService
      * @param UploadRepository $uploadRepository
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService, UploadRepository $uploadRepository)
+    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService, UploadRepository $uploadRepository, FavoriteService $favoriteService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->postRepository = $postRepository;
         $this->uploadRepository = $uploadRepository;
         $this->postService = $postService;
+        $this->favoriteService = $favoriteService;
     }
 
     /**
@@ -189,6 +193,21 @@ class PostController extends \BaseController
         return Response::json(array(
             'success' => true,
             'posts' => $posts
+        ));
+    }
+
+    public function favoritePost($user_id, $post_id, $type){
+        if ($type == 'favorite'){
+            $favorite = $this->favoriteService->create(array(
+                'user_id' => $user_id,
+                'post_id' => $post_id
+            ));
+        } elseif ($type == 'unFavorite'){
+            $this->favoriteService->unFavorite($user_id,$post_id);
+        }
+
+        return Response::json(array(
+            'success' => true
         ));
     }
 

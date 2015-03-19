@@ -8,87 +8,65 @@
 
 namespace Repositories;
 
-
 use Core\BaseRepository;
+use \Favorite;
 
 /**
  * Class FavoriteRepository
  * @package Repositories
  */
 class FavoriteRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
+
     public function errors($code)
     {
         // TODO: Implement errors() method.
     }
 
-    /**
-     * @param array $related
-     */
     public function all(array $related = null)
     {
         // TODO: Implement all() method.
     }
 
-    /**
-     * @param $id
-     * @param array $related
-     */
     public function get($id, array $related = null)
     {
         // TODO: Implement get() method.
     }
 
-    /**
-     * @param $column
-     * @param $value
-     * @param array $related
-     */
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
+        $favorite = Favorite::where($column, $value);
+
+        return $favorite;
     }
 
-    /**
-     * @param array $related
-     */
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $favorite = new Favorite();
+
+        return $favorite;
     }
 
-    /**
-     * @param array $data
-     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
+        if (!empty($data)) {
+             $favorite = Favorite::create($data);
+        };
+        return $favorite;
     }
 
-    /**
-     * @param $column
-     * @param $value
-     * @param array $data
-     */
     public function update($column, $value, array $data)
     {
         // TODO: Implement update() method.
     }
 
-    /**
-     * @param $id
-     */
     public function delete($id)
     {
         // TODO: Implement delete() method.
     }
 
-    /**
-     * @param $column
-     * @param $value
-     */
     public function deleteWhere($column, $value)
     {
         // TODO: Implement deleteWhere() method.

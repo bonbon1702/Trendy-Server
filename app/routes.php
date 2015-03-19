@@ -26,8 +26,9 @@ Route::group(array('prefix' => 'api'), function() {
 
     //PostController
 	Route::get('post/getPost/order/{order_by}/paging/{id}/userId/{user_id}', 'PostController@getPost');
-	Route::resource('post', 'PostController');
+    Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
 	Route::delete('post/delete/{id}', 'PostController@deletePost');
+	Route::resource('post', 'PostController');
 
 
     //UploadController

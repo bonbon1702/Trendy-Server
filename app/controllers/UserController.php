@@ -70,7 +70,6 @@ class UserController extends BaseController
     {
         $data = Input::all();
         $user = $this->userRepository->getWhere('remember_token', $data['remember_token'])->first();
-
         return Response::json(array(
             'success' => true,
             'user' => $user

@@ -60,6 +60,10 @@ class UserService implements BaseService
                     'role_id' => 1,
                     'remember_token' => $data['remember_token']
                 ));
+                $album = $this->albumService->create(array(
+                    'user_id' => $user->id,
+                    'album_name' => 'favorite'
+                ));
             } else {
                 $user = $this->userRepository->update('email', $data['email'], array(
                     'remember_token' => $data['remember_token']

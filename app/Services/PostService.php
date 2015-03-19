@@ -111,7 +111,7 @@ class PostService implements BaseService
      * @param PostAlbumRepository $postAlbumRepository
      * @param AlbumRepository $albumRepository
      */
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository)
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository, FavoriteService $favoriteService)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -129,6 +129,7 @@ class PostService implements BaseService
         $this->albumRespository = $albumRepository;
         $this->followService = $followService;
         $this->followRepository = $followRepository;
+        $this->favoriteService = $favoriteService;
     }
 
     /**
@@ -261,6 +262,7 @@ class PostService implements BaseService
         foreach ($post['tag'] as $v) {
             $v['content'] = $v->tagContent;
         }
+        $post['favorite'] = $this->favoriteService->getUserFavorite($id);
         return $post;
     }
 
