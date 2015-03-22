@@ -13,6 +13,7 @@ use Core\BaseService;
 use Core\GoogleMapHelper;
 use Core\Helper;
 use Repositories\AlbumRepository;
+use Repositories\FavoriteRepository;
 use Repositories\FollowRepository;
 use Repositories\PostAlbumRepository;
 use Repositories\PostRepository;
@@ -96,6 +97,8 @@ class PostService implements BaseService
      */
     private $followService;
 
+    private $favoriteRepository;
+
     /**
      * @param PostRepository $postRepository
      * @param UserRepository $userRepository
@@ -111,7 +114,7 @@ class PostService implements BaseService
      * @param PostAlbumRepository $postAlbumRepository
      * @param AlbumRepository $albumRepository
      */
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository, FavoriteService $favoriteService)
+    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository, FavoriteService $favoriteService, FavoriteRepository $favoriteRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -130,6 +133,7 @@ class PostService implements BaseService
         $this->followService = $followService;
         $this->followRepository = $followRepository;
         $this->favoriteService = $favoriteService;
+        $this->favoriteRepository = $favoriteRepository;
     }
 
     /**
@@ -279,18 +283,41 @@ class PostService implements BaseService
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
             }
+            $results = $posts;
         } elseif ($order_by == "newfeed") {
             $posts =  $this->followRepository->getRecent()
                         ->where('follower_id', $user_id)
                         ->join('post', 'follow.user_id', '=' , 'post.user_id')
                         ->orderBy('post.created_at', 'DESC')->take(8)->skip($id)->get();
+            $post_comment = $this->followRepository->getRecent()
+                            ->where('follower_id', $user_id)
+                            ->join('comment', 'follow.user_id', '=', 'comment.user_id')
+                            ->where('comment.type_comment',0)
+                            ->join('post', 'post.id', '=', 'comment.type_id')
+                            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                            ->take(8)->skip($id)->get();
 
+            $posts = array_merge($posts->toArray(), $post_comment->toArray());
+
+            //clear dup
+            $results = array();
+            foreach ($posts as $v){
+                $results[$v['id']] = $v;
+                $results[$v['id']]['user'] = $this->userRepository->get($v['user_id']);
+            }
+        } elseif ($order_by == 'favorite'){
+            $posts = $this->favoriteRepository->getRecent()
+                        ->where('favorite.user_id', $user_id)
+                        ->join('post', 'favorite.post_id', '=', 'post.id')
+                        ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                        ->take(8)->skip($id)->get();
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
             }
+            $results = $posts;
         }
 
-        return $posts;
+        return $results;
     }
 
     /**

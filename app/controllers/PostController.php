@@ -195,8 +195,8 @@ class PostController extends \BaseController
         ));
     }
 
-    public function getPostFavorite($id){
-        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+    public function getPostFavorite($id, $user_id){
+        $posts = $this->postService->getPostPaging('favorite', $id, $user_id);
 
         return Response::json(array(
             'success' => true,
