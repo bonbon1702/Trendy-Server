@@ -16,7 +16,6 @@ class CreateShopTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('image_url')->nullable();
-			$table->string('image_url_resize')->nullable();
 			$table->string('name')->nullable();
 			$table->string('description')->nullable();
 			$table->string('lat')->nullable();

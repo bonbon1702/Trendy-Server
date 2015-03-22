@@ -19,8 +19,11 @@ class CreatePostTable extends Migration {
 			$table->integer('user_id')->nullable();
 			$table->string('image_url')->nullable();
 			$table->string('image_url_editor')->nullable();
-			$table->string('image_url_resize')->nullable();
 			$table->string('caption')->nullable();
+			$table->integer('day')->nullable()->default(0);
+			$table->integer('interaction')->nullable()->default(0);
+			$table->integer('sqr_interaction')->nullable()->default(0);
+			$table->float('zScore', 10, 0)->nullable()->default(0);
 			$table->timestamps();
 		});
 	}

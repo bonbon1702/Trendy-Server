@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateHistoryTable extends Migration {
+class CreateAlbumTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,11 @@ class CreateHistoryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('history', function(Blueprint $table)
+		Schema::create('album', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->integer('user_id');
-            $table->string('type_action');
-            $table->integer('action_id');
+			$table->integer('user_id')->nullable();
+			$table->string('album_name')->nullable();
 			$table->timestamps();
 		});
 	}
@@ -30,7 +29,7 @@ class CreateHistoryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('history');
+		Schema::drop('album');
 	}
 
 }
