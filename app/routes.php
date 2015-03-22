@@ -25,9 +25,12 @@ Route::group(array('prefix' => 'api'), function() {
 
 
     //PostController
-	Route::get('post/getPost/order/{order_by}/paging/{id}/userId/{user_id}', 'PostController@getPost');
     Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
 	Route::delete('post/delete/{id}', 'PostController@deletePost');
+    Route::get('post/getPostTrendy/paging/{id}', 'PostController@getPostTrendy');
+    Route::get('post/getPostAround/paging/{id}', 'PostController@getPostAround');
+    Route::get('post/getPostFavorite/paging/{id}', 'PostController@getPostFavorite');
+    Route::get('post/getPostNewFeed/paging/{id}/userId/{user_id}', 'PostController@getPostNewFeed');
 	Route::resource('post', 'PostController');
 
     //FavoriteController

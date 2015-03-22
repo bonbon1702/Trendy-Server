@@ -177,18 +177,35 @@ class PostController extends \BaseController
         ));
     }
 
-    /**
-     * @param $order_by
-     * @param $id
-     * @return mixed
-     */
-    public function getPost($order_by, $id, $user_id)
-    {
-        if ($order_by == 'trend') {
-            $posts = $this->postService->getPostPaging('zScore', $id, $user_id);
-        } else if ($order_by == 'new') {
-            $posts = $this->postService->getPostPaging('created_at', $id, $user_id);
-        }
+    public function getPostTrendy($id){
+        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    public function getPostAround($id){
+        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    public function getPostFavorite($id){
+        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    public function getPostNewFeed($id,$user_id){
+        $posts = $this->postService->getPostPaging('newfeed', $id, $user_id);
 
         return Response::json(array(
             'success' => true,

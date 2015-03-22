@@ -279,11 +279,11 @@ class PostService implements BaseService
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
             }
-        } elseif ($order_by == "created_at") {
+        } elseif ($order_by == "newfeed") {
             $posts =  $this->followRepository->getRecent()
                         ->where('follower_id', $user_id)
                         ->join('post', 'follow.user_id', '=' , 'post.user_id')
-                        ->orderBy('post.' . $order_by, 'DESC')->take(8)->skip($id)->get();
+                        ->orderBy('post.created_at', 'DESC')->take(8)->skip($id)->get();
 
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
