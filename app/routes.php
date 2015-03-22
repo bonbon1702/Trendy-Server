@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-
+    echo "<h1>Hello</h1>";
 });
 
 Route::get('countZScore','HomeController@zScore');
