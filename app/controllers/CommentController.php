@@ -13,6 +13,7 @@ use Services\PostService;
 use Repositories\ShopRepository;
 use Services\ShopService;
 use Services\NotificationService;
+use Repositories\UserRepository;
 
 class CommentController extends \BaseController {
 
@@ -30,7 +31,9 @@ class CommentController extends \BaseController {
 
     private $notificationService;
 
-    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService) {
+    private $userRepository;
+
+    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService, UserRepository $userRepository) {
         $this->commentRepository = $commentRepository;
         $this->commentService = $commentService;
         $this->postRepository = $postRepository;
@@ -38,6 +41,7 @@ class CommentController extends \BaseController {
         $this->shopRepository = $shopRepository;
         $this->shopService = $shopService;
         $this->notificationService = $notificationService;
+        $this->userRepository = $userRepository;
     }
 
     public function index() {
@@ -56,11 +60,11 @@ class CommentController extends \BaseController {
         $data['action'] = 'comment';
 
         $notification = $this->notificationService->create($data);
-        $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
+        $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+        $notification['list_user'] =  $this->notificationService->userEffectedPost($notification->post_id);
 
         Event::fire(NotificationEventHandler::EVENT, array(
             'notification' => $notification,
-            'user_effected_id' => $user_effected_id
         ));
 
         return Response::json(array(

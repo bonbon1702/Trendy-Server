@@ -8,6 +8,7 @@
 
 use Services\NotificationService;
 use Services\FavoriteService;
+use Repositories\UserRepository;
 
 class FavoriteController extends \BaseController {
 
@@ -15,9 +16,12 @@ class FavoriteController extends \BaseController {
 
     private $favoriteService;
 
-    public function __construct(NotificationService $notificationService, FavoriteService $favoriteService) {
+    private $userRepository;
+
+    public function __construct(NotificationService $notificationService, FavoriteService $favoriteService, UserRepository $userRepository) {
         $this->notificationService = $notificationService;
         $this->favoriteService = $favoriteService;
+        $this->userRepository = $userRepository;
     }
 
     public function index() {
@@ -48,11 +52,11 @@ class FavoriteController extends \BaseController {
                 'action' => 'favorite'
             );
             $notification = $this->notificationService->create($data);
-            $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
+            $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+            $notification['list_user'] =  $this->notificationService->userEffectedPost($notification->post_id);
 
             Event::fire(NotificationEventHandler::EVENT, array(
-                'notification' => $notification,
-                'user_effected_id' => $user_effected_id
+                'notification' => $notification
             ));
         } elseif ($type == 'unFavorite'){
             $this->favoriteService->unFavorite($user_id,$post_id);

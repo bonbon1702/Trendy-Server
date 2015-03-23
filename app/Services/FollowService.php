@@ -44,11 +44,12 @@ class FollowService implements BaseService
         // TODO: Implement create() method.
         $userId = $data['user_id'];
         $followerId = $data['follower_id'];
-        $this->followRepository->create(array(
+        $follow = $this->followRepository->create(array(
             'user_id' => $userId,
             'follower_id' => $followerId,
         ));
 
+        return $follow;
     }
 
     /**

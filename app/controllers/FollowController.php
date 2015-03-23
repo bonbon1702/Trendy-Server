@@ -77,7 +77,7 @@ class FollowController extends \BaseController
     {
         $data = Input::all();
 
-        $this->followService->create($data);
+        $follow = $this->followService->create($data);
         return Response::json(array(
             'success' => true
         ));

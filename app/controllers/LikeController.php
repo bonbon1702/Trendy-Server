@@ -1,7 +1,7 @@
 <?php
 use Services\LikeService;
 use Services\NotificationService;
-
+use Repositories\UserRepository;
 /**
  * Class LikeController
  */
@@ -15,14 +15,17 @@ class LikeController extends \BaseController
 
     private $notificationService;
 
+    private $userRepository;
+
     /**
      * @param LikeService $likeService
      * @param NotificationService $notificationService
      */
-    function __construct(LikeService $likeService, NotificationService $notificationService)
+    function __construct(LikeService $likeService, NotificationService $notificationService, UserRepository $userRepository)
     {
         $this->likeService = $likeService;
         $this->notificationService = $notificationService;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -122,14 +125,11 @@ class LikeController extends \BaseController
                 'user_id' => $user_id,
                 'action' => 'like'
             ));
-            $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
-//            Pusherer::trigger('real-time', 'notification', array(
-//                'notification' => $notification,
-//                'user_effected_id' => $user_effected_id
-//            ));
+            $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+            $notification['list_user'] =  $this->notificationService->userEffectedPost($notification->post_id);
+
             Event::fire(NotificationEventHandler::EVENT, array(
                 'notification' => $notification,
-                'user_effected_id' => $user_effected_id
             ));
         }
         return Response::json(array(

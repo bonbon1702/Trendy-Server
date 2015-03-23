@@ -12,18 +12,20 @@ namespace Services;
 use Core\BaseService;
 use Repositories\NotificationRepository;
 use Repositories\NotificationWatchedRepository;
+use Repositories\UserRepository;
 
 class NotificationService implements BaseService
 {
 
 
-    function __construct(NotificationRepository $notificationRepository, PostService $postService, ShopService $shopService, UserService $userService, NotificationWatchedRepository $notificationWatchedRepository)
+    function __construct(NotificationRepository $notificationRepository, PostService $postService, ShopService $shopService, UserService $userService, NotificationWatchedRepository $notificationWatchedRepository, UserRepository $userRepository)
     {
         $this->notificationRepository = $notificationRepository;
         $this->postService = $postService;
         $this->shopService = $shopService;
         $this->userService = $userService;
         $this->notificationWatchedRepository = $notificationWatchedRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function create(array $data)
@@ -90,10 +92,14 @@ class NotificationService implements BaseService
         if (count($notification) > 0) {
             foreach ($notification as $v) {
                 $check = $this->notificationWatchedRepository->getWhere('notification_id', $v->id)->get();
-
+                $v['username'] = $this->userRepository->get($v['user_id'])->username;
                 if (count($check) == 0) {
                     $notification_unread[] = $v;
                 }
+            }
+
+            foreach ($notification_unread as $v){
+                $v['username'] = $this->userRepository->get($v['user_id'])->username;
             }
         }
         $results = array(
