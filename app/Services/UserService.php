@@ -58,7 +58,8 @@ class UserService implements BaseService
                     'gender' => $data['gender'],
                     'delete_flag' => 0,
                     'role_id' => 1,
-                    'remember_token' => $data['remember_token']
+                    'remember_token' => $data['remember_token'],
+                    'image_cover' => url() . '/assets/cover-facebook-1.jpg'
                 ));
                 $album = $this->albumService->create(array(
                     'user_id' => $user->id,
@@ -66,7 +67,7 @@ class UserService implements BaseService
                 ));
             } else {
                 $user = $this->userRepository->update('email', $data['email'], array(
-                    'remember_token' => $data['remember_token']
+                    'remember_token' => $data['remember_token'],
                 ));
             }
         }
