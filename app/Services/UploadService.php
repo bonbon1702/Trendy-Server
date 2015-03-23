@@ -51,16 +51,20 @@ class UploadService implements BaseService{
         // TODO: Implement create() method.
         $img = $data['img'];
         if ($img){
-//            $image = Image::make($img);
-            $image_name = Helper::get_rand_alphanumeric(8);
-//            $image_url = 'assets/images/' .$image_name.'.jpg';
-//
-//            $image->save($image_url);
-            \Cloudy::upload($img, $image_name);
+            $image = Image::make($img);
+            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
+            $image_url = 'assets/images/'.$image_name.'.jpg';
+
+            $image->save($image_url);
             $upload = $this->uploadRepository->create(array(
-                'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
+                'image_url' => url() . '/' . $image_url,
                 'name' => $image_name
             ));
+//            \Cloudy::upload($img, $image_name);
+//            $upload = $this->uploadRepository->create(array(
+//                'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
+//                'name' => $image_name
+//            ));
         }
         return $upload;
     }
