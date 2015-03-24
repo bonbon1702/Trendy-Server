@@ -80,6 +80,7 @@ class UserService implements BaseService
     public function update(array $data)
     {
         // TODO: Implement update() method.
+        return $this->userRepository->update('id',$data['id'],$data);
     }
 
 

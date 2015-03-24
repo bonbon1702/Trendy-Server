@@ -135,4 +135,13 @@ class UserController extends BaseController
             'results' => $results
         ));
     }
+
+    public function update($id){
+        $data = Input::all();
+        $data['id']=$id;
+        $this->userService->update($data);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 }
