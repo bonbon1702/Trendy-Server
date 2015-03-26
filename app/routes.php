@@ -16,14 +16,7 @@ Route::get('/', function()
 
 });
 
-Route::get('countZScore','HomeController@zScore');
-
 Route::group(array('prefix' => 'api'), function() {
-
-    //HomeController
-    Route::resource('home', 'HomeController');
-
-
     //PostController
     Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
 	Route::delete('post/delete/{id}', 'PostController@deletePost');
@@ -61,7 +54,8 @@ Route::group(array('prefix' => 'api'), function() {
     //FollowController
 	Route::get('follower/{user_id}', 'FollowController@followerByUser');
 	Route::get('following/{follower_id}', 'FollowController@followingByUser');
-	Route::delete('following/delete', 'FollowController@deleteFollowing');
+//	Route::delete('following/delete', 'FollowController@deleteFollowing');
+    Route::get('following/delete/userID/{user_id}/followerID/{follower_id}', 'FollowController@deleteFollowing');
     Route::get('follow/suggestionFollow/{id}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
     Route::resource('follow', 'FollowController');
 
@@ -94,7 +88,6 @@ Route::group(array('prefix' => 'api'), function() {
     //NotificationController
     Route::post('notification/watchedNotification', 'NotificationController@watchedNotification');
     Route::resource('notification', 'NotificationController');
-
 });
 
 App::missing(function($exception) {
