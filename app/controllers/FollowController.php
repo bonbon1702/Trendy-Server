@@ -99,16 +99,12 @@ class FollowController extends \BaseController
         ));
     }
 
-
-    /**
-     * Remove the specified Follow from storage.
-     * DELETE/follow
-     *
-     * @return Response
-     */
-    public function deleteFollowing()
+    public function deleteFollowing($user_id, $follower_id)
     {
-        $data = Input::all();
+        $data = array(
+            'user_id' => $user_id,
+            'follower_id' => $follower_id
+        );
         $this->followService->deleteFollowing($data);
         return Response::json(array(
             'success' => true

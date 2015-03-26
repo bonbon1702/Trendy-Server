@@ -68,6 +68,7 @@ class UserService implements BaseService
             } else {
                 $user = $this->userRepository->update('email', $data['email'], array(
                     'remember_token' => $data['remember_token'],
+                    'sw_id' => $data['sw_id']
                 ));
             }
         }
