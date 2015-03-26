@@ -47,10 +47,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('getShopList', 'ShopController@getShopList');
     Route::get('shop/getShop/{id}/paging/{offSet}','ShopController@getShopPaging');
 	Route::resource('shop', 'ShopController');
-
-
-    //ShopDetailController
-    Route::resource('shop_detail', 'ShopDetailController');
+    Route::post('shop/saveShopInfo','ShopController@saveShopDetailInfo');
 
 
     //UserController
