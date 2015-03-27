@@ -19,12 +19,13 @@ use Repositories\PostAlbumRepository;
 use Repositories\PostRepository;
 use Repositories\UploadRepository;
 use Repositories\UserRepository;
+use Services\interfaces\IPostService;
 
 /**
  * Class PostService
  * @package Services
  */
-class PostService implements BaseService
+class PostService implements IPostService
 {
 
     /**
