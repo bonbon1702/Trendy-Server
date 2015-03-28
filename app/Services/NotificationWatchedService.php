@@ -8,15 +8,14 @@
 
 namespace Services;
 
+use Repositories\interfaces\INotificationWatchedRepository;
+use Services\interfaces\INotificationWatchedService;
 
-use Core\BaseService;
-use Repositories\NotificationWatchedRepository;
-
-class NotificationWatchedService implements BaseService{
+class NotificationWatchedService implements INotificationWatchedService{
 
     private $notificationWatchedRepository;
 
-    function __construct(NotificationWatchedRepository $notificationWatchedRepository)
+    function __construct(INotificationWatchedRepository $notificationWatchedRepository)
     {
         $this->notificationWatchedRepository = $notificationWatchedRepository;
     }

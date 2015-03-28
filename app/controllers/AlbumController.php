@@ -1,11 +1,12 @@
 <?php
-use Services\AlbumService;
+
+use Services\interfaces\IAlbumService;
 
 class AlbumController extends \BaseController {
 
     private $albumService;
 
-    function __construct(AlbumService $albumService)
+    function __construct(IAlbumService $albumService)
     {
         $this->albumService = $albumService;
     }

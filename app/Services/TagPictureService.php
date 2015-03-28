@@ -8,15 +8,14 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\TagPictureRepository;
+use Repositories\interfaces\ITagPictureRepository;
+use Services\interfaces\ITagPictureService;
 
 /**
  * Class TagPictureService
  * @package Services
  */
-class TagPictureService implements BaseService{
+class TagPictureService implements ITagPictureService{
 
     /**
      * @var TagPictureRepository
@@ -26,7 +25,7 @@ class TagPictureService implements BaseService{
     /**
      * @param TagPictureRepository $tagPictureRepository
      */
-    function __construct(TagPictureRepository $tagPictureRepository)
+    function __construct(ITagPictureRepository $tagPictureRepository)
     {
         $this->tagPictureRepository = $tagPictureRepository;
     }

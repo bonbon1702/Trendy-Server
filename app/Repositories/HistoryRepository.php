@@ -11,12 +11,13 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \History;
+use Repositories\interfaces\IHistoryRepository;
 
 /**
  * Class HistoryRepository
  * @package Repositories
  */
-class HistoryRepository implements BaseRepository{
+class HistoryRepository implements IHistoryRepository{
 
     /**
      * @param $code

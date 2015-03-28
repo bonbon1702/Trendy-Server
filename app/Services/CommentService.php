@@ -8,18 +8,18 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\CommentRepository;
-use Repositories\UserRepository;
-use Repositories\PostRepository;
-use Repositories\ShopRepository;
+use Repositories\interfaces\ICommentRepository;
+use Repositories\interfaces\IUserRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IShopRepository;
+use Services\interfaces\ICommentService;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class CommentService
  * @package Services
  */
-class CommentService implements BaseService{
+class CommentService implements ICommentService{
 
     /**
      * @var CommentRepository
@@ -53,7 +53,7 @@ class CommentService implements BaseService{
      * @param ShopRepository $shopRepository
      * @param HistoryService $historyService
      */
-    function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository,HistoryService $historyService)
+    function __construct(ICommentRepository $commentRepository, IUserRepository $userRepository, IPostRepository $postRepository, IShopRepository $shopRepository, IHistoryService $historyService)
     {
         // TODO: Implement __construct() method.
         $this->commentRepository = $commentRepository;

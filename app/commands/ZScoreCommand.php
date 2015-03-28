@@ -5,6 +5,8 @@ use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Services\interfaces\IPostService;
+use Services\interfaces\IHistoryService;
 
 class ZScoreCommand extends ScheduledCommand {
 
@@ -27,7 +29,7 @@ class ZScoreCommand extends ScheduledCommand {
 	 *
 	 * @return void
 	 */
-	public function __construct(\Services\PostService $postService, \Services\HistoryService $historyService)
+	public function __construct(IPostService $postService, IHistoryService $historyService)
 	{
 		parent::__construct();
 

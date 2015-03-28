@@ -10,8 +10,9 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \NotificationWatched;
+use Repositories\interfaces\INotificationWatchedRepository;
 
-class NotificationWatchedRepository implements BaseRepository{
+class NotificationWatchedRepository implements INotificationWatchedRepository{
     public function errors($code)
     {
         // TODO: Implement errors() method.

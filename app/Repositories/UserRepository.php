@@ -11,13 +11,14 @@ namespace Repositories;
 use Core\BaseRepository;
 use Illuminate\Support\Facades\Auth;
 
+use Repositories\interfaces\IUserRepository;
 use \User;
 
 /**
  * Class UserRepository
  * @package Repositories
  */
-class UserRepository implements BaseRepository
+class UserRepository implements IUserRepository
 {
     /**
      * @param $code

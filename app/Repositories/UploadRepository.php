@@ -10,13 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\IUploadRepository;
 use \Upload;
 
 /**
  * Class UploadRepository
  * @package Repositories
  */
-class UploadRepository implements BaseRepository{
+class UploadRepository implements IUploadRepository{
     /**
      * @param $code
      */

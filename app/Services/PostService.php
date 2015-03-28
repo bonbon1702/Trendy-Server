@@ -8,18 +8,23 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\GoogleMapHelper;
 use Core\Helper;
-use Repositories\AlbumRepository;
-use Repositories\FavoriteRepository;
-use Repositories\FollowRepository;
-use Repositories\PostAlbumRepository;
-use Repositories\PostRepository;
-use Repositories\UploadRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\IAlbumRepository;
+use Repositories\interfaces\IFavoriteRepository;
+use Repositories\interfaces\IFollowRepository;
+use Repositories\interfaces\IPostAlbumRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IUploadRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\ITagPictureService;
 use Services\interfaces\IPostService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IAlbumService;
+use Services\interfaces\ICommentService;
+use Services\interfaces\ILikeService;
+use Services\interfaces\IFollowService;
+use Services\interfaces\IFavoriteService;
 
 /**
  * Class PostService
@@ -74,16 +79,6 @@ class PostService implements IPostService
     private $likeService;
 
     /**
-     * @var TagContentService
-     */
-    private $tagContentService;
-
-    /**
-     * @var TagService
-     */
-    private $tagService;
-
-    /**
      * @var PostAlbumRepository
      */
     private $postAlbumRepository;
@@ -115,7 +110,7 @@ class PostService implements IPostService
      * @param PostAlbumRepository $postAlbumRepository
      * @param AlbumRepository $albumRepository
      */
-    function __construct(PostRepository $postRepository, UserRepository $userRepository, UploadRepository $uploadRepository, TagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, ShopService $shopService, AlbumService $albumService, CommentService $commentService, LikeService $likeService, TagContentService $tagContentService, TagService $tagService, PostAlbumRepository $postAlbumRepository, AlbumRepository $albumRepository, FollowService $followService, FollowRepository $followRepository, FavoriteService $favoriteService, FavoriteRepository $favoriteRepository)
+    function __construct(IPostRepository $postRepository, IUserRepository $userRepository, IUploadRepository $uploadRepository, ITagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, IShopService $shopService, IAlbumService $albumService, ICommentService $commentService, ILikeService $likeService, IPostAlbumRepository $postAlbumRepository, IAlbumRepository $albumRepository, IFollowService $followService, IFollowRepository $followRepository, IFavoriteService $favoriteService, IFavoriteRepository $favoriteRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -127,8 +122,6 @@ class PostService implements IPostService
         $this->albumService = $albumService;
         $this->commentService = $commentService;
         $this->likeService = $likeService;
-        $this->tagContentService = $tagContentService;
-        $this->tagService = $tagService;
         $this->postAlbumRepository = $postAlbumRepository;
         $this->albumRespository = $albumRepository;
         $this->followService = $followService;
@@ -186,18 +179,6 @@ class PostService implements IPostService
                     'top' => $v['top'],
                     'left' => $v['left'],
                     'shop_id' => $shop->id
-                ));
-            }
-        }
-
-        if ($data['tags']) {
-            foreach ($data['tags'] as $v) {
-                $tagContent = $this->tagContentService->create(array(
-                    'content' => $v['text']
-                ));
-                $this->tagService->create(array(
-                    'post_id' => $post->id,
-                    'tag_content_id' => $tagContent->id
                 ));
             }
         }

@@ -1,12 +1,11 @@
 <?php
 
-use Repositories\PostRepository;
-use Repositories\UploadRepository;
-use Repositories\UserRepository;
-use Services\PostService;
-use Services\UserService;
-use Services\FavoriteService;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IUploadRepository;
+use Repositories\interfaces\IUserRepository;
 use Services\interfaces\IPostService;
+use Services\interfaces\IUserService;
+use Services\interfaces\IFavoriteService;
 
 /**
  * Class PostController
@@ -46,7 +45,7 @@ class PostController extends \BaseController
      * @param PostService $postService
      * @param UploadRepository $uploadRepository
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, IPostService $postService, UploadRepository $uploadRepository, FavoriteService $favoriteService)
+    public function __construct(IUserRepository $userRepository, IUserService $userService, IPostRepository $postRepository, IPostService $postService, IUploadRepository $uploadRepository, IFavoriteService $favoriteService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;

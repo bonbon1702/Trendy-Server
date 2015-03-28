@@ -2,7 +2,7 @@
 
 use Repositories\UploadRepository;
 use Repositories\UserRepository;
-use Services\UploadService;
+use Services\interfaces\IUploadService;
 
 /**
  * Class UploadController
@@ -17,7 +17,7 @@ class UploadController extends \BaseController {
 	/**
 	 * @param UploadService $uploadService
      */
-	function __construct(UploadService $uploadService)
+	function __construct(IUploadService $uploadService)
 	{
 		$this->uploadService = $uploadService;
 	}

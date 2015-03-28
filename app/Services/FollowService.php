@@ -8,18 +8,16 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Core\Helper;
 use Core\ItemToItem;
-use Repositories\FollowRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\IFollowRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IFollowService;
 
 /**
  * Class FollowService
  * @package Services
  */
-class FollowService implements BaseService
+class FollowService implements IFollowService
 {
 
     /**
@@ -29,7 +27,7 @@ class FollowService implements BaseService
 
     private $userRepository;
 
-    function __construct(FollowRepository $followRepository, UserRepository $userRepository)
+    function __construct(IFollowRepository $followRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->followRepository = $followRepository;

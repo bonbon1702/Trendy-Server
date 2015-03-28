@@ -11,8 +11,9 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Album;
+use Repositories\interfaces\IAlbumRepository;
 
-class AlbumRepository implements BaseRepository
+class AlbumRepository implements IAlbumRepository
 {
     public function errors($code)
     {

@@ -8,16 +8,19 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\GoogleMapHelper;
-use Repositories\ShopRepository;
+use Repositories\interfaces\IShopRepository;
+use Services\interfaces\IShopService;
+use Services\interfaces\ILikeService;
+use Services\interfaces\ICommentService;
+use Services\interfaces\ITagPictureService;
+use Services\interfaces\IShopDetailService;
 
 /**
  * Class ShopService
  * @package Services
  */
-class ShopService implements BaseService
+class ShopService implements IShopService
 {
 
     /**
@@ -44,7 +47,7 @@ class ShopService implements BaseService
      * @param LikeService $likeService
      * @param CommentService $commentService
      */
-    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService,TagPictureService $tagPictureService,ShopDetailService $shopDetailService)
+    function __construct(IShopRepository $shopRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService, IShopDetailService $shopDetailService)
     {
         // TODO: Implement __construct() method.
         $this->shopRepository = $shopRepository;

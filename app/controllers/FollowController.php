@@ -6,8 +6,8 @@
  * Time: 10:19 AM
  */
 
-use Repositories\FollowRepository;
-use Services\FollowService;
+use Repositories\interfaces\IFollowRepository;
+use Services\interfaces\IFollowService;
 
 /**
  * Class FollowController
@@ -28,7 +28,7 @@ class FollowController extends \BaseController
      * @param FollowService $followService
      * @param FollowRepository $followRepository
      */
-    public function __construct(FollowService $followService, FollowRepository $followRepository)
+    public function __construct(IFollowService $followService, IFollowRepository $followRepository)
     {
         $this->followService = $followService;
         $this->followRepository = $followRepository;

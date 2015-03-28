@@ -10,12 +10,13 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Favorite;
+use Repositories\interfaces\IFavoriteRepository;
 
 /**
  * Class FavoriteRepository
  * @package Repositories
  */
-class FavoriteRepository implements BaseRepository{
+class FavoriteRepository implements IFavoriteRepository{
 
     public function errors($code)
     {

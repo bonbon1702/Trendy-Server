@@ -11,8 +11,10 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Notification;
+use Repositories\interfaces\INotificationRepository;
+use Services\interfaces\INotificationService;
 
-class NotificationRepository implements BaseRepository{
+class NotificationRepository implements INotificationRepository{
     public function errors($code)
     {
         // TODO: Implement errors() method.

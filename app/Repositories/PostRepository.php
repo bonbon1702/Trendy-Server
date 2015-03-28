@@ -9,15 +9,15 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
 use Illuminate\Support\Facades\Auth;
 use \Post;
+use Repositories\interfaces\IPostRepository;
 
 /**
  * Class PostRepository
  * @package Repositories
  */
-class PostRepository implements BaseRepository{
+class PostRepository implements IPostRepository{
     /**
      * @param $code
      */

@@ -10,13 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\ITagPictureRepository;
 use \TagPicture;
 
 /**
  * Class TagPictureRepository
  * @package Repositories
  */
-class TagPictureRepository implements BaseRepository{
+class TagPictureRepository implements ITagPictureRepository{
     /**
      * @param $code
      */

@@ -9,20 +9,21 @@
 namespace Services;
 
 
-use Core\BaseService;
-use Repositories\FavoriteRepository;
+use Repositories\interfaces\IFavoriteRepository;
+use Services\interfaces\IFavoriteService;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class FavoriteService
  * @package Services
  */
-class FavoriteService implements BaseService
+class FavoriteService implements IFavoriteService
 {
     private $favoriteRepository;
 
     private $historyService;
 
-    function __construct(FavoriteRepository $favoriteRepository, HistoryService $historyService)
+    function __construct(IFavoriteRepository $favoriteRepository, IHistoryService $historyService)
     {
         $this->favoriteRepository = $favoriteRepository;
         $this->historyService = $historyService;

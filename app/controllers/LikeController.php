@@ -1,7 +1,7 @@
 <?php
-use Services\LikeService;
-use Services\NotificationService;
-use Repositories\UserRepository;
+use Services\interfaces\ILikeService;
+use Services\interfaces\INotificationService;
+use Repositories\interfaces\IUserRepository;
 /**
  * Class LikeController
  */
@@ -21,7 +21,7 @@ class LikeController extends \BaseController
      * @param LikeService $likeService
      * @param NotificationService $notificationService
      */
-    function __construct(LikeService $likeService, NotificationService $notificationService, UserRepository $userRepository)
+    function __construct(ILikeService $likeService, INotificationService $notificationService, IUserRepository $userRepository)
     {
         $this->likeService = $likeService;
         $this->notificationService = $notificationService;

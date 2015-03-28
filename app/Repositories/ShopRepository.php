@@ -10,13 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\IShopRepository;
 use \Shop;
 
 /**
  * Class ShopRepository
  * @package Repositories
  */
-class ShopRepository implements BaseRepository{
+class ShopRepository implements IShopRepository{
     /**
      * @param $code
      */

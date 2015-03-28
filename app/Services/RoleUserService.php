@@ -8,15 +8,14 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\RoleUserRepository;
+use Repositories\interfaces\IRoleUserRepository;
+use Services\interfaces\IRoleUserService;
 
 /**
  * Class RoleUserService
  * @package Services
  */
-class RoleUserService implements BaseService
+class RoleUserService implements IRoleUserService
 {
     /**
      * @var RoleUserRepository
@@ -26,7 +25,7 @@ class RoleUserService implements BaseService
     /**
      * @param RoleUserRepository $roleUserRepository
      */
-    function __construct(RoleUserRepository $roleUserRepository)
+    function __construct(IRoleUserRepository $roleUserRepository)
     {
         $this->roleUserRepository = $roleUserRepository;
     }

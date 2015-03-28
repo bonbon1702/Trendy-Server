@@ -10,13 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
-use PostAlbum;
+use \PostAlbum;
+use Repositories\interfaces\IPostAlbumRepository;
 
 /**
  * Class PostAlbumRepository
  * @package Repositories
  */
-class PostAlbumRepository implements BaseRepository
+class PostAlbumRepository implements IPostAlbumRepository
 {
 
     /**

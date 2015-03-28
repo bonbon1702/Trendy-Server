@@ -11,12 +11,13 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Like;
+use Repositories\interfaces\ILikeRepository;
 
 /**
  * Class LikeRepository
  * @package Repositories
  */
-class LikeRepository implements BaseRepository
+class LikeRepository implements ILikeRepository
 {
     /**
      * @param $code

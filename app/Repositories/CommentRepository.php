@@ -11,12 +11,13 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Comment;
+use Repositories\interfaces\ICommentRepository;
 
 /**
  * Class CommentRepository
  * @package Repositories
  */
-class CommentRepository implements BaseRepository{
+class CommentRepository implements ICommentRepository{
     /**
      * @param $code
      */

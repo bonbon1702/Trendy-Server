@@ -8,18 +8,17 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\Helper;
-use Repositories\UploadRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\IUploadRepository;
+use Repositories\interfaces\IUserRepository;
 use \Image;
+use Services\interfaces\IUploadService;
 
 /**
  * Class UploadService
  * @package Services
  */
-class UploadService implements BaseService{
+class UploadService implements IUploadService{
 
     /**
      * @var UploadRepository
@@ -35,7 +34,7 @@ class UploadService implements BaseService{
      * @param UploadRepository $uploadRepository
      * @param UserRepository $userRepository
      */
-    function __construct(UploadRepository $uploadRepository, UserRepository $userRepository)
+    function __construct(IUploadRepository $uploadRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->uploadRepository = $uploadRepository;

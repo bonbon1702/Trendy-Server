@@ -6,7 +6,7 @@
  * Time: 10:49 AM
  */
 
-use Services\ShopDetailService;
+use Services\interfaces\IShopDetailService;
 
 /**
  * Class UserController
@@ -22,7 +22,7 @@ class ShopDetailController extends BaseController
     /**
      * @param ShopDetailService $shopDetailService
      */
-    public function __construct(ShopDetailService $shopDetailService)
+    public function __construct(IShopDetailService $shopDetailService)
     {
         $this->shopDetailService = $shopDetailService;
     }

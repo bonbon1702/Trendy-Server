@@ -6,14 +6,14 @@
  * Time: 4:14 PM
  */
 
-use Repositories\CommentRepository;
-use Services\CommentService;
-use Repositories\PostRepository;
-use Services\PostService;
-use Repositories\ShopRepository;
-use Services\ShopService;
-use Services\NotificationService;
-use Repositories\UserRepository;
+use Repositories\interfaces\ICommentRepository;
+use Services\interfaces\ICommentService;
+use Repositories\interfaces\IPostRepository;
+use Services\interfaces\IPostService;
+use Repositories\interfaces\IShopRepository;
+use Services\interfaces\IShopService;
+use Services\interfaces\INotificationService;
+use Repositories\interfaces\IUserRepository;
 
 class CommentController extends \BaseController {
 
@@ -33,7 +33,7 @@ class CommentController extends \BaseController {
 
     private $userRepository;
 
-    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService, UserRepository $userRepository) {
+    public function __construct(IPostRepository $postRepository, ICommentRepository $commentRepository, IPostService $postService, ICommentService $commentService, IShopRepository $shopRepository, IShopService $shopService, INotificationService $notificationService, IUserRepository $userRepository) {
         $this->commentRepository = $commentRepository;
         $this->commentService = $commentService;
         $this->postRepository = $postRepository;

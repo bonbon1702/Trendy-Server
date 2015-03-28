@@ -8,14 +8,17 @@
 
 namespace Services;
 
-use Core\BaseService;
-use Repositories\UserRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IFollowService;
+use Services\interfaces\IUserService;
+use Services\interfaces\IPostService;
+use Services\interfaces\IAlbumService;
 
 /**
  * Class UserService
  * @package Services
  */
-class UserService implements BaseService
+class UserService implements IUserService
 {
 
     /**
@@ -29,7 +32,7 @@ class UserService implements BaseService
      * @param PostService $postService
      * @param AlbumService $albumService
      */
-    function __construct(UserRepository $userRepository, FollowService $followService, PostService $postService, AlbumService $albumService)
+    function __construct(IUserRepository $userRepository, IFollowService $followService, IPostService $postService, IAlbumService $albumService)
     {
         $this->userRepository = $userRepository;
         $this->followService = $followService;

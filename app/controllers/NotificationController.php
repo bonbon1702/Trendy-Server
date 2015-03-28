@@ -6,14 +6,19 @@
  * Time: 4:14 PM
  */
 
-use Repositories\NotificationRepository;
-use Services\NotificationService;
-use Services\NotificationWatchedService;
+use Repositories\interfaces\INotificationRepository;
+use Services\interfaces\INotificationService;
+use Services\interfaces\INotificationWatchedService;
 
 class NotificationController extends \BaseController {
 
+    private $notificationService;
 
-    public function __construct(NotificationService $notificationService, NotificationRepository $notificationRepository, NotificationWatchedService $notificationWatchedService) {
+    private $notificationRepository;
+
+    private $notificationWatchedService;
+
+    public function __construct(INotificationService $notificationService, INotificationRepository $notificationRepository, INotificationWatchedService $notificationWatchedService) {
         $this->notificationService = $notificationService;
         $this->notificationRepository = $notificationRepository;
         $this->notificationWatchedService = $notificationWatchedService;

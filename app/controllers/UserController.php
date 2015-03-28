@@ -6,10 +6,10 @@
  * Time: 10:23 AM
  */
 
-use Repositories\UserRepository;
-use Services\UserService;
-use Services\ShopService;
-use Services\FollowService;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IUserService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IFollowService;
 
 /**
  * Class UserController
@@ -41,7 +41,7 @@ class UserController extends BaseController
      * @param ShopService $shopService
      * @param FollowService $followService
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, ShopService $shopService, FollowService $followService)
+    public function __construct(IUserRepository $userRepository, IUserService $userService, IShopService $shopService, IFollowService $followService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;

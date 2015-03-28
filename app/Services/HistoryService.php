@@ -8,15 +8,14 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\HistoryRepository;
+use Repositories\interfaces\IHistoryRepository;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class HistoryService
  * @package Services
  */
-class HistoryService implements BaseService{
+class HistoryService implements IHistoryService{
 
     /**
      * @var HistoryRepository
@@ -26,7 +25,7 @@ class HistoryService implements BaseService{
     /**
      * @param HistoryRepository $historyRepository
      */
-    function __construct(HistoryRepository $historyRepository)
+    function __construct(IHistoryRepository $historyRepository)
     {
         $this->historyRepository = $historyRepository;
     }

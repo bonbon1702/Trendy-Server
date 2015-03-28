@@ -1,11 +1,11 @@
 <?php
 
-use Services\UserService;
-use Repositories\UserRepository;
+use Services\interfaces\IUserService;
+use Repositories\interfaces\IUserRepository;
 use Core\GoogleMapHelper;
-use Services\ShopService;
-use Services\TagPictureService;
-use Services\ShopDetailService;
+use Services\interfaces\IShopService;
+use Services\interfaces\ITagPictureService;
+use Services\interfaces\IShopDetailService;
 
 /**
  * Class ShopController
@@ -42,7 +42,7 @@ class ShopController extends BaseController
      * @param GoogleMapHelper $googleMapHelper
      * @param ShopService $shopService
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, GoogleMapHelper $googleMapHelper, ShopService $shopService,TagPictureService $tagPictureService,ShopDetailService $shopDetailService)
+    public function __construct(IUserRepository $userRepository, IUserService $userService, GoogleMapHelper $googleMapHelper, IShopService $shopService,ITagPictureService $tagPictureService, IShopDetailService $shopDetailService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;

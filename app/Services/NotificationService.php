@@ -8,17 +8,19 @@
 
 namespace Services;
 
+use Repositories\interfaces\INotificationRepository;
+use Repositories\interfaces\INotificationWatchedRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IPostService;
+use Services\interfaces\INotificationService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IUserService;
 
-use Core\BaseService;
-use Repositories\NotificationRepository;
-use Repositories\NotificationWatchedRepository;
-use Repositories\UserRepository;
-
-class NotificationService implements BaseService
+class NotificationService implements INotificationService
 {
 
 
-    function __construct(NotificationRepository $notificationRepository, PostService $postService, ShopService $shopService, UserService $userService, NotificationWatchedRepository $notificationWatchedRepository, UserRepository $userRepository)
+    function __construct(INotificationRepository $notificationRepository, IPostService $postService, IShopService $shopService, IUserService $userService, INotificationWatchedRepository $notificationWatchedRepository, IUserRepository $userRepository)
     {
         $this->notificationRepository = $notificationRepository;
         $this->postService = $postService;
