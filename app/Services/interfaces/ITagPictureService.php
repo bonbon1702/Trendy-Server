@@ -9,6 +9,29 @@
 namespace Services\interfaces;
 
 
-interface ITagPictureService {
+/**
+ * Interface ITagPictureService
+ * @package Services\interfaces
+ */
+interface ITagPictureService
+{
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function create(array $data);
 
+
+    /**
+     * @param $id
+     * @param $offSet
+     * @return mixed
+     */
+    public function getPagingPostInShopByShopId($id, $offSet);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPostInShopByShopId($id);
 }

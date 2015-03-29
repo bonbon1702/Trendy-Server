@@ -41,11 +41,12 @@ class AlbumService implements IAlbumService
      */
     private $postAlbumRepository;
 
+
     /**
-     * @param AlbumRepository $albumRepository
-     * @param PostRepository $postRepository
-     * @param UserRepository $userRepository
-     * @param PostAlbumRepository $postAlbumRepository
+     * @param IAlbumRepository $albumRepository
+     * @param IPostRepository $postRepository
+     * @param IUserRepository $userRepository
+     * @param IPostAlbumRepository $postAlbumRepository
      */
     function __construct(IAlbumRepository $albumRepository, IPostRepository $postRepository, IUserRepository $userRepository,IPostAlbumRepository $postAlbumRepository)
     {

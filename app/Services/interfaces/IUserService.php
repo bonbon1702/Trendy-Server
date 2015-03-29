@@ -9,6 +9,47 @@
 namespace Services\interfaces;
 
 
-interface IUserService {
+/**
+ * Interface IUserService
+ * @package Services\interfaces
+ */
+interface IUserService
+{
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data);
+
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function update(array $data);
+
+
+    /**
+     * @param $column
+     * @param $value
+     */
+    public function delete($column, $value);
+
+    /**
+     * @param $id
+     * @return null
+     */
+    public function getUserInfo($id);
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function searchFullText($type);
+
+    /**
+     * @return mixed
+     */
+    public function getAllUser();
 }

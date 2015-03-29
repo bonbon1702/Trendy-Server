@@ -17,14 +17,14 @@ use Repositories\interfaces\IPostAlbumRepository;
 use Repositories\interfaces\IPostRepository;
 use Repositories\interfaces\IUploadRepository;
 use Repositories\interfaces\IUserRepository;
-use Services\interfaces\ITagPictureService;
-use Services\interfaces\IPostService;
-use Services\interfaces\IShopService;
 use Services\interfaces\IAlbumService;
 use Services\interfaces\ICommentService;
-use Services\interfaces\ILikeService;
-use Services\interfaces\IFollowService;
 use Services\interfaces\IFavoriteService;
+use Services\interfaces\IFollowService;
+use Services\interfaces\ILikeService;
+use Services\interfaces\IPostService;
+use Services\interfaces\IShopService;
+use Services\interfaces\ITagPictureService;
 
 /**
  * Class PostService
@@ -93,22 +93,28 @@ class PostService implements IPostService
      */
     private $followService;
 
+    /**
+     * @var IFavoriteRepository
+     */
     private $favoriteRepository;
 
+
     /**
-     * @param PostRepository $postRepository
-     * @param UserRepository $userRepository
-     * @param UploadRepository $uploadRepository
-     * @param TagPictureService $tagPictureService
+     * @param IPostRepository $postRepository
+     * @param IUserRepository $userRepository
+     * @param IUploadRepository $uploadRepository
+     * @param ITagPictureService $tagPictureService
      * @param GoogleMapHelper $googleMapHelper
-     * @param ShopService $shopService
-     * @param AlbumService $albumService
-     * @param CommentService $commentService
-     * @param LikeService $likeService
-     * @param TagContentService $tagContentService
-     * @param TagService $tagService
-     * @param PostAlbumRepository $postAlbumRepository
-     * @param AlbumRepository $albumRepository
+     * @param IShopService $shopService
+     * @param IAlbumService $albumService
+     * @param ICommentService $commentService
+     * @param ILikeService $likeService
+     * @param IPostAlbumRepository $postAlbumRepository
+     * @param IAlbumRepository $albumRepository
+     * @param IFollowService $followService
+     * @param IFollowRepository $followRepository
+     * @param IFavoriteService $favoriteService
+     * @param IFavoriteRepository $favoriteRepository
      */
     function __construct(IPostRepository $postRepository, IUserRepository $userRepository, IUploadRepository $uploadRepository, ITagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, IShopService $shopService, IAlbumService $albumService, ICommentService $commentService, ILikeService $likeService, IPostAlbumRepository $postAlbumRepository, IAlbumRepository $albumRepository, IFollowService $followService, IFollowRepository $followRepository, IFavoriteService $favoriteService, IFavoriteRepository $favoriteRepository)
     {
@@ -259,7 +265,7 @@ class PostService implements IPostService
      */
     public function getPostPaging($order_by, $id, $user_id)
     {
-        if ($order_by == "zScore"){
+        if ($order_by == "zScore") {
             $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
 
             foreach ($posts as $v) {
@@ -267,32 +273,32 @@ class PostService implements IPostService
             }
             $results = $posts;
         } elseif ($order_by == "newfeed") {
-            $posts =  $this->followRepository->getRecent()
-                        ->where('follower_id', $user_id)
-                        ->join('post', 'follow.user_id', '=' , 'post.user_id')
-                        ->orderBy('post.created_at', 'DESC')->take(8)->skip($id)->get();
+            $posts = $this->followRepository->getRecent()
+                ->where('follower_id', $user_id)
+                ->join('post', 'follow.user_id', '=', 'post.user_id')
+                ->orderBy('post.created_at', 'DESC')->take(8)->skip($id)->get();
             $post_comment = $this->followRepository->getRecent()
-                            ->where('follower_id', $user_id)
-                            ->join('comment', 'follow.user_id', '=', 'comment.user_id')
-                            ->where('comment.type_comment',0)
-                            ->join('post', 'post.id', '=', 'comment.type_id')
-                            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                            ->take(8)->skip($id)->get();
+                ->where('follower_id', $user_id)
+                ->join('comment', 'follow.user_id', '=', 'comment.user_id')
+                ->where('comment.type_comment', 0)
+                ->join('post', 'post.id', '=', 'comment.type_id')
+                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                ->take(8)->skip($id)->get();
 
             $posts = array_merge($posts->toArray(), $post_comment->toArray());
 
             //clear dup
             $results = array();
-            foreach ($posts as $v){
+            foreach ($posts as $v) {
                 $results[$v['id']] = $v;
                 $results[$v['id']]['user'] = $this->userRepository->get($v['user_id']);
             }
-        } elseif ($order_by == 'favorite'){
+        } elseif ($order_by == 'favorite') {
             $posts = $this->favoriteRepository->getRecent()
-                        ->where('favorite.user_id', $user_id)
-                        ->join('post', 'favorite.post_id', '=', 'post.id')
-                        ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                        ->take(8)->skip($id)->get();
+                ->where('favorite.user_id', $user_id)
+                ->join('post', 'favorite.post_id', '=', 'post.id')
+                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                ->take(8)->skip($id)->get();
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
             }

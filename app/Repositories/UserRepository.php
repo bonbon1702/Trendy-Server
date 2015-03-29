@@ -20,13 +20,6 @@ use \User;
  */
 class UserRepository implements IUserRepository
 {
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

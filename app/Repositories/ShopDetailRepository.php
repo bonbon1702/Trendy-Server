@@ -17,13 +17,6 @@ use \ShopDetail;
  * @package Repositories
  */
 class ShopDetailRepository implements IShopDetailRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

@@ -8,20 +8,15 @@
 
 namespace Repositories;
 
-use Core\BaseRepository;
-use \Favorite;
+use Favorite;
 use Repositories\interfaces\IFavoriteRepository;
 
 /**
  * Class FavoriteRepository
  * @package Repositories
  */
-class FavoriteRepository implements IFavoriteRepository{
-
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class FavoriteRepository implements IFavoriteRepository
+{
 
     public function all(array $related = null)
     {
@@ -53,7 +48,7 @@ class FavoriteRepository implements IFavoriteRepository{
     {
         // TODO: Implement create() method.
         if (!empty($data)) {
-             $favorite = Favorite::create($data);
+            $favorite = Favorite::create($data);
         };
         return $favorite;
     }

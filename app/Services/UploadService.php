@@ -30,9 +30,10 @@ class UploadService implements IUploadService{
      */
     private $userRepository;
 
+
     /**
-     * @param UploadRepository $uploadRepository
-     * @param UserRepository $userRepository
+     * @param IUploadRepository $uploadRepository
+     * @param IUserRepository $userRepository
      */
     function __construct(IUploadRepository $uploadRepository, IUserRepository $userRepository)
     {
@@ -85,15 +86,6 @@ class UploadService implements IUploadService{
         ));
 
         return $upload;
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
     }
 
     /**

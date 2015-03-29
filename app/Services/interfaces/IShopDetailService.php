@@ -9,6 +9,22 @@
 namespace Services\interfaces;
 
 
-interface IShopDetailService {
+/**
+ * Interface IShopDetailService
+ * @package Services\interfaces
+ */
+interface IShopDetailService
+{
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getShopDetail($id);
 }

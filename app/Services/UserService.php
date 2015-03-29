@@ -26,11 +26,12 @@ class UserService implements IUserService
      */
     private $userRepository;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param FollowService $followService
-     * @param PostService $postService
-     * @param AlbumService $albumService
+     * @param IUserRepository $userRepository
+     * @param IFollowService $followService
+     * @param IPostService $postService
+     * @param IAlbumService $albumService
      */
     function __construct(IUserRepository $userRepository, IFollowService $followService, IPostService $postService, IAlbumService $albumService)
     {
@@ -78,8 +79,10 @@ class UserService implements IUserService
         return $user;
     }
 
+
     /**
      * @param array $data
+     * @return mixed
      */
     public function update(array $data)
     {
@@ -127,6 +130,9 @@ class UserService implements IUserService
         return $users;
     }
 
+    /**
+     * @return mixed
+     */
     public function getAllUser(){
         $users = $this->userRepository->all();
 

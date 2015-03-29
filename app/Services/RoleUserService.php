@@ -22,8 +22,9 @@ class RoleUserService implements IRoleUserService
      */
     private $roleUserRepository;
 
+
     /**
-     * @param RoleUserRepository $roleUserRepository
+     * @param IRoleUserRepository $roleUserRepository
      */
     function __construct(IRoleUserRepository $roleUserRepository)
     {
@@ -39,14 +40,6 @@ class RoleUserService implements IRoleUserService
         // TODO: Implement create() method.
         if ($this->roleUserRepository->create($data))
             return true;
-    }
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
     }
 
     /**

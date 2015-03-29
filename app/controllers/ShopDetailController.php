@@ -20,7 +20,7 @@ class ShopDetailController extends BaseController
 
 
     /**
-     * @param ShopDetailService $shopDetailService
+     * @param IShopDetailService $shopDetailService
      */
     public function __construct(IShopDetailService $shopDetailService)
     {

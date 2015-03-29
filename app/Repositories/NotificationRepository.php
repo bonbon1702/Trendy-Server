@@ -9,16 +9,11 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
-use \Notification;
+use Notification;
 use Repositories\interfaces\INotificationRepository;
-use Services\interfaces\INotificationService;
 
-class NotificationRepository implements INotificationRepository{
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class NotificationRepository implements INotificationRepository
+{
 
     public function all(array $related = null)
     {
@@ -33,7 +28,7 @@ class NotificationRepository implements INotificationRepository{
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
-        $notification = Notification::where($column,$value);
+        $notification = Notification::where($column, $value);
 
         return $notification;
     }

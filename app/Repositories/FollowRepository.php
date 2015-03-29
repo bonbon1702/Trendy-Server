@@ -20,13 +20,6 @@ use User as User;
  */
 class FollowRepository implements IFollowRepository
 {
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

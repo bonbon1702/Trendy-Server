@@ -21,21 +21,6 @@ class PostAlbumRepository implements IPostAlbumRepository
 {
 
     /**
-     *
-     */
-    function __construct()
-    {
-    }
-
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
-
-    /**
      * @param array $related
      */
     public function all(array $related = null)

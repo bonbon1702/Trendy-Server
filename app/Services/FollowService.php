@@ -25,8 +25,15 @@ class FollowService implements IFollowService
      */
     private $followRepository;
 
+    /**
+     * @var IUserRepository
+     */
     private $userRepository;
 
+    /**
+     * @param IFollowRepository $followRepository
+     * @param IUserRepository $userRepository
+     */
     function __construct(IFollowRepository $followRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
@@ -34,8 +41,10 @@ class FollowService implements IFollowService
         $this->userRepository = $userRepository;
     }
 
+
     /**
      * @param array $data
+     * @return mixed
      */
     public function create(array $data)
     {
@@ -102,6 +111,11 @@ class FollowService implements IFollowService
             ->where('user_id', '=', $id)->get();
     }
 
+    /**
+     * @param $id
+     * @param $user_id
+     * @return array
+     */
     public function itemToItemFollow($id, $user_id){
         $users = $this->userRepository->getRecent()
                     ->select('users.id')
@@ -149,6 +163,10 @@ class FollowService implements IFollowService
         return $suggestions;
     }
 
+    /**
+     * @param $user_id
+     * @return array
+     */
     public function popularFollow($user_id){
         $following = $this->FollowingByUser($user_id);
 

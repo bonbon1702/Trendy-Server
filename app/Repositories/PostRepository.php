@@ -18,13 +18,6 @@ use Repositories\interfaces\IPostRepository;
  * @package Repositories
  */
 class PostRepository implements IPostRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

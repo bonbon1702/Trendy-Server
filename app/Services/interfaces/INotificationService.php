@@ -9,6 +9,28 @@
 namespace Services\interfaces;
 
 
-interface INotificationService {
+/**
+ * Interface INotificationService
+ * @package Services\interfaces
+ */
+interface INotificationService
+{
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data);
 
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function getNotification($user_id);
+
+    /**
+     * @param $post_id
+     * @return mixed
+     */
+    public function userEffectedPost($post_id);
 }

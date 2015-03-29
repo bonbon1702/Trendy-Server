@@ -18,13 +18,7 @@ use \Upload;
  * @package Repositories
  */
 class UploadRepository implements IUploadRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+
 
     /**
      * @param array $related

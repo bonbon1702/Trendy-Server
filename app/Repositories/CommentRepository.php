@@ -18,13 +18,6 @@ use Repositories\interfaces\ICommentRepository;
  * @package Repositories
  */
 class CommentRepository implements ICommentRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

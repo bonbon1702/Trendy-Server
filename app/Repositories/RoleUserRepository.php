@@ -21,14 +21,6 @@ class RoleUserRepository implements IRoleUserRepository
 {
 
     /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
-
-    /**
      * @param array $related
      * @return mixed
      */

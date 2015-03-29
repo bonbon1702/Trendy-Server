@@ -44,10 +44,11 @@ class ShopDetailService implements IShopDetailService
 
 
     /**
-     * @param ShopDetailRepository $shopDetailRepository
+     * @param IShopDetailRepository $shopDetailRepository
      * @param GoogleMapHelper $googleMapHelper
-     * @param LikeService $likeService
-     * @param CommentService $commentService
+     * @param ILikeService $likeService
+     * @param ICommentService $commentService
+     * @param ITagPictureService $tagPictureService
      */
     function __construct(IShopDetailRepository $shopDetailRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService)
     {
@@ -106,25 +107,6 @@ class ShopDetailService implements IShopDetailService
 
         return $shopDetail;
 
-    }
-
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
     }
 
     /**
