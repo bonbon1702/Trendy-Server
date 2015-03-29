@@ -36,14 +36,19 @@ class PostController extends \BaseController
      */
     private $uploadRepository;
 
+    /**
+     * @var IFavoriteService
+     */
     private $favoriteService;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param UserService $userService
-     * @param PostRepository $postRepository
-     * @param PostService $postService
-     * @param UploadRepository $uploadRepository
+     * @param IUserRepository $userRepository
+     * @param IUserService $userService
+     * @param IPostRepository $postRepository
+     * @param IPostService $postService
+     * @param IUploadRepository $uploadRepository
+     * @param IFavoriteService $favoriteService
      */
     public function __construct(IUserRepository $userRepository, IUserService $userService, IPostRepository $postRepository, IPostService $postService, IUploadRepository $uploadRepository, IFavoriteService $favoriteService)
     {
@@ -177,6 +182,10 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getPostTrendy($id){
         $posts = $this->postService->getPostPaging('zScore', $id, "none");
 
@@ -186,6 +195,10 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getPostAround($id){
         $posts = $this->postService->getPostPaging('zScore', $id, "none");
 
@@ -195,6 +208,11 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
     public function getPostFavorite($id, $user_id){
         $posts = $this->postService->getPostPaging('favorite', $id, $user_id);
 
@@ -204,6 +222,11 @@ class PostController extends \BaseController
         ));
     }
 
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
     public function getPostNewFeed($id,$user_id){
         $posts = $this->postService->getPostPaging('newfeed', $id, $user_id);
 

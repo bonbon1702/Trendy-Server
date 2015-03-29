@@ -24,9 +24,10 @@ class FollowController extends \BaseController
      */
     private $followRepository;
 
+
     /**
-     * @param FollowService $followService
-     * @param FollowRepository $followRepository
+     * @param IFollowService $followService
+     * @param IFollowRepository $followRepository
      */
     public function __construct(IFollowService $followService, IFollowRepository $followRepository)
     {
@@ -99,6 +100,11 @@ class FollowController extends \BaseController
         ));
     }
 
+    /**
+     * @param $user_id
+     * @param $follower_id
+     * @return mixed
+     */
     public function deleteFollowing($user_id, $follower_id)
     {
         $data = array(
@@ -111,12 +117,19 @@ class FollowController extends \BaseController
         ));
     }
 
-    public function suggestionFollow($id, $type, $userId){
+    /**
+     * @param $id
+     * @param $type
+     * @param $userId
+     * @return mixed
+     */
+    public function suggestionFollow($id, $type, $userId)
+    {
         $suggests = array();
-        if ($type == 'popular'){
+        if ($type == 'popular') {
             $suggests = $this->followService->popularFollow($userId);
-        }elseif ($type == 'itemToItem'){
-            $suggests = $this->followService->itemToItemFollow($id,$userId);
+        } elseif ($type == 'itemToItem') {
+            $suggests = $this->followService->itemToItemFollow($id, $userId);
         }
 
 

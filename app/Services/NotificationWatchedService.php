@@ -11,15 +11,29 @@ namespace Services;
 use Repositories\interfaces\INotificationWatchedRepository;
 use Services\interfaces\INotificationWatchedService;
 
+/**
+ * Class NotificationWatchedService
+ * @package Services
+ */
 class NotificationWatchedService implements INotificationWatchedService{
 
+    /**
+     * @var INotificationWatchedRepository
+     */
     private $notificationWatchedRepository;
 
+    /**
+     * @param INotificationWatchedRepository $notificationWatchedRepository
+     */
     function __construct(INotificationWatchedRepository $notificationWatchedRepository)
     {
         $this->notificationWatchedRepository = $notificationWatchedRepository;
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -35,13 +49,4 @@ class NotificationWatchedService implements INotificationWatchedService{
         return true;
     }
 
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 } 

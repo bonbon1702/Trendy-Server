@@ -35,10 +35,11 @@ class LikeService implements ILikeService
      */
     private $historyService;
 
+
     /**
-     * @param LikeRepository $likeRepository
-     * @param UserRepository $userRepository
-     * @param HistoryService $historyService
+     * @param ILikeRepository $likeRepository
+     * @param IUserRepository $userRepository
+     * @param IHistoryService $historyService
      */
     function __construct(ILikeRepository $likeRepository, IUserRepository $userRepository, IHistoryService $historyService)
     {
@@ -47,31 +48,6 @@ class LikeService implements ILikeService
         $this->historyService = $historyService;
     }
 
-    /**
-     * @param array $data
-     */
-    public function create(array $data)
-    {
-        // TODO: Implement create() method.
-
-    }
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 
     /**
      * @param $type_like

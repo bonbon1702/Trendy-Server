@@ -142,10 +142,6 @@ class PostService implements IPostService
         $this->followRepository = $followRepository;
         $this->favoriteService = $favoriteService;
         $this->favoriteRepository = $favoriteRepository;
-        $this->tagService = $tagContentService;
-        $this->tagContentService = $tagContentService;
-        $this->tagContentRepository = $tagContentRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -159,12 +155,9 @@ class PostService implements IPostService
 
         //check if user editor image
         if ($data['url']) {
-            $image = Image::make($data['url']);
-            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
-            $image_url = 'assets/images/'.$image_name.'.jpg';
-
-            $image->save($image_url);
-            $image_url_editor = url() . '/' . $image_name;
+            $image_name = Helper::get_rand_alphanumeric(8);
+            \Cloudy::upload($data['url'], $image_name);
+            $image_url_editor = 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name;
         } else {
             $image_url_editor = $upload->image_url;
         }
@@ -200,16 +193,6 @@ class PostService implements IPostService
                     'top' => $v['top'],
                     'left' => $v['left'],
                     'shop_id' => $shop->id
-                ));
-            }
-        }
-
-        if (!empty($data['tags'])) {
-            foreach ($data['tags'] as $v) {
-                $tagContent = $this->tagContentRepository->get($v['id']);
-                $this->tagRepository->create(array(
-                    'post_id' => $post->id,
-                    'tag_content_id' => $tagContent->id
                 ));
             }
         }

@@ -10,5 +10,9 @@ namespace Services\interfaces;
 
 
 interface INotificationWatchedService {
-
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function create(array $data);
 }

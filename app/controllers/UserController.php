@@ -7,9 +7,9 @@
  */
 
 use Repositories\interfaces\IUserRepository;
-use Services\interfaces\IUserService;
-use Services\interfaces\IShopService;
 use Services\interfaces\IFollowService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IUserService;
 
 /**
  * Class UserController
@@ -35,11 +35,12 @@ class UserController extends BaseController
      */
     private $followService;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param UserService $userService
-     * @param ShopService $shopService
-     * @param FollowService $followService
+     * @param IUserRepository $userRepository
+     * @param IUserService $userService
+     * @param IShopService $shopService
+     * @param IFollowService $followService
      */
     public function __construct(IUserRepository $userRepository, IUserService $userService, IShopService $shopService, IFollowService $followService)
     {
@@ -118,7 +119,7 @@ class UserController extends BaseController
                 'name' => $v->username,
                 'image' => $v->picture_profile,
                 'sub' => $count_follower . ' Follower',
-                'url' => 'user/' .$v->id
+                'url' => 'user/' . $v->id
             );
         }
 
@@ -136,9 +137,14 @@ class UserController extends BaseController
         ));
     }
 
-    public function update($id){
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function update($id)
+    {
         $data = Input::all();
-        $data['id']=$id;
+        $data['id'] = $id;
         $this->userService->update($data);
         return Response::json(array(
             'success' => true

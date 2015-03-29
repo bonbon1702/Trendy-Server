@@ -18,13 +18,6 @@ use \TagPicture;
  * @package Repositories
  */
 class TagPictureRepository implements ITagPictureRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related
@@ -115,6 +108,9 @@ class TagPictureRepository implements ITagPictureRepository{
         $this->getWhere($column,$value)->delete();
     }
 
+    /**
+     * @return mixed
+     */
     public function joinPostAndTagPicture(){
         return TagPicture::join('post', 'tag_picture.post_id', '=' , 'post.id');
     }

@@ -22,8 +22,9 @@ class TagPictureService implements ITagPictureService{
      */
     private $tagPictureRepository;
 
+
     /**
-     * @param TagPictureRepository $tagPictureRepository
+     * @param ITagPictureRepository $tagPictureRepository
      */
     function __construct(ITagPictureRepository $tagPictureRepository)
     {
@@ -42,23 +43,12 @@ class TagPictureService implements ITagPictureService{
         return true;
     }
 
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
 
     /**
-     * @param $column
-     * @param $value
+     * @param $id
+     * @param $offSet
+     * @return mixed
      */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
     public function getPagingPostInShopByShopId($id,$offSet){
         return $this->tagPictureRepository->joinPostAndTagPicture()
                                             ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
@@ -68,6 +58,10 @@ class TagPictureService implements ITagPictureService{
                                                             ->get();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getPostInShopByShopId($id){
         return $this->tagPictureRepository->joinPostAndTagPicture()
                                             ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')

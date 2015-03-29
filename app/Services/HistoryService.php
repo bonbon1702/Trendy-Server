@@ -22,8 +22,9 @@ class HistoryService implements IHistoryService{
      */
     private $historyRepository;
 
+
     /**
-     * @param HistoryRepository $historyRepository
+     * @param IHistoryRepository $historyRepository
      */
     function __construct(IHistoryRepository $historyRepository)
     {
@@ -42,22 +43,6 @@ class HistoryService implements IHistoryService{
         return true;
     }
 
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 
     /**
      * @param $type_action

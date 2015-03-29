@@ -9,6 +9,29 @@
 namespace Services\interfaces;
 
 
-interface IUploadService {
+/**
+ * Interface IUploadService
+ * @package Services\interfaces
+ */
+interface IUploadService
+{
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data);
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function update(array $data);
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getUploadImage($name);
 
 }

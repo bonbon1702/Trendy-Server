@@ -10,11 +10,11 @@ namespace Services;
 
 use Core\GoogleMapHelper;
 use Repositories\interfaces\IShopRepository;
-use Services\interfaces\IShopService;
-use Services\interfaces\ILikeService;
 use Services\interfaces\ICommentService;
-use Services\interfaces\ITagPictureService;
+use Services\interfaces\ILikeService;
 use Services\interfaces\IShopDetailService;
+use Services\interfaces\IShopService;
+use Services\interfaces\ITagPictureService;
 
 /**
  * Class ShopService
@@ -37,15 +37,24 @@ class ShopService implements IShopService
      */
     private $commentService;
 
+    /**
+     * @var ITagPictureService
+     */
     private $tagPictureService;
 
+    /**
+     * @var IShopDetailService
+     */
     private $shopDetailService;
 
+
     /**
-     * @param ShopRepository $shopRepository
+     * @param IShopRepository $shopRepository
      * @param GoogleMapHelper $googleMapHelper
-     * @param LikeService $likeService
-     * @param CommentService $commentService
+     * @param ILikeService $likeService
+     * @param ICommentService $commentService
+     * @param ITagPictureService $tagPictureService
+     * @param IShopDetailService $shopDetailService
      */
     function __construct(IShopRepository $shopRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService, IShopDetailService $shopDetailService)
     {
@@ -54,46 +63,23 @@ class ShopService implements IShopService
         $this->googleMapHelper = $googleMapHelper;
         $this->likeService = $likeService;
         $this->commentService = $commentService;
-        $this->tagPictureService= $tagPictureService;
-        $this->shopDetailService=$shopDetailService;
+        $this->tagPictureService = $tagPictureService;
+        $this->shopDetailService = $shopDetailService;
     }
 
     /**
-     * @param array $data
+     * @param $id
+     * @return mixed
      */
-    public function create(array $data)
-    {
-        // TODO: Implement create() method.
-
-    }
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
     public function getShopByShopId($id)
     {
         $shop = $this->shopRepository->get($id);
-        $shop['shop_detail'] =$this->shopDetailService->getShopDetail($id);
+        $shop['shop_detail'] = $this->shopDetailService->getShopDetail($id);
         $shop['like'] = $this->likeService->countLike(1, $id);
         $shop['comments'] = $this->commentService->showCommentByShopId($id);
         $shop['posts'] = $this->tagPictureService->getPostInShopByShopId($id);
         return $shop;
     }
-
 
 
     /**

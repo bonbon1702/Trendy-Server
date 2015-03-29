@@ -9,6 +9,21 @@
 namespace Services\interfaces;
 
 
-interface IRoleUserService {
+/**
+ * Interface IRoleUserService
+ * @package Services\interfaces
+ */
+interface IRoleUserService
+{
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function create(array $data);
 
+    /**
+     * @param $column
+     * @param $value
+     */
+    public function delete($column, $value);
 }

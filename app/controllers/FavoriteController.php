@@ -10,15 +10,32 @@ use Services\interfaces\INotificationService;
 use Services\interfaces\IFavoriteService;
 use Repositories\interfaces\IUserRepository;
 
+/**
+ * Class FavoriteController
+ */
 class FavoriteController extends \BaseController
 {
 
+    /**
+     * @var INotificationService
+     */
     private $notificationService;
 
+    /**
+     * @var IFavoriteService
+     */
     private $favoriteService;
 
+    /**
+     * @var IUserRepository
+     */
     private $userRepository;
 
+    /**
+     * @param INotificationService $notificationService
+     * @param IFavoriteService $favoriteService
+     * @param IUserRepository $userRepository
+     */
     public function __construct(INotificationService $notificationService, IFavoriteService $favoriteService, IUserRepository $userRepository)
     {
         $this->notificationService = $notificationService;
@@ -26,26 +43,12 @@ class FavoriteController extends \BaseController
         $this->userRepository = $userRepository;
     }
 
-    public function index()
-    {
-
-    }
-
-    public function store()
-    {
-
-    }
-
-    public function update($id)
-    {
-
-    }
-
-    public function destroy($id)
-    {
-
-    }
-
+    /**
+     * @param $user_id
+     * @param $post_id
+     * @param $type
+     * @return mixed
+     */
     public function favoritePost($user_id, $post_id, $type)
     {
         if ($type == 'favorite') {

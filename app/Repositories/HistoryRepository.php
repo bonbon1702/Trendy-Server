@@ -9,23 +9,15 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
-use \History;
+use History;
 use Repositories\interfaces\IHistoryRepository;
 
 /**
  * Class HistoryRepository
  * @package Repositories
  */
-class HistoryRepository implements IHistoryRepository{
-
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class HistoryRepository implements IHistoryRepository
+{
 
     /**
      * @param array $related
@@ -100,8 +92,8 @@ class HistoryRepository implements IHistoryRepository{
     {
         // TODO: Implement update() method.
         if (!empty($data)) {
-            $history = $this->getWhere($column,$value)
-                                ->update($data);
+            $history = $this->getWhere($column, $value)
+                ->update($data);
         }
         return $history;
     }

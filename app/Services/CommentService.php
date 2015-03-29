@@ -46,12 +46,13 @@ class CommentService implements ICommentService{
      */
     private $historyService;
 
+
     /**
-     * @param CommentRepository $commentRepository
-     * @param UserRepository $userRepository
-     * @param PostRepository $postRepository
-     * @param ShopRepository $shopRepository
-     * @param HistoryService $historyService
+     * @param ICommentRepository $commentRepository
+     * @param IUserRepository $userRepository
+     * @param IPostRepository $postRepository
+     * @param IShopRepository $shopRepository
+     * @param IHistoryService $historyService
      */
     function __construct(ICommentRepository $commentRepository, IUserRepository $userRepository, IPostRepository $postRepository, IShopRepository $shopRepository, IHistoryService $historyService)
     {
@@ -98,24 +99,6 @@ class CommentService implements ICommentService{
         $this->commentRepository->update('id', $data['id'], $data);
     }
 
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function deleteComment($id)
-    {
-        $this->commentRepository->delete($id);
-        return true;
-    }
 
     /**
      * @param $id
@@ -141,6 +124,10 @@ class CommentService implements ICommentService{
         return $comment;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function deleteCommentInPost($id){
         return $this->commentRepository->deleteCommentInPost($id);
     }

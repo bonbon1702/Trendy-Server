@@ -16,10 +16,22 @@ use Services\interfaces\INotificationService;
 use Services\interfaces\IShopService;
 use Services\interfaces\IUserService;
 
+/**
+ * Class NotificationService
+ * @package Services
+ */
 class NotificationService implements INotificationService
 {
 
 
+    /**
+     * @param INotificationRepository $notificationRepository
+     * @param IPostService $postService
+     * @param IShopService $shopService
+     * @param IUserService $userService
+     * @param INotificationWatchedRepository $notificationWatchedRepository
+     * @param IUserRepository $userRepository
+     */
     function __construct(INotificationRepository $notificationRepository, IPostService $postService, IShopService $shopService, IUserService $userService, INotificationWatchedRepository $notificationWatchedRepository, IUserRepository $userRepository)
     {
         $this->notificationRepository = $notificationRepository;
@@ -30,6 +42,10 @@ class NotificationService implements INotificationService
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -49,16 +65,11 @@ class NotificationService implements INotificationService
         return $notification;
     }
 
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
 
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
+    /**
+     * @param $user_id
+     * @return array
+     */
     public function getNotification($user_id)
     {
         $notification_unread = array();
@@ -111,6 +122,10 @@ class NotificationService implements INotificationService
         return $results;
     }
 
+    /**
+     * @param $post_id
+     * @return mixed
+     */
     public function userEffectedPost($post_id){
         $user_effected_id = $this->notificationRepository->getRecent()
             ->select('id_of_user_effected')
