@@ -32,9 +32,6 @@ class TagController extends  BaseController{
         $this->tagRepository=$tagRepository;
     }
 
-
-
-
     /**
      * Display all follower by user
      *
@@ -55,7 +52,7 @@ class TagController extends  BaseController{
      *
      * @return Response
      */
-    public function  store(){
+    public function store(){
         $data=Input::all();
         $this->tagService->create($data);
         return Response::json(array(

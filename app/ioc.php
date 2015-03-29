@@ -22,6 +22,8 @@ App::bind('Services\\interfaces\\IShopService', 'Services\\ShopService');
 App::bind('Services\\interfaces\\ITagPictureService', 'Services\\TagPictureService');
 App::bind('Services\\interfaces\\IUploadService', 'Services\\UploadService');
 App::bind('Services\\interfaces\\IUserService', 'Services\\UserService');
+App::bind('Services\\interfaces\\ITagService', 'Services\\TagService');
+App::bind('Services\\interfaces\\ITagContentService', 'Services\\TagContentService');
 
 //Repositories
 
@@ -41,5 +43,7 @@ App::bind('Repositories\\interfaces\\IShopRepository', 'Repositories\\ShopReposi
 App::bind('Repositories\\interfaces\\ITagPictureRepository', 'Repositories\\TagPictureRepository');
 App::bind('Repositories\\interfaces\\IUploadRepository', 'Repositories\\UploadRepository');
 App::bind('Repositories\\interfaces\\IUserRepository', 'Repositories\\UserRepository');
+App::bind('Repositories\\interfaces\\ITagRepository', 'Repositories\\TagRepository');
+App::bind('Repositories\\interfaces\\ITagContentRepository', 'Repositories\\TagContentRepository');
 
 

@@ -12,12 +12,15 @@ namespace Services;
 use Core\BaseService;
 use Repositories\TagContentRepository;
 use Repositories\UserRepository;
+use Services\interfaces\ITagContentService;
+use Repositories\interfaces\ITagContentRepository;
+use Repositories\interfaces\IUserRepository;
 
 /**
  * Class TagContentService
  * @package Services
  */
-class TagContentService implements BaseService{
+class TagContentService implements ITagContentService{
 
     /**
      * @var TagContentRepository
@@ -29,11 +32,8 @@ class TagContentService implements BaseService{
      */
     private $userRepository;
 
-    /**
-     * @param TagContentRepository $tagContentRepository
-     * @param UserRepository $userRepository
-     */
-    function __construct(TagContentRepository $tagContentRepository, UserRepository $userRepository)
+
+    function __construct(ITagContentRepository $tagContentRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->tagContentRepository = $tagContentRepository;
@@ -46,17 +46,7 @@ class TagContentService implements BaseService{
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
-        $content = $data['content'];
-        $check = $this->tagContentRepository->getWhere('content', $content);
-        if ($check->count()){
-            return $check->first();
-        } else {
-            $tagContent = $this->tagContentRepository->create(array(
-                'content' => $content,
-            ));
-            return $tagContent;
-        }
+
     }
 
     /**

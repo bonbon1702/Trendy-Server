@@ -88,11 +88,8 @@ class TagContentController extends \BaseController {
      * @return mixed
      */
     public function show($id){
-        $tag = $this->tagContentService->searchTag($id);
-
         return Response::json(array(
-            'success' => true,
-            'tag' => $tag
+            'success' => true
         ));
     }
 } 

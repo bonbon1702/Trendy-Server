@@ -15,8 +15,11 @@ use Repositories\interfaces\IFavoriteRepository;
 use Repositories\interfaces\IFollowRepository;
 use Repositories\interfaces\IPostAlbumRepository;
 use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\ITagContentRepository;
+use Repositories\interfaces\ITagRepository;
 use Repositories\interfaces\IUploadRepository;
 use Repositories\interfaces\IUserRepository;
+use Services\interfaces\ITagContentService;
 use Services\interfaces\ITagPictureService;
 use Services\interfaces\IPostService;
 use Services\interfaces\IShopService;
@@ -25,6 +28,7 @@ use Services\interfaces\ICommentService;
 use Services\interfaces\ILikeService;
 use Services\interfaces\IFollowService;
 use Services\interfaces\IFavoriteService;
+use Services\interfaces\ITagService;
 
 /**
  * Class PostService
@@ -95,22 +99,32 @@ class PostService implements IPostService
 
     private $favoriteRepository;
 
+    private $tagService;
+
+    private $tagContentService;
+
+    private $tagRepository;
+
     /**
-     * @param PostRepository $postRepository
-     * @param UserRepository $userRepository
-     * @param UploadRepository $uploadRepository
-     * @param TagPictureService $tagPictureService
+     * @param IPostRepository $postRepository
+     * @param IUserRepository $userRepository
+     * @param IUploadRepository $uploadRepository
+     * @param ITagPictureService $tagPictureService
      * @param GoogleMapHelper $googleMapHelper
-     * @param ShopService $shopService
-     * @param AlbumService $albumService
-     * @param CommentService $commentService
-     * @param LikeService $likeService
-     * @param TagContentService $tagContentService
-     * @param TagService $tagService
-     * @param PostAlbumRepository $postAlbumRepository
-     * @param AlbumRepository $albumRepository
+     * @param IShopService $shopService
+     * @param IAlbumService $albumService
+     * @param ICommentService $commentService
+     * @param ILikeService $likeService
+     * @param IPostAlbumRepository $postAlbumRepository
+     * @param IAlbumRepository $albumRepository
+     * @param IFollowService $followService
+     * @param IFollowRepository $followRepository
+     * @param IFavoriteService $favoriteService
+     * @param IFavoriteRepository $favoriteRepository
+     * @param ITagService $tagService
+     * @param ITagContentService $tagContentService
      */
-    function __construct(IPostRepository $postRepository, IUserRepository $userRepository, IUploadRepository $uploadRepository, ITagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, IShopService $shopService, IAlbumService $albumService, ICommentService $commentService, ILikeService $likeService, IPostAlbumRepository $postAlbumRepository, IAlbumRepository $albumRepository, IFollowService $followService, IFollowRepository $followRepository, IFavoriteService $favoriteService, IFavoriteRepository $favoriteRepository)
+    function __construct(IPostRepository $postRepository, IUserRepository $userRepository, IUploadRepository $uploadRepository, ITagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, IShopService $shopService, IAlbumService $albumService, ICommentService $commentService, ILikeService $likeService, IPostAlbumRepository $postAlbumRepository, IAlbumRepository $albumRepository, IFollowService $followService, IFollowRepository $followRepository, IFavoriteService $favoriteService, IFavoriteRepository $favoriteRepository, ITagService $tagService, ITagContentService $tagContentService, ITagContentRepository $tagContentRepository, ITagRepository $tagRepository)
     {
         // TODO: Implement __construct() method.
         $this->postRepository = $postRepository;
@@ -128,6 +142,10 @@ class PostService implements IPostService
         $this->followRepository = $followRepository;
         $this->favoriteService = $favoriteService;
         $this->favoriteRepository = $favoriteRepository;
+        $this->tagService = $tagContentService;
+        $this->tagContentService = $tagContentService;
+        $this->tagContentRepository = $tagContentRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -141,9 +159,12 @@ class PostService implements IPostService
 
         //check if user editor image
         if ($data['url']) {
-            $image_name = Helper::get_rand_alphanumeric(8);
-            \Cloudy::upload($data['url'], $image_name);
-            $image_url_editor = 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name;
+            $image = Image::make($data['url']);
+            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
+            $image_url = 'assets/images/'.$image_name.'.jpg';
+
+            $image->save($image_url);
+            $image_url_editor = url() . '/' . $image_name;
         } else {
             $image_url_editor = $upload->image_url;
         }
@@ -179,6 +200,16 @@ class PostService implements IPostService
                     'top' => $v['top'],
                     'left' => $v['left'],
                     'shop_id' => $shop->id
+                ));
+            }
+        }
+
+        if (!empty($data['tags'])) {
+            foreach ($data['tags'] as $v) {
+                $tagContent = $this->tagContentRepository->get($v['id']);
+                $this->tagRepository->create(array(
+                    'post_id' => $post->id,
+                    'tag_content_id' => $tagContent->id
                 ));
             }
         }

@@ -74,6 +74,7 @@ Route::group(array('prefix' => 'api'), function() {
 
     //TagController
 	Route::resource('tag', 'TagController');
+    Route::get('tagContent/queryTag/{query}', 'TagContentController@queryTag');
     Route::resource('tagContent', 'TagContentController');
 
 
