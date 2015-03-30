@@ -78,7 +78,6 @@ class NotificationService implements INotificationService
             ->where('user_id', $user_id)
             ->having('id_of_user_effected', '<>', $user_id)
             ->orderBy('created_at', 'desc')
-            ->take(5)
             ->get();
 
         $notification_eff = $this->notificationRepository->getRecent()
@@ -86,7 +85,6 @@ class NotificationService implements INotificationService
             ->having('user_id', '<>', $user_id)
             ->groupBy('post_id')
             ->orderBy('created_at', 'desc')
-            ->take(5)
             ->get();
 
         if (count($notification_eff) > 0){

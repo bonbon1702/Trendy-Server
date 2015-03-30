@@ -187,7 +187,8 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostTrendy($id){
-        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+        $data= array();
+        $posts = $this->postService->getPostPaging('zScore', $id, $data);
 
         return Response::json(array(
             'success' => true,
@@ -197,10 +198,17 @@ class PostController extends \BaseController
 
     /**
      * @param $id
+     * @param $lat
+     * @param $long
      * @return mixed
      */
-    public function getPostAround($id){
-        $posts = $this->postService->getPostPaging('zScore', $id, "none");
+    public function getPostAround($id, $lat, $long){
+        $data = array(
+            'lat' => $lat,
+            'long' => $long
+        );
+
+        $posts = $this->postService->getPostPaging('around', $id, $data);
 
         return Response::json(array(
             'success' => true,
@@ -214,7 +222,10 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostFavorite($id, $user_id){
-        $posts = $this->postService->getPostPaging('favorite', $id, $user_id);
+        $data = array(
+            'user_id' => $user_id
+        );
+        $posts = $this->postService->getPostPaging('favorite', $id, $data);
 
         return Response::json(array(
             'success' => true,
@@ -228,7 +239,10 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostNewFeed($id,$user_id){
-        $posts = $this->postService->getPostPaging('newfeed', $id, $user_id);
+        $data = array(
+            'user_id' => $user_id
+        );
+        $posts = $this->postService->getPostPaging('newfeed', $id, $data);
 
         return Response::json(array(
             'success' => true,

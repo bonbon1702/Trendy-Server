@@ -131,9 +131,12 @@ class ShopService implements IShopService
         if ($check)
             return $check;
         else {
+            $cor = $this->googleMapHelper->findCoordinate($address);
             $shop = $this->shopRepository->create(array(
                 'address' => $address,
-                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg'
+                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg',
+                'lat' => $cor[0]['latitude'],
+                'long' => $cor[0]['longitude']
             ));
 
             return $shop;

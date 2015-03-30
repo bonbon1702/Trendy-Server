@@ -29,6 +29,7 @@ use Services\interfaces\ILikeService;
 use Services\interfaces\IFollowService;
 use Services\interfaces\IFavoriteService;
 use Services\interfaces\ITagService;
+use \Image;
 
 /**
  * Class PostService
@@ -154,10 +155,13 @@ class PostService implements IPostService
         $image_url_editor = null;
 
         //check if user editor image
-        if ($data['url']) {
-            $image_name = Helper::get_rand_alphanumeric(8);
-            \Cloudy::upload($data['url'], $image_name);
-            $image_url_editor = 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name;
+        if ($data['url'] != null) {
+            $image = Image::make($data['url']);
+            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
+            $image_url = 'assets/images/'.$image_name.'.jpg';
+
+            $image->save($image_url);
+            $image_url_editor = $image_name;
         } else {
             $image_url_editor = $upload->image_url;
         }
@@ -166,7 +170,7 @@ class PostService implements IPostService
             'name' => Helper::get_rand_alphanumeric(8),
             'user_id' => $data['user_id'],
             'image_url' => $upload->image_url,
-            'image_url_editor' => $image_url_editor,
+            'image_url_editor' => url() . '/' . $image_url_editor,
             'caption' => $data['caption'] ? $data['caption'] : '',
         ));
 
@@ -269,9 +273,10 @@ class PostService implements IPostService
     /**
      * @param $order_by
      * @param $id
-     * @return mixed
+     * @param $data
+     * @return array
      */
-    public function getPostPaging($order_by, $id, $user_id)
+    public function getPostPaging($order_by, $id, $data)
     {
         if ($order_by == "zScore"){
             $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
@@ -281,6 +286,8 @@ class PostService implements IPostService
             }
             $results = $posts;
         } elseif ($order_by == "newfeed") {
+            $user_id = $data['user_id'];
+
             $posts =  $this->followRepository->getRecent()
                         ->where('follower_id', $user_id)
                         ->join('post', 'follow.user_id', '=' , 'post.user_id')
@@ -302,6 +309,8 @@ class PostService implements IPostService
                 $results[$v['id']]['user'] = $this->userRepository->get($v['user_id']);
             }
         } elseif ($order_by == 'favorite'){
+            $user_id = $data['user_id'];
+
             $posts = $this->favoriteRepository->getRecent()
                         ->where('favorite.user_id', $user_id)
                         ->join('post', 'favorite.post_id', '=', 'post.id')
@@ -311,6 +320,35 @@ class PostService implements IPostService
                 $v['user'] = $v->user;
             }
             $results = $posts;
+        } elseif ($order_by == 'around'){
+            $lat = $data['lat'];
+            $long = $data['long'];
+            $posts = $this->postRepository->getRecent()
+                ->select('post.*','shop.lat', 'shop.long')
+                ->Join('tag_picture', 'tag_picture.post_id', '=', 'post.id')
+                ->where('shop.lat' , '<>' , 'null')
+                ->where('shop.long' , '<>' , 'null')
+                ->Join('shop', 'shop.id', '=', 'tag_picture.shop_id')
+                ->get();
+            foreach ($posts as $v) {
+                $v['user'] = $v->user;
+            }
+
+            foreach ($posts as $k => $v){
+                $posts[$k]->re_lat = abs($v->lat - $lat);
+                $posts[$k]->re_long = abs($v->long - $long);
+            }
+
+            $posts = $posts->toArray();
+            $posts_sort = array();
+            foreach ($posts as $key => $row)
+            {
+                $posts_sort[$key] = $row['re_lat'];
+                $posts_sort[$key] = $row['re_long'];
+            }
+            array_multisort($posts_sort, SORT_ASC, $posts);
+
+            $results = array_slice($posts, $id, 8);
         }
 
         return $results;
