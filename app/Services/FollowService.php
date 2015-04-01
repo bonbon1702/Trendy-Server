@@ -119,7 +119,6 @@ class FollowService implements IFollowService
     public function itemToItemFollow($loginId, $user_id){
         $users = $this->userRepository->getRecent()
                     ->select('users.id')
-                    ->where('users.id' , '<>', $loginId)
                     ->get();
         $matrix = array();
         foreach ($users as $v){
@@ -167,6 +166,7 @@ class FollowService implements IFollowService
             foreach ($follows as $t){
                 if ($v->id == $t->user_id) unset($suggestions[$k]);
             }
+            if ($v->id == $loginId) unset($suggestions[$k]);
         }
 
         return $suggestions;

@@ -106,6 +106,8 @@ class PostService implements IPostService
 
     private $tagRepository;
 
+    private $tagContentRepository;
+
     /**
      * @param IPostRepository $postRepository
      * @param IUserRepository $userRepository
@@ -124,6 +126,8 @@ class PostService implements IPostService
      * @param IFavoriteRepository $favoriteRepository
      * @param ITagService $tagService
      * @param ITagContentService $tagContentService
+     * @param ITagContentRepository $tagContentRepository
+     * @param ITagRepository $tagRepository
      */
     function __construct(IPostRepository $postRepository, IUserRepository $userRepository, IUploadRepository $uploadRepository, ITagPictureService $tagPictureService, GoogleMapHelper $googleMapHelper, IShopService $shopService, IAlbumService $albumService, ICommentService $commentService, ILikeService $likeService, IPostAlbumRepository $postAlbumRepository, IAlbumRepository $albumRepository, IFollowService $followService, IFollowRepository $followRepository, IFavoriteService $favoriteService, IFavoriteRepository $favoriteRepository, ITagService $tagService, ITagContentService $tagContentService, ITagContentRepository $tagContentRepository, ITagRepository $tagRepository)
     {
@@ -143,6 +147,8 @@ class PostService implements IPostService
         $this->followRepository = $followRepository;
         $this->favoriteService = $favoriteService;
         $this->favoriteRepository = $favoriteRepository;
+        $this->tagRepository = $tagRepository;
+        $this->tagContentRepository =  $tagContentRepository;
     }
 
     /**
@@ -161,7 +167,7 @@ class PostService implements IPostService
             $image_url = 'assets/images/'.$image_name.'.jpg';
 
             $image->save($image_url);
-            $image_url_editor = $image_name;
+            $image_url_editor = url() . '/ '. $image_url;
         } else {
             $image_url_editor = $upload->image_url;
         }
@@ -170,7 +176,7 @@ class PostService implements IPostService
             'name' => Helper::get_rand_alphanumeric(8),
             'user_id' => $data['user_id'],
             'image_url' => $upload->image_url,
-            'image_url_editor' => url() . '/' . $image_url_editor,
+            'image_url_editor' => $image_url_editor,
             'caption' => $data['caption'] ? $data['caption'] : '',
         ));
 
@@ -197,6 +203,16 @@ class PostService implements IPostService
                     'top' => $v['top'],
                     'left' => $v['left'],
                     'shop_id' => $shop->id
+                ));
+            }
+        }
+
+        if (!empty($data['tags'])) {
+            foreach ($data['tags'] as $v) {
+                $tagContent = $this->tagContentRepository->get($v['id']);
+                $this->tagRepository->create(array(
+                    'post_id' => $post->id,
+                    'tag_content_id' => $tagContent->id
                 ));
             }
         }
@@ -310,25 +326,71 @@ class PostService implements IPostService
             $user_id = $data['user_id'];
 
             $posts =  $this->followRepository->getRecent()
+                        ->select('*', 'post.created_at as time_created')
                         ->where('follower_id', $user_id)
                         ->join('post', 'follow.user_id', '=' , 'post.user_id')
-                        ->orderBy('post.created_at', 'DESC')->take(8)->skip($id)->get();
+                        ->orderBy('post.created_at', 'DESC')->get();
+            foreach ($posts as $v){
+                $v['type'] = 'create';
+                $v['user'] = $this->userRepository->get($v->user_id);
+            }
             $post_comment = $this->followRepository->getRecent()
+                            ->select('*', 'comment.created_at as time_created', 'comment.user_id as actor_id')
                             ->where('follower_id', $user_id)
                             ->join('comment', 'follow.user_id', '=', 'comment.user_id')
                             ->where('comment.type_comment',0)
                             ->join('post', 'post.id', '=', 'comment.type_id')
                             ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                            ->take(8)->skip($id)->get();
+                            ->get();
 
-            $posts = array_merge($posts->toArray(), $post_comment->toArray());
+            foreach ($post_comment as $v){
+                $v['type'] = 'comment';
+                $v['user'] = $this->userRepository->get($v->actor_id);
+            }
+
+            $post_like = $this->followRepository->getRecent()
+                ->select('*', 'like.created_at as time_created', 'like.user_id as actor_id')
+                ->where('follower_id', $user_id)
+                ->join('like', 'follow.user_id', '=', 'like.user_id')
+                ->where('like.type_like',0)
+                ->join('post', 'post.id', '=', 'like.type_id')
+                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                ->get();
+
+            foreach ($post_like as $v){
+                $v['type'] = 'like';
+                $v['user'] = $this->userRepository->get($v->actor_id);
+            }
+
+            $post_favorite = $this->followRepository->getRecent()
+                ->select('*', 'favorite.created_at as time_created', 'favorite.user_id as actor_id')
+                ->where('follower_id', $user_id)
+                ->join('favorite', 'follow.user_id', '=', 'favorite.user_id')
+                ->join('post', 'post.id', '=', 'favorite.post_id')
+                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+                ->get();
+
+            foreach ($post_favorite as $v){
+                $v['type'] = 'favorite';
+                $v['user'] = $this->userRepository->get($v->actor_id);
+            }
+
+            $posts = array_merge($posts->toArray(), $post_comment->toArray(), $post_like->toArray(), $post_favorite->toArray());
 
             //clear dup
+            usort($posts, function ($a, $b){
+                return strcmp($b['time_created'], $a['time_created']);
+            });
+            $k = 0;
             $results = array();
             foreach ($posts as $v){
-                $results[$v['id']] = $v;
-                $results[$v['id']]['user'] = $this->userRepository->get($v['user_id']);
+                $results[$k] = $v;
+                $results[$k]['like'] = $this->likeService->countLike(0, $v['id']);
+                $results[$k]['favorite'] = $this->favoriteRepository->getRecent()
+                    ->where('post_id', $v['id'])->get();
+                $k++;
             }
+            $results = array_slice($results, $id, 8);
         } elseif ($order_by == 'favorite'){
             $user_id = $data['user_id'];
 
@@ -339,6 +401,9 @@ class PostService implements IPostService
                         ->take(8)->skip($id)->get();
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
+                $v['like'] = $this->likeService->countLike(0, $v->id);
+                $v['favorite'] = $this->favoriteRepository->getRecent()
+                    ->where('post_id', $v->id)->get();
             }
             $results = $posts;
         } elseif ($order_by == 'around'){
@@ -353,6 +418,9 @@ class PostService implements IPostService
                 ->get();
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
+                $v['like'] = $this->likeService->countLike(0, $v->id);
+                $v['favorite'] = $this->favoriteRepository->getRecent()
+                    ->where('post_id', $v->id)->get();
             }
 
             foreach ($posts as $k => $v){
@@ -384,4 +452,5 @@ class PostService implements IPostService
         $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
         $this->commentService->deleteCommentInPost($id);
     }
+
 }
