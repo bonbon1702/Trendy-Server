@@ -55,12 +55,12 @@ class ShopController extends BaseController
         $this->shopDetailService = $shopDetailService;
     }
 
+
     /**
-     * @param $name
+     * @param $id
      * @return mixed
      */
-    public function show($id)
-    {
+    public  function getShopByShopId($id){
         $shop = $this->shopService->getShopByShopId($id);
 
         return Response::json(array(
@@ -68,7 +68,6 @@ class ShopController extends BaseController
             'shop' => $shop
         ));
     }
-
     /**
      * @param $type
      * @return mixed
