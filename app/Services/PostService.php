@@ -279,7 +279,28 @@ class PostService implements IPostService
     public function getPostPaging($order_by, $id, $data)
     {
         if ($order_by == "zScore"){
-            $posts = $this->postRepository->getRecent()->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+            $tag = $data['tag'];
+            if ($tag == 'all'){
+                $posts = $this->postRepository->getRecent()
+                    ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+                foreach ($posts as $v){
+                    $v['like'] = $this->likeService->countLike(0, $v->id);
+                    $v['favorite'] = $this->favoriteRepository->getRecent()
+                        ->where('post_id', $v->id)->get();
+                }
+            } else {
+                $posts = $this->postRepository->getRecent()
+                    ->join('tag', 'tag.post_id', '=', 'post.id')
+                    ->join('tag_content', 'tag_content.id', '=', 'tag.tag_content_id')
+                    ->where('tag_content.content', $tag)
+                    ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+
+                foreach ($posts as $v){
+                    $v['like'] = $this->likeService->countLike(0, $v->post_id);
+                    $v['favorite'] = $this->favoriteRepository->getRecent()
+                        ->where('post_id', $v->post_id)->get();
+                }
+            }
 
             foreach ($posts as $v) {
                 $v['user'] = $v->user;
