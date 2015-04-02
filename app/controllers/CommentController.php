@@ -178,4 +178,19 @@ class CommentController extends \BaseController
             'comment' => $comment
         ));
     }
+
+    public function editPostComment($id, $content){
+        $this->commentService->editPostComment($id, $content);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function deletePostComment($id){
+        $comment = $this->commentService->deleteCommentInPost($id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 }

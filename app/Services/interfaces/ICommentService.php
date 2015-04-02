@@ -44,4 +44,6 @@ interface ICommentService
      * @return mixed
      */
     public function deleteCommentInPost($id);
+
+    public function editPostComment($id, $content);
 }

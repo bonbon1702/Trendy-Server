@@ -61,6 +61,9 @@ class CommentRepository implements ICommentRepository{
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $comment = new Comment();
+
+        return $comment;
     }
 
     /**
@@ -120,8 +123,9 @@ class CommentRepository implements ICommentRepository{
         return Comment::where('type_comment', $typeComment)->where('type_id', $typeId)->get();
     }
 
-    public  function deleteCommentInPost($typeId){
-        return Comment::where('type_comment', 0)->where('type_id', $typeId)->delete();
+    public  function deleteCommentInPost($id){
+        return Comment::where('type_comment', 0)->where('id', $id)->delete();
     }
+
 
 }

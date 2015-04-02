@@ -74,8 +74,8 @@ interface ICommentRepository
     public function whereTypeComment($typeComment, $typeId);
 
     /**
-     * @param $typeId
+     * @param $id
      * @return mixed
      */
-    public function deleteCommentInPost($typeId);
+    public function deleteCommentInPost($id);
 }

@@ -453,4 +453,12 @@ class PostService implements IPostService
         $this->commentService->deleteCommentInPost($id);
     }
 
+    public function editPostCaption($id, $caption){
+        $post = $this->postRepository->update('id', $id , array(
+            'caption' => $caption
+        ));
+
+        return true;
+    }
+
 }
