@@ -43,7 +43,7 @@ class FavoriteService implements IFavoriteService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function addFavorite(array $data)
     {
         // TODO: Implement create() method.
         $favorite = $this->favoriteRepository->create(array(

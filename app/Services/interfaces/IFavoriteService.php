@@ -19,7 +19,7 @@ interface IFavoriteService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data);
+    public function addFavorite(array $data);
 
     /**
      * @param $user_id
