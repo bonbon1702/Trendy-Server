@@ -34,7 +34,7 @@ interface IUserService
      * @param $column
      * @param $value
      */
-    public function delete($column, $value);
+    public function deleteLogoutUser($column, $value);
 
     /**
      * @param $id

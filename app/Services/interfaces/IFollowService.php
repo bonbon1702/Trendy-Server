@@ -19,7 +19,7 @@ interface IFollowService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data);
+    public function addFollowing(array $data);
 
     /**
      * @param array $data

@@ -48,7 +48,7 @@ Route::group(array('prefix' => 'api'), function() {
 
     //UserController
     Route::get('searchAllPage/{type}','UserController@searchAllPage');
-	Route::get('user/getUser/{id}', 'UserController@getUser');
+	Route::get('user/getUser/{id}', 'UserController@getUserInfo');
 	Route::post('user/getLoginUser', 'UserController@getLoginUser');
 	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');
 	Route::resource('user', 'UserController');
@@ -57,6 +57,7 @@ Route::group(array('prefix' => 'api'), function() {
     //FollowController
 	Route::get('follower/{user_id}', 'FollowController@followerByUser');
 	Route::get('following/{follower_id}', 'FollowController@followingByUser');
+    Route::post('follow/addFollowing', 'FollowController@addFollowing');
 //	Route::delete('following/delete', 'FollowController@deleteFollowing');
     Route::get('following/delete/userID/{user_id}/followerID/{follower_id}', 'FollowController@deleteFollowing');
     Route::get('follow/suggestionFollow/loginId/{loginId}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
