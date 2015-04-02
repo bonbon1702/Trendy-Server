@@ -148,7 +148,7 @@ class PostService implements IPostService
     /**
      * @param array $data
      */
-    public function create(array $data)
+    public function createPost(array $data)
     {
         // TODO: Implement create() method.
         $upload = $this->uploadRepository->getWhere('name', $data['name']);

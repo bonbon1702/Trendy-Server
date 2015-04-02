@@ -24,6 +24,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('post/getPostAround/paging/{id}/lat/{lat}/lng/{lng}', 'PostController@getPostAround');
     Route::get('post/getPostFavorite/paging/{id}/userId/{user_id}', 'PostController@getPostFavorite');
     Route::get('post/getPostNewFeed/paging/{id}/userId/{user_id}', 'PostController@getPostNewFeed');
+    Route::post('post/createPost', 'PostController@createPost');
 	Route::resource('post', 'PostController');
 
     //FavoriteController

@@ -20,7 +20,7 @@ interface IShopDetailService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data);
+    public function saveShopDetailInfo(array $data);
 
     /**
      * @param $id
