@@ -131,4 +131,12 @@ class CommentService implements ICommentService{
     public function deleteCommentInPost($id){
         return $this->commentRepository->deleteCommentInPost($id);
     }
+
+    public function editPostComment($id, $content){
+        $this->commentRepository->getRecent()
+            ->where('id', $id)->where('type_comment', 0)
+            ->update(array(
+                'content' => $content
+            ));
+    }
 }

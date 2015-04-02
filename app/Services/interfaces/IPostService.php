@@ -48,4 +48,6 @@ interface IPostService
      * @param $id
      */
     public function deletePost($id);
+
+    public function editPostCaption($id, $caption);
 }

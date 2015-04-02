@@ -25,6 +25,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('post/getPostFavorite/paging/{id}/userId/{user_id}', 'PostController@getPostFavorite');
     Route::get('post/getPostNewFeed/paging/{id}/userId/{user_id}', 'PostController@getPostNewFeed');
     Route::post('post/createPost', 'PostController@createPost');
+    Route::get('post/editPostCaption/id/{id}/caption/{caption}', 'PostController@editPostCaption');
 	Route::resource('post', 'PostController');
 
     //FavoriteController
@@ -67,6 +68,8 @@ Route::group(array('prefix' => 'api'), function() {
     //CommentController
 	Route::get('comment/showPost/{id}', 'CommentController@showPost');
 	Route::get('comment/showShop/{id}', 'CommentController@showShop');
+    Route::get('comment/editPostComment/id/{id}/content/{content}', 'CommentController@editPostComment');
+    Route::get('comment/deletePostComment/id/{id}', 'CommentController@deletePostComment');
     Route::resource('comment', 'CommentController');
 
 

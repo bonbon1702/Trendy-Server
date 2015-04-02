@@ -225,4 +225,12 @@ class PostController extends \BaseController
         ));
     }
 
+    public function editPostCaption($id, $caption){
+        $this->postService->editPostCaption($id, $caption);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
 }
