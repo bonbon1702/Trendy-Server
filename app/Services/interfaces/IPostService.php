@@ -8,6 +8,10 @@
 
 namespace Services\interfaces;
 
+/**
+ * Interface IPostService
+ * @package Services\interfaces
+ */
 interface IPostService
 {
     /**

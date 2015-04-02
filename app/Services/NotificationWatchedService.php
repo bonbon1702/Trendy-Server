@@ -34,7 +34,7 @@ class NotificationWatchedService implements INotificationWatchedService{
      * @param array $data
      * @return bool
      */
-    public function create(array $data)
+    public function watchedNotification(array $data)
     {
         // TODO: Implement create() method.
         $check = $this->notificationWatchedRepository->getWhere('notification_id', $data['notification_id'])->get();

@@ -52,7 +52,7 @@ class FavoriteController extends \BaseController
     public function favoritePost($user_id, $post_id, $type)
     {
         if ($type == 'favorite') {
-            $favorite = $this->favoriteService->create(array(
+            $favorite = $this->favoriteService->addFavorite(array(
                 'user_id' => $user_id,
                 'post_id' => $post_id
             ));
