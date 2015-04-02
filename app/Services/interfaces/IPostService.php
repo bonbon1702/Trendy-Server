@@ -38,16 +38,38 @@ interface IPostService
     public function getPostDetails($id);
 
     /**
-     * @param $order_by
-     * @param $id
-     * @return mixed
-     */
-    public function getPostPaging($order_by, $id, $user_id);
-
-    /**
      * @param $id
      */
     public function deletePost($id);
 
+    /**
+     * @param $id
+     * @param $caption
+     * @return mixed
+     */
     public function editPostCaption($id, $caption);
+
+    /**
+     * @param $id
+     * @param $tag
+     * @return mixed
+     */
+    public function getPostTrendy($id, $tag);
+
+    /**
+     * @param $id
+     * @param $lat
+     * @param $long
+     * @return mixed
+     */
+    public function getPostAround($id, $lat, $long);
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
+    public function getPostFavorite($id, $user_id);
+
+    public function getPostNewFeed($id, $user_id);
 }

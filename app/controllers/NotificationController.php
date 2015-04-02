@@ -48,7 +48,7 @@ class NotificationController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function getNotificationByUserId($id)
     {
         $notification = $this->notificationService->getNotification($id);
 

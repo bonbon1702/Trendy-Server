@@ -36,60 +36,11 @@ class TagContentController extends \BaseController {
     /**
      * @return mixed
      */
-    public function index() {
-        $tagContent = $this->tagContentRepository->all();
+    public function getAllTag() {
+        $tagContent = $this->tagContentService->getAllTag();
         return Response::json(array(
             'success' => true,
             'tagContent' => $tagContent
-        ));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function store() {
-        $data = Input::all();
-
-        $result = $this->tagContentService->create($data);
-
-        return Response::json(array(
-            'success' => true,
-            're' => $result
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function update($id) {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->tagContentService->update($data);
-
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function destroy($id) {
-        $this->tagContentService->deleteTagContent($id);
-        return Response::json(array(
-            'success' => true,
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function show($id){
-        return Response::json(array(
-            'success' => true
         ));
     }
 } 

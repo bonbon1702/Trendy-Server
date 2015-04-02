@@ -10,5 +10,5 @@ namespace Services\interfaces;
 
 
 interface ITagContentService {
-
+    public function getAllTag();
 }

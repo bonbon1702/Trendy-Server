@@ -21,49 +21,11 @@ class AlbumController extends \BaseController
         $this->albumService = $albumService;
     }
 
-
     /**
-     * Store a newly created resource in storage.
-     * POST /album
-     *
-     * @return Response
+     * @param $id
+     * @return mixed
      */
-    public function store()
-    {
-        //
-        $data = Input::all();
-        $album = $this->albumService->create($data);
-
-        return Response::json(array(
-            'success' => true,
-            'album' => $album
-        ));
-    }
-
-    /**
-     * Display the specified resource.
-     * GET /album/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        $album = $this->albumService->getListAlbumOfUser($id);
-        return Response::json(array(
-            'success' => true,
-            'album' => $album
-        ));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * PUT /album/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function editAlbumById($id)
     {
         $data = Input::all();
         $data['id'] = $id;
@@ -74,25 +36,10 @@ class AlbumController extends \BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
-     * DELETE /album/{album_name}
-     *
-     * @param  string $album_name
-     * @return Response
-     */
-    public function destroy($album_name)
-    {
-        $this->albumService->delete('album_name', $album_name);
-        return Response::json(array(
-            'success' => true,
-        ));
-    }
-
-    /**
      * @param $album_name
      * @return mixed
      */
-    public function deleteAlbum($album_name)
+    public function deleteAlbumByName($album_name)
     {
         $this->albumService->deleteAlbum($album_name);
         return Response::json(array(

@@ -82,22 +82,6 @@ class FollowController extends \BaseController
     }
 
     /**
-     * Update the specified resource in storage.
-     * PUT/follow
-     *
-     * @return Response
-     */
-    public function update($id)
-    {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->followService->update($data);
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
-    /**
      * @param $user_id
      * @param $follower_id
      * @return mixed

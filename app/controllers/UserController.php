@@ -53,7 +53,7 @@ class UserController extends BaseController
     /**
      * @return mixed
      */
-    public function store()
+    public function createUser()
     {
         $data = Input::all();
 
@@ -134,20 +134,6 @@ class UserController extends BaseController
         return Response::json(array(
             'success' => true,
             'results' => $results
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->userService->update($data);
-        return Response::json(array(
-            'success' => true
         ));
     }
 }

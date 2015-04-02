@@ -29,7 +29,7 @@ class UploadController extends \BaseController
      *
      * @return Response
      */
-    public function store()
+    public function uploadPicture()
     {
         //
         $img = $_FILES['file']['tmp_name'];
@@ -37,44 +37,6 @@ class UploadController extends \BaseController
         $upload = $this->uploadService->create(array(
             'img' => $img
         ));
-
-        return Response::json(array(
-            'success' => true,
-            'upload' => $upload
-        ));
-    }
-
-    /**
-     * Display the specified resource.
-     * GET /upload/{name}
-     *
-     * @param  String $name
-     * @return Response
-     */
-    public function show($name)
-    {
-        //
-        $upload = $this->uploadService->getUploadImage($name);
-        return Response::json(array(
-            'success' => true,
-            'upload' => $upload
-        ));
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     * PUT /upload/{name}
-     *
-     * @param  int $name
-     * @return Response
-     */
-    public function update($name)
-    {
-        //
-        $data = Input::all();
-        $data['name'] = $name;
-        $upload = $this->uploadService->update($data);
 
         return Response::json(array(
             'success' => true,

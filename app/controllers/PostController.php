@@ -61,23 +61,6 @@ class PostController extends \BaseController
     }
 
     /**
-     * Display a listing of the resource.
-     * GET /post
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-        $posts = $this->postService->allPost();
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
-        ));
-    }
-
-
-    /**
      * @return mixed
      */
     public function createPost(){
@@ -97,7 +80,7 @@ class PostController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function getPostById($id)
     {
         //
         $post = $this->postService->getPostDetails($id);
@@ -127,28 +110,11 @@ class PostController extends \BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
-     * DELETE /post/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $this->postService->delete('id', $id);
-
-        return Response::json(array(
-            'success' => true,
-        ));
-    }
-
-    /**
      * @param $id
      * @return mixed
      */
-    public function deletePost($id)
+    public function deletePostById($id)
     {
-//        $data = Input::all();
         $this->postService->deletePost($id);
         return Response::json(array(
             'success' => true
@@ -160,10 +126,8 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostTrendy($id, $tag){
-        $data= array(
-            'tag' => $tag
-        );
-        $posts = $this->postService->getPostPaging('zScore', $id, $data);
+
+        $posts = $this->postService->getPostTrendy($id, $tag);
 
         return Response::json(array(
             'success' => true,
@@ -178,12 +142,7 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostAround($id, $lat, $long){
-        $data = array(
-            'lat' => $lat,
-            'long' => $long
-        );
-
-        $posts = $this->postService->getPostPaging('around', $id, $data);
+        $posts = $this->postService->getPostAround($id,$lat,$long);
 
         return Response::json(array(
             'success' => true,
@@ -197,10 +156,7 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostFavorite($id, $user_id){
-        $data = array(
-            'user_id' => $user_id
-        );
-        $posts = $this->postService->getPostPaging('favorite', $id, $data);
+        $posts = $this->postService->getPostFavorite($id, $user_id);
 
         return Response::json(array(
             'success' => true,
@@ -214,10 +170,7 @@ class PostController extends \BaseController
      * @return mixed
      */
     public function getPostNewFeed($id,$user_id){
-        $data = array(
-            'user_id' => $user_id
-        );
-        $posts = $this->postService->getPostPaging('newfeed', $id, $data);
+        $posts = $this->postService->getPostNewFeed($id, $user_id);
 
         return Response::json(array(
             'success' => true,

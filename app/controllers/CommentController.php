@@ -86,19 +86,7 @@ class CommentController extends \BaseController
     /**
      * @return mixed
      */
-    public function index()
-    {
-        $comment = $this->commentRepository->all();
-        return Response::json(array(
-            'success' => true,
-            'comment' => $comment
-        ));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function store()
+    public function saveComment()
     {
         $data = Input::all();
 
@@ -122,33 +110,6 @@ class CommentController extends \BaseController
         return Response::json(array(
             'success' => true,
             'comment' => $comment
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->commentService->update($data);
-
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function destroy($id)
-    {
-        $this->commentService->deleteComment($id);
-        return Response::json(array(
-            'success' => true,
         ));
     }
 

@@ -35,8 +35,7 @@ use \Image;
  * Class PostService
  * @package Services
  */
-class PostService implements IPostService
-{
+class PostService implements IPostService{
 
     /**
      * @var PostRepository
@@ -287,158 +286,176 @@ class PostService implements IPostService
     }
 
     /**
-     * @param $order_by
      * @param $id
-     * @param $data
+     * @param $tag
+     * @return mixed
+     */
+    public function getPostTrendy($id, $tag){
+        $order_by = 'zScore';
+        if ($tag == 'all'){
+            $posts = $this->postRepository->getRecent()
+                ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+            foreach ($posts as $v){
+                $v['like'] = $this->likeService->countLike(0, $v->id);
+                $v['favorite'] = $this->favoriteRepository->getRecent()
+                    ->where('post_id', $v->id)->get();
+            }
+        } else {
+            $posts = $this->postRepository->getRecent()
+                ->join('tag', 'tag.post_id', '=', 'post.id')
+                ->join('tag_content', 'tag_content.id', '=', 'tag.tag_content_id')
+                ->where('tag_content.content', $tag)
+                ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
+
+            foreach ($posts as $v){
+                $v['like'] = $this->likeService->countLike(0, $v->post_id);
+                $v['favorite'] = $this->favoriteRepository->getRecent()
+                    ->where('post_id', $v->post_id)->get();
+            }
+        }
+
+        foreach ($posts as $v) {
+            $v['user'] = $v->user;
+        }
+        $results = $posts;
+
+        return $results;
+    }
+
+    /**
+     * @param $id
+     * @param $lat
+     * @param $long
      * @return array
      */
-    public function getPostPaging($order_by, $id, $data)
-    {
-        if ($order_by == "zScore"){
-            $tag = $data['tag'];
-            if ($tag == 'all'){
-                $posts = $this->postRepository->getRecent()
-                    ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
-                foreach ($posts as $v){
-                    $v['like'] = $this->likeService->countLike(0, $v->id);
-                    $v['favorite'] = $this->favoriteRepository->getRecent()
-                        ->where('post_id', $v->id)->get();
-                }
-            } else {
-                $posts = $this->postRepository->getRecent()
-                    ->join('tag', 'tag.post_id', '=', 'post.id')
-                    ->join('tag_content', 'tag_content.id', '=', 'tag.tag_content_id')
-                    ->where('tag_content.content', $tag)
-                    ->orderBy($order_by, 'DESC')->take(8)->skip($id)->get();
-
-                foreach ($posts as $v){
-                    $v['like'] = $this->likeService->countLike(0, $v->post_id);
-                    $v['favorite'] = $this->favoriteRepository->getRecent()
-                        ->where('post_id', $v->post_id)->get();
-                }
-            }
-
-            foreach ($posts as $v) {
-                $v['user'] = $v->user;
-            }
-            $results = $posts;
-        } elseif ($order_by == "newfeed") {
-            $user_id = $data['user_id'];
-
-            $posts =  $this->followRepository->getRecent()
-                        ->select('*', 'post.created_at as time_created')
-                        ->where('follower_id', $user_id)
-                        ->join('post', 'follow.user_id', '=' , 'post.user_id')
-                        ->orderBy('post.created_at', 'DESC')->get();
-            foreach ($posts as $v){
-                $v['type'] = 'create';
-                $v['user'] = $this->userRepository->get($v->user_id);
-            }
-            $post_comment = $this->followRepository->getRecent()
-                            ->select('*', 'comment.created_at as time_created', 'comment.user_id as actor_id')
-                            ->where('follower_id', $user_id)
-                            ->join('comment', 'follow.user_id', '=', 'comment.user_id')
-                            ->where('comment.type_comment',0)
-                            ->join('post', 'post.id', '=', 'comment.type_id')
-                            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                            ->get();
-
-            foreach ($post_comment as $v){
-                $v['type'] = 'comment';
-                $v['user'] = $this->userRepository->get($v->actor_id);
-            }
-
-            $post_like = $this->followRepository->getRecent()
-                ->select('*', 'like.created_at as time_created', 'like.user_id as actor_id')
-                ->where('follower_id', $user_id)
-                ->join('like', 'follow.user_id', '=', 'like.user_id')
-                ->where('like.type_like',0)
-                ->join('post', 'post.id', '=', 'like.type_id')
-                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                ->get();
-
-            foreach ($post_like as $v){
-                $v['type'] = 'like';
-                $v['user'] = $this->userRepository->get($v->actor_id);
-            }
-
-            $post_favorite = $this->followRepository->getRecent()
-                ->select('*', 'favorite.created_at as time_created', 'favorite.user_id as actor_id')
-                ->where('follower_id', $user_id)
-                ->join('favorite', 'follow.user_id', '=', 'favorite.user_id')
-                ->join('post', 'post.id', '=', 'favorite.post_id')
-                ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                ->get();
-
-            foreach ($post_favorite as $v){
-                $v['type'] = 'favorite';
-                $v['user'] = $this->userRepository->get($v->actor_id);
-            }
-
-            $posts = array_merge($posts->toArray(), $post_comment->toArray(), $post_like->toArray(), $post_favorite->toArray());
-
-            //clear dup
-            usort($posts, function ($a, $b){
-                return strcmp($b['time_created'], $a['time_created']);
-            });
-            $k = 0;
-            $results = array();
-            foreach ($posts as $v){
-                $results[$k] = $v;
-                $results[$k]['like'] = $this->likeService->countLike(0, $v['id']);
-                $results[$k]['favorite'] = $this->favoriteRepository->getRecent()
-                    ->where('post_id', $v['id'])->get();
-                $k++;
-            }
-            $results = array_slice($results, $id, 8);
-        } elseif ($order_by == 'favorite'){
-            $user_id = $data['user_id'];
-
-            $posts = $this->favoriteRepository->getRecent()
-                        ->where('favorite.user_id', $user_id)
-                        ->join('post', 'favorite.post_id', '=', 'post.id')
-                        ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
-                        ->take(8)->skip($id)->get();
-            foreach ($posts as $v) {
-                $v['user'] = $v->user;
-                $v['like'] = $this->likeService->countLike(0, $v->id);
-                $v['favorite'] = $this->favoriteRepository->getRecent()
-                    ->where('post_id', $v->id)->get();
-            }
-            $results = $posts;
-        } elseif ($order_by == 'around'){
-            $lat = $data['lat'];
-            $long = $data['long'];
-            $posts = $this->postRepository->getRecent()
-                ->select('post.*','shop.lat', 'shop.long')
-                ->Join('tag_picture', 'tag_picture.post_id', '=', 'post.id')
-                ->where('shop.lat' , '<>' , 'null')
-                ->where('shop.long' , '<>' , 'null')
-                ->Join('shop', 'shop.id', '=', 'tag_picture.shop_id')
-                ->get();
-            foreach ($posts as $v) {
-                $v['user'] = $v->user;
-                $v['like'] = $this->likeService->countLike(0, $v->id);
-                $v['favorite'] = $this->favoriteRepository->getRecent()
-                    ->where('post_id', $v->id)->get();
-            }
-
-            foreach ($posts as $k => $v){
-                $posts[$k]->re_lat = abs($v->lat - $lat);
-                $posts[$k]->re_long = abs($v->long - $long);
-            }
-
-            $posts = $posts->toArray();
-            $posts_sort = array();
-            foreach ($posts as $key => $row)
-            {
-                $posts_sort[$key] = $row['re_lat'];
-                $posts_sort[$key] = $row['re_long'];
-            }
-            array_multisort($posts_sort, SORT_ASC, $posts);
-
-            $results = array_slice($posts, $id, 8);
+    public function getPostAround($id, $lat, $long){
+        $posts = $this->postRepository->getRecent()
+            ->select('post.*','shop.lat', 'shop.long')
+            ->Join('tag_picture', 'tag_picture.post_id', '=', 'post.id')
+            ->where('shop.lat' , '<>' , 'null')
+            ->where('shop.long' , '<>' , 'null')
+            ->Join('shop', 'shop.id', '=', 'tag_picture.shop_id')
+            ->get();
+        foreach ($posts as $v) {
+            $v['user'] = $v->user;
+            $v['like'] = $this->likeService->countLike(0, $v->id);
+            $v['favorite'] = $this->favoriteRepository->getRecent()
+                ->where('post_id', $v->id)->get();
         }
+
+        foreach ($posts as $k => $v){
+            $posts[$k]->re_lat = abs($v->lat - $lat);
+            $posts[$k]->re_long = abs($v->long - $long);
+        }
+
+        $posts = $posts->toArray();
+        $posts_sort = array();
+        foreach ($posts as $key => $row)
+        {
+            $posts_sort[$key] = $row['re_lat'];
+            $posts_sort[$key] = $row['re_long'];
+        }
+        array_multisort($posts_sort, SORT_ASC, $posts);
+
+        $results = array_slice($posts, $id, 8);
+
+        return $results;
+    }
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
+    public function getPostFavorite($id, $user_id){
+        $posts = $this->favoriteRepository->getRecent()
+            ->where('favorite.user_id', $user_id)
+            ->join('post', 'favorite.post_id', '=', 'post.id')
+            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->take(8)->skip($id)->get();
+        foreach ($posts as $v) {
+            $v['user'] = $v->user;
+            $v['like'] = $this->likeService->countLike(0, $v->id);
+            $v['favorite'] = $this->favoriteRepository->getRecent()
+                ->where('post_id', $v->id)->get();
+        }
+        $results = $posts;
+
+        return $results;
+    }
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @return array
+     */
+    public function getPostNewFeed($id, $user_id){
+        $posts =  $this->followRepository->getRecent()
+            ->select('*', 'post.created_at as time_created')
+            ->where('follower_id', $user_id)
+            ->join('post', 'follow.user_id', '=' , 'post.user_id')
+            ->orderBy('post.created_at', 'DESC')->get();
+        foreach ($posts as $v){
+            $v['type'] = 'create';
+            $v['user'] = $this->userRepository->get($v->user_id);
+        }
+        $post_comment = $this->followRepository->getRecent()
+            ->select('*', 'comment.created_at as time_created', 'comment.user_id as actor_id')
+            ->where('follower_id', $user_id)
+            ->join('comment', 'follow.user_id', '=', 'comment.user_id')
+            ->where('comment.type_comment',0)
+            ->join('post', 'post.id', '=', 'comment.type_id')
+            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->get();
+
+        foreach ($post_comment as $v){
+            $v['type'] = 'comment';
+            $v['user'] = $this->userRepository->get($v->actor_id);
+        }
+
+        $post_like = $this->followRepository->getRecent()
+            ->select('*', 'like.created_at as time_created', 'like.user_id as actor_id')
+            ->where('follower_id', $user_id)
+            ->join('like', 'follow.user_id', '=', 'like.user_id')
+            ->where('like.type_like',0)
+            ->join('post', 'post.id', '=', 'like.type_id')
+            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->get();
+
+        foreach ($post_like as $v){
+            $v['type'] = 'like';
+            $v['user'] = $this->userRepository->get($v->actor_id);
+        }
+
+        $post_favorite = $this->followRepository->getRecent()
+            ->select('*', 'favorite.created_at as time_created', 'favorite.user_id as actor_id')
+            ->where('follower_id', $user_id)
+            ->join('favorite', 'follow.user_id', '=', 'favorite.user_id')
+            ->join('post', 'post.id', '=', 'favorite.post_id')
+            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->get();
+
+        foreach ($post_favorite as $v){
+            $v['type'] = 'favorite';
+            $v['user'] = $this->userRepository->get($v->actor_id);
+        }
+
+        $posts = array_merge($posts->toArray(), $post_comment->toArray(), $post_like->toArray(), $post_favorite->toArray());
+
+        //clear dup
+        usort($posts, function ($a, $b){
+            return strcmp($b['time_created'], $a['time_created']);
+        });
+        $k = 0;
+        $results = array();
+        foreach ($posts as $v){
+            $results[$k] = $v;
+            $results[$k]['like'] = $this->likeService->countLike(0, $v['id']);
+            $results[$k]['favorite'] = $this->favoriteRepository->getRecent()
+                ->where('post_id', $v['id'])->get();
+            $k++;
+        }
+        $results = array_slice($results, $id, 8);
 
         return $results;
     }
