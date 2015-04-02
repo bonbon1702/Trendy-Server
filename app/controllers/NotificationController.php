@@ -66,7 +66,7 @@ class NotificationController extends \BaseController {
         $data = Input::all();
 
         foreach ($data as $v){
-            $this->notificationWatchedService->create($v);
+            $this->notificationWatchedService->watchedNotification($v);
         }
 
         return Response::json(array(
