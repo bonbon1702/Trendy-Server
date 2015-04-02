@@ -14,5 +14,5 @@ interface INotificationWatchedService {
      * @param array $data
      * @return bool
      */
-    public function create(array $data);
+    public function watchedNotification(array $data);
 }

@@ -95,6 +95,7 @@ Route::group(array('prefix' => 'api'), function() {
 
     //NotificationController
     Route::post('notification/watchedNotification', 'NotificationController@watchedNotification');
+    Route::get('notification/getNotification/{id}', 'NotificationController@getNotification');
     Route::resource('notification', 'NotificationController');
 });
 

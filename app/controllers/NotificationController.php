@@ -41,14 +41,12 @@ class NotificationController extends \BaseController {
         $this->notificationWatchedService = $notificationWatchedService;
     }
 
+
     /**
-     * Display the specified resource.
-     * GET /notification/{id}
-     *
-     * @param  int $id
-     * @return Response
+     * @param $id
+     * @return mixed
      */
-    public function show($id)
+    public function getNotification($id)
     {
         $notification = $this->notificationService->getNotification($id);
 
@@ -66,7 +64,7 @@ class NotificationController extends \BaseController {
         $data = Input::all();
 
         foreach ($data as $v){
-            $this->notificationWatchedService->create($v);
+            $this->notificationWatchedService->watchedNotification($v);
         }
 
         return Response::json(array(

@@ -8,6 +8,10 @@
 
 namespace Services\interfaces;
 
+/**
+ * Interface IPostService
+ * @package Services\interfaces
+ */
 interface IPostService
 {
     /**
@@ -49,5 +53,10 @@ interface IPostService
      */
     public function deletePost($id);
 
+    /**
+     * @param $id
+     * @param $caption
+     * @return mixed
+     */
     public function editPostCaption($id, $caption);
 }
