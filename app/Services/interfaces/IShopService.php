@@ -52,4 +52,6 @@ interface IShopService
      * @return mixed
      */
     public function getShopList();
+
+    public function suggestShop($loginId, $shopId);
 }

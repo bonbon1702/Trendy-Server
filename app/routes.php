@@ -20,7 +20,7 @@ Route::group(array('prefix' => 'api'), function() {
     //PostController
     Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
 	Route::delete('post/delete/{id}', 'PostController@deletePost');
-    Route::get('post/getPostTrendy/paging/{id}', 'PostController@getPostTrendy');
+    Route::get('post/getPostTrendy/paging/{id}/tag/{tag}', 'PostController@getPostTrendy');
     Route::get('post/getPostAround/paging/{id}/lat/{lat}/lng/{lng}', 'PostController@getPostAround');
     Route::get('post/getPostFavorite/paging/{id}/userId/{user_id}', 'PostController@getPostFavorite');
     Route::get('post/getPostNewFeed/paging/{id}/userId/{user_id}', 'PostController@getPostNewFeed');
@@ -41,8 +41,9 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('getShopList', 'ShopController@getShopList');
     Route::get('shop/getShop/{id}', 'ShopController@getShopByShopId');
     Route::get('shop/getShop/{id}/paging/{offSet}','ShopController@getShopPaging');
-	Route::resource('shop', 'ShopController');
+    Route::get('shop/suggestShop/loginId/{loginId}/shopId/{shopId}','ShopController@suggestShop');
     Route::post('shop/saveShopInfo','ShopController@saveShopDetailInfo');
+	Route::resource('shop', 'ShopController');
 
 
     //UserController
@@ -58,7 +59,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('following/{follower_id}', 'FollowController@followingByUser');
 //	Route::delete('following/delete', 'FollowController@deleteFollowing');
     Route::get('following/delete/userID/{user_id}/followerID/{follower_id}', 'FollowController@deleteFollowing');
-    Route::get('follow/suggestionFollow/{id}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
+    Route::get('follow/suggestionFollow/loginId/{loginId}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
     Route::resource('follow', 'FollowController');
 
 

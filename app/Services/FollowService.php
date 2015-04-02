@@ -116,7 +116,7 @@ class FollowService implements IFollowService
      * @param $user_id
      * @return array
      */
-    public function itemToItemFollow($id, $user_id){
+    public function itemToItemFollow($loginId, $user_id){
         $users = $this->userRepository->getRecent()
                     ->select('users.id')
                     ->get();
@@ -138,7 +138,7 @@ class FollowService implements IFollowService
         }
         $itemToItem = new ItemToItem();
         $itemToItem->insert($matrix);
-        $results = $itemToItem->predict($id);
+        $results = $itemToItem->predict($user_id);
 
 
         $suggestions = array();
@@ -159,6 +159,15 @@ class FollowService implements IFollowService
         });
 
         $suggestions = array_slice($suggestions, 0, 3);
+
+        $follows = $this->followRepository->getRecent()
+            ->where('follower_id',$loginId)->get();
+        foreach ($suggestions as $k => $v){
+            foreach ($follows as $t){
+                if ($v->id == $t->user_id) unset($suggestions[$k]);
+            }
+            if ($v->id == $loginId) unset($suggestions[$k]);
+        }
 
         return $suggestions;
     }

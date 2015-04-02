@@ -159,8 +159,10 @@ class PostController extends \BaseController
      * @param $id
      * @return mixed
      */
-    public function getPostTrendy($id){
-        $data= array();
+    public function getPostTrendy($id, $tag){
+        $data= array(
+            'tag' => $tag
+        );
         $posts = $this->postService->getPostPaging('zScore', $id, $data);
 
         return Response::json(array(

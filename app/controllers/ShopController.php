@@ -120,4 +120,13 @@ class ShopController extends BaseController
         ));
     }
 
+    public function suggestShop($loginId, $shopId){
+        $suggests = $this->shopService->suggestShop($loginId,$shopId);
+
+        return Response::json(array(
+            'success' => true,
+            'suggests' => $suggests
+        ));
+    }
+
 }

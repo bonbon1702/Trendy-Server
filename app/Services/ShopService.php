@@ -9,12 +9,15 @@
 namespace Services;
 
 use Core\GoogleMapHelper;
+use Repositories\interfaces\ILikeRepository;
 use Repositories\interfaces\IShopRepository;
+use Repositories\interfaces\IUserRepository;
 use Services\interfaces\ICommentService;
 use Services\interfaces\ILikeService;
 use Services\interfaces\IShopDetailService;
 use Services\interfaces\IShopService;
 use Services\interfaces\ITagPictureService;
+use Core\ItemToItem;
 
 /**
  * Class ShopService
@@ -47,6 +50,16 @@ class ShopService implements IShopService
      */
     private $shopDetailService;
 
+    /**
+     * @var
+     */
+    private $likeRepository;
+
+    /**
+     * @var
+     */
+    private $userRepository;
+
 
     /**
      * @param IShopRepository $shopRepository
@@ -55,8 +68,10 @@ class ShopService implements IShopService
      * @param ICommentService $commentService
      * @param ITagPictureService $tagPictureService
      * @param IShopDetailService $shopDetailService
+     * @param ILikeRepository $likeRepository
+     * @param IUserRepository $userRepository
      */
-    function __construct(IShopRepository $shopRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService, IShopDetailService $shopDetailService)
+    function __construct(IShopRepository $shopRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService, IShopDetailService $shopDetailService, ILikeRepository $likeRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->shopRepository = $shopRepository;
@@ -65,6 +80,8 @@ class ShopService implements IShopService
         $this->commentService = $commentService;
         $this->tagPictureService = $tagPictureService;
         $this->shopDetailService = $shopDetailService;
+        $this->likeRepository = $likeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -163,5 +180,66 @@ class ShopService implements IShopService
     {
         $shop = $this->shopRepository->all();
         return $shop;
+    }
+
+    public function suggestShop($loginId, $shopId){
+        $shops = $this->shopRepository->getRecent()
+            ->select('shop.id')
+            ->get();
+        $users = $this->userRepository->getRecent()
+            ->select('users.id')
+            ->get();
+        $matrix = array();
+        foreach ($users as $v){
+            $matrix[$v->id] = array();
+            foreach ($shops as $v1){
+                $check = $this->likeRepository->getRecent()
+                    ->where('type_like', 1)
+                    ->where('type_id', $v1->id)
+                    ->where('user_id', $v->id)
+                    ->get();
+
+                if (count($check) > 0) {
+                    $matrix[$v->id][$v1->id] = 1;
+                } else {
+                    $matrix[$v->id][$v1->id] = 0;
+                }
+            }
+        }
+        $itemToItem = new ItemToItem();
+        $itemToItem->insert($matrix);
+        $results = $itemToItem->predict($shopId);
+
+
+        $suggestions = array();
+        foreach ($results as $k =>$v){
+            $shop = $this->shopRepository->get($k);
+            $shop['cosine'] = $v;
+            $suggestions[] = $shop;
+        }
+
+        usort($suggestions, function ($item1, $item2) {
+            $result = 0;
+            if ($item1['cosine'] < $item2['cosine']) {
+                $result = 1;
+            } else if ($item1['cosine'] > $item2['cosine']) {
+                $result = -1;
+            }
+            return $result;
+        });
+
+        $suggestions = array_slice($suggestions, 0, 3);
+
+        $likes = $this->likeRepository->getRecent()
+            ->where('user_id',$loginId)
+            ->where('type_like', 1)
+            ->get();
+        foreach ($suggestions as $k => $v){
+            foreach ($likes as $t){
+                if ($v->id == $t->type_id) unset($suggestions[$k]);
+            }
+        }
+
+        return $suggestions;
     }
 }

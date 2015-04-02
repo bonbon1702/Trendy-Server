@@ -49,6 +49,9 @@ class LikeRepository implements ILikeRepository
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $like = new Like();
+
+        return $like;
     }
 
     /**
