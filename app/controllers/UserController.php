@@ -83,7 +83,7 @@ class UserController extends BaseController
      */
     public function  deleteLogoutUser($id)
     {
-        $this->userService->delete('id', $id);
+        $this->userService->deleteLogoutUser('id', $id);
 
         return Response::json(array(
             'success' => true
@@ -94,7 +94,7 @@ class UserController extends BaseController
      * @param $id
      * @return mixed
      */
-    public function getUser($id)
+    public function getUserInfo($id)
     {
         $user = $this->userService->getUserInfo($id);
         return Response::json(array(

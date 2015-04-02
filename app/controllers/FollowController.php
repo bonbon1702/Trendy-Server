@@ -69,16 +69,13 @@ class FollowController extends \BaseController
     }
 
     /**
-     * Display all follow
-     * POST/follow
-     *
-     * @return Response
+     * @return mixed
      */
-    public function  store()
+    public function addFollowing()
     {
         $data = Input::all();
 
-        $follow = $this->followService->create($data);
+        $this->followService->addFollowing($data);
         return Response::json(array(
             'success' => true
         ));

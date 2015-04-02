@@ -46,7 +46,7 @@ class FollowService implements IFollowService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function addFollowing(array $data)
     {
         // TODO: Implement create() method.
         $userId = $data['user_id'];

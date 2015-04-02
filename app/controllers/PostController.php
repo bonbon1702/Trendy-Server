@@ -76,29 +76,14 @@ class PostController extends \BaseController
         ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * GET /post/create
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
-     * POST /post
-     *
-     * @return Response
+     * @return mixed
      */
-    public function store()
-    {
-        //
+    public function createPost(){
         $data = Input::all();
 
-        $this->postService->create($data);
+        $this->postService->createPost($data);
 
         return Response::json(array(
             'success' => true
@@ -122,17 +107,6 @@ class PostController extends \BaseController
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * GET /post/{id}/edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -141,9 +115,8 @@ class PostController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function updatePost($id)
     {
-        //
         $data = Input::all();
 
         $this->postService->update($data);

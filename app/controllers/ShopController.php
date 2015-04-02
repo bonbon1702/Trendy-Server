@@ -113,7 +113,7 @@ class ShopController extends BaseController
     public function saveShopDetailInfo(){
         $data = Input::all();
 
-        $shopDetail = $this->shopDetailService->create($data);
+        $shopDetail = $this->shopDetailService->saveShopDetailInfo($data);
         return Response::json(array(
             'success' => true,
             'shop_detail' => $shopDetail
