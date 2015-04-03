@@ -13,7 +13,34 @@ class TagContentTableSeeder extends Seeder {
             'content' => 'Winter'
         ));
         TagContent::create(array(
-            'content' => 'Summer'
+            'content' => 'Summber'
+        ));
+        TagContent::create(array(
+            'content' => 'Autumn'
+        ));
+        TagContent::create(array(
+            'content' => 'Clothes'
+        ));
+        TagContent::create(array(
+            'content' => 'Man'
+        ));
+        TagContent::create(array(
+            'content' => 'Woman'
+        ));
+        TagContent::create(array(
+            'content' => 'Kids'
+        ));
+        TagContent::create(array(
+            'content' => 'Shoes & Bags'
+        ));
+        TagContent::create(array(
+            'content' => 'Shirts'
+        ));
+        TagContent::create(array(
+            'content' => 'Pants'
+        ));
+        TagContent::create(array(
+            'content' => 'Jeans'
         ));
 	}
 
