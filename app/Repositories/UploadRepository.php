@@ -10,20 +10,15 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\IUploadRepository;
 use \Upload;
 
 /**
  * Class UploadRepository
  * @package Repositories
  */
-class UploadRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class UploadRepository implements IUploadRepository{
+
 
     /**
      * @param array $related

@@ -1,11 +1,11 @@
 <?php
 
-use Repositories\PostRepository;
-use Repositories\UploadRepository;
-use Repositories\UserRepository;
-use Services\PostService;
-use Services\UserService;
-use Services\FavoriteService;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IUploadRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IPostService;
+use Services\interfaces\IUserService;
+use Services\interfaces\IFavoriteService;
 
 /**
  * Class PostController
@@ -36,16 +36,21 @@ class PostController extends \BaseController
      */
     private $uploadRepository;
 
+    /**
+     * @var IFavoriteService
+     */
     private $favoriteService;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param UserService $userService
-     * @param PostRepository $postRepository
-     * @param PostService $postService
-     * @param UploadRepository $uploadRepository
+     * @param IUserRepository $userRepository
+     * @param IUserService $userService
+     * @param IPostRepository $postRepository
+     * @param IPostService $postService
+     * @param IUploadRepository $uploadRepository
+     * @param IFavoriteService $favoriteService
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, PostRepository $postRepository, PostService $postService, UploadRepository $uploadRepository, FavoriteService $favoriteService)
+    public function __construct(IUserRepository $userRepository, IUserService $userService, IPostRepository $postRepository, IPostService $postService, IUploadRepository $uploadRepository, IFavoriteService $favoriteService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
@@ -56,44 +61,12 @@ class PostController extends \BaseController
     }
 
     /**
-     * Display a listing of the resource.
-     * GET /post
-     *
-     * @return Response
+     * @return mixed
      */
-    public function index()
-    {
-        //
-        $posts = $this->postService->allPost();
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
-        ));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     * GET /post/create
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * POST /post
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        //
+    public function createPost(){
         $data = Input::all();
 
-        $this->postService->create($data);
+        $this->postService->createPost($data);
 
         return Response::json(array(
             'success' => true
@@ -107,7 +80,7 @@ class PostController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function getPostById($id)
     {
         //
         $post = $this->postService->getPostDetails($id);
@@ -117,17 +90,6 @@ class PostController extends \BaseController
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * GET /post/{id}/edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -136,9 +98,8 @@ class PostController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function updatePost($id)
     {
-        //
         $data = Input::all();
 
         $this->postService->update($data);
@@ -149,18 +110,14 @@ class PostController extends \BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
-     * DELETE /post/{id}
-     *
-     * @param  int $id
-     * @return Response
+     * @param $id
+     * @return mixed
      */
-    public function destroy($id)
+    public function deletePostById($id)
     {
-        $this->postService->delete('id', $id);
-
+        $this->postService->deletePost($id);
         return Response::json(array(
-            'success' => true,
+            'success' => true
         ));
     }
 
@@ -168,48 +125,64 @@ class PostController extends \BaseController
      * @param $id
      * @return mixed
      */
-    public function deletePost($id)
-    {
-//        $data = Input::all();
-        $this->postService->deletePost($id);
+    public function getPostTrendy($id, $tag){
+
+        $posts = $this->postService->getPostTrendy($id, $tag);
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    /**
+     * @param $id
+     * @param $lat
+     * @param $long
+     * @return mixed
+     */
+    public function getPostAround($id, $lat, $long){
+        $posts = $this->postService->getPostAround($id,$lat,$long);
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
+    public function getPostFavorite($id, $user_id){
+        $posts = $this->postService->getPostFavorite($id, $user_id);
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
+    public function getPostNewFeed($id,$user_id){
+        $posts = $this->postService->getPostNewFeed($id, $user_id);
+
+        return Response::json(array(
+            'success' => true,
+            'posts' => $posts
+        ));
+    }
+
+    public function editPostCaption($id, $caption){
+        $this->postService->editPostCaption($id, $caption);
+
         return Response::json(array(
             'success' => true
-        ));
-    }
-
-    public function getPostTrendy($id){
-        $posts = $this->postService->getPostPaging('zScore', $id, "none");
-
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
-        ));
-    }
-
-    public function getPostAround($id){
-        $posts = $this->postService->getPostPaging('zScore', $id, "none");
-
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
-        ));
-    }
-
-    public function getPostFavorite($id, $user_id){
-        $posts = $this->postService->getPostPaging('favorite', $id, $user_id);
-
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
-        ));
-    }
-
-    public function getPostNewFeed($id,$user_id){
-        $posts = $this->postService->getPostPaging('newfeed', $id, $user_id);
-
-        return Response::json(array(
-            'success' => true,
-            'posts' => $posts
         ));
     }
 

@@ -9,25 +9,25 @@
 namespace Services;
 
 
-use Core\BaseService;
-use Repositories\TagRepository;
+use Services\interfaces\ITagService;
+use Repositories\interfaces\ITagRepository;
 
 /**
  * Class TagService
  * @package Services
  */
-class TagService implements BaseService
+class TagService implements ITagService
 {
 
     /**
-     * @var TagRepository
+     * @var ITagRepository
      */
     private $tagRepository;
 
     /**
-     * @param TagRepository $tagRepository
+     * @param ITagRepository $tagRepository
      */
-    function __construct(TagRepository $tagRepository)
+    function __construct(ITagRepository $tagRepository)
     {
         $this->tagRepository = $tagRepository;
     }
@@ -41,7 +41,7 @@ class TagService implements BaseService
         // TODO: Implement create() method.
         $postId = $data['post_id'];
         $tagContentId = $data['tag_content_id'];
-        return $this->tagRepository->create(array(
+        $this->tagRepository->create(array(
             'post_id' => $postId,
             'tag_content_id' => $tagContentId
         ));

@@ -9,21 +9,15 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
-use \Shop;
+use Repositories\interfaces\IShopRepository;
+use Shop;
 
 /**
  * Class ShopRepository
  * @package Repositories
  */
-class ShopRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class ShopRepository implements IShopRepository
+{
 
     /**
      * @param array $related
@@ -55,7 +49,7 @@ class ShopRepository implements BaseRepository{
     public function getWhere($column, $value, array $related = null)
     {
         // TODO: Implement getWhere() method.
-        $shop = Shop::where($column,$value)->first();
+        $shop = Shop::where($column, $value)->first();
 
         return $shop;
     }
@@ -79,7 +73,7 @@ class ShopRepository implements BaseRepository{
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        if (!empty($data)){
+        if (!empty($data)) {
             $shop = Shop::create($data);
         }
 

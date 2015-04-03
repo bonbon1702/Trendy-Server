@@ -8,15 +8,14 @@
 
 namespace Repositories;
 
-
-use Core\BaseRepository;
-use Tag as Tag;
+use Repositories\interfaces\ITagRepository;
+use \Tag;
 
 /**
  * Class TagRepository
  * @package Repositories
  */
-class TagRepository implements BaseRepository
+class TagRepository implements ITagRepository
 {
     /**
      * @param $code

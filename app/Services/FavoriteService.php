@@ -9,26 +9,41 @@
 namespace Services;
 
 
-use Core\BaseService;
-use Repositories\FavoriteRepository;
+use Repositories\interfaces\IFavoriteRepository;
+use Services\interfaces\IFavoriteService;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class FavoriteService
  * @package Services
  */
-class FavoriteService implements BaseService
+class FavoriteService implements IFavoriteService
 {
+    /**
+     * @var IFavoriteRepository
+     */
     private $favoriteRepository;
 
+    /**
+     * @var IHistoryService
+     */
     private $historyService;
 
-    function __construct(FavoriteRepository $favoriteRepository, HistoryService $historyService)
+    /**
+     * @param IFavoriteRepository $favoriteRepository
+     * @param IHistoryService $historyService
+     */
+    function __construct(IFavoriteRepository $favoriteRepository, IHistoryService $historyService)
     {
         $this->favoriteRepository = $favoriteRepository;
         $this->historyService = $historyService;
     }
 
-    public function create(array $data)
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function addFavorite(array $data)
     {
         // TODO: Implement create() method.
         $favorite = $this->favoriteRepository->create(array(
@@ -43,16 +58,10 @@ class FavoriteService implements BaseService
         return $favorite;
     }
 
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
+    /**
+     * @param $user_id
+     * @param $post_id
+     */
     public function unFavorite($user_id, $post_id){
         $this->favoriteRepository->getRecent()
             ->where('user_id', $user_id)
@@ -60,6 +69,10 @@ class FavoriteService implements BaseService
             ->first()->delete();
     }
 
+    /**
+     * @param $post_id
+     * @return mixed
+     */
     public function getUserFavorite($post_id){
         $favorite = $this->favoriteRepository->getWhere('post_id', $post_id)->get();
 

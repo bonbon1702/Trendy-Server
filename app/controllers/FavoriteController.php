@@ -6,39 +6,53 @@
  * Time: 4:14 PM
  */
 
-use Services\NotificationService;
-use Services\FavoriteService;
+use Services\interfaces\INotificationService;
+use Services\interfaces\IFavoriteService;
+use Repositories\interfaces\IUserRepository;
 
-class FavoriteController extends \BaseController {
+/**
+ * Class FavoriteController
+ */
+class FavoriteController extends \BaseController
+{
 
+    /**
+     * @var INotificationService
+     */
     private $notificationService;
 
+    /**
+     * @var IFavoriteService
+     */
     private $favoriteService;
 
-    public function __construct(NotificationService $notificationService, FavoriteService $favoriteService) {
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @param INotificationService $notificationService
+     * @param IFavoriteService $favoriteService
+     * @param IUserRepository $userRepository
+     */
+    public function __construct(INotificationService $notificationService, IFavoriteService $favoriteService, IUserRepository $userRepository)
+    {
         $this->notificationService = $notificationService;
         $this->favoriteService = $favoriteService;
+        $this->userRepository = $userRepository;
     }
 
-    public function index() {
-
-    }
-
-        public function store() {
-
-        }
-
-        public function update($id) {
-
-        }
-
-        public function destroy($id) {
-
-        }
-
-        public function favoritePost($user_id, $post_id, $type){
-        if ($type == 'favorite'){
-            $favorite = $this->favoriteService->create(array(
+    /**
+     * @param $user_id
+     * @param $post_id
+     * @param $type
+     * @return mixed
+     */
+    public function favoritePost($user_id, $post_id, $type)
+    {
+        if ($type == 'favorite') {
+            $favorite = $this->favoriteService->addFavorite(array(
                 'user_id' => $user_id,
                 'post_id' => $post_id
             ));
@@ -48,14 +62,14 @@ class FavoriteController extends \BaseController {
                 'action' => 'favorite'
             );
             $notification = $this->notificationService->create($data);
-            $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
+            $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+            $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
 
             Event::fire(NotificationEventHandler::EVENT, array(
-                'notification' => $notification,
-                'user_effected_id' => $user_effected_id
+                'notification' => $notification
             ));
-        } elseif ($type == 'unFavorite'){
-            $this->favoriteService->unFavorite($user_id,$post_id);
+        } elseif ($type == 'unFavorite') {
+            $this->favoriteService->unFavorite($user_id, $post_id);
         }
 
         return Response::json(array(

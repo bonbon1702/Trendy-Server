@@ -10,13 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\ITagContentRepository;
 use \TagContent;
 
 /**
  * Class TagContentRepository
  * @package Repositories
  */
-class TagContentRepository implements BaseRepository{
+class TagContentRepository implements ITagContentRepository{
     /**
      * @param $code
      */
@@ -123,9 +124,7 @@ class TagContentRepository implements BaseRepository{
      */
     public function search($type){
         $tagContent =  TagContent::where('content', 'LIKE', '%'.$type.'%' )->get();
-        // $shop = Shop::whereRaw('MATCH(name,address) AGAINST (?)', array(
-        //         $type
-        //     ));
+
         return $tagContent;
     }
 }

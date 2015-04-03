@@ -8,14 +8,17 @@
 
 namespace Services;
 
-use Core\BaseService;
-use Repositories\UserRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IAlbumService;
+use Services\interfaces\IFollowService;
+use Services\interfaces\IPostService;
+use Services\interfaces\IUserService;
 
 /**
  * Class UserService
  * @package Services
  */
-class UserService implements BaseService
+class UserService implements IUserService
 {
 
     /**
@@ -23,13 +26,14 @@ class UserService implements BaseService
      */
     private $userRepository;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param FollowService $followService
-     * @param PostService $postService
-     * @param AlbumService $albumService
+     * @param IUserRepository $userRepository
+     * @param IFollowService $followService
+     * @param IPostService $postService
+     * @param IAlbumService $albumService
      */
-    function __construct(UserRepository $userRepository, FollowService $followService, PostService $postService, AlbumService $albumService)
+    function __construct(IUserRepository $userRepository, IFollowService $followService, IPostService $postService, IAlbumService $albumService)
     {
         $this->userRepository = $userRepository;
         $this->followService = $followService;
@@ -58,7 +62,8 @@ class UserService implements BaseService
                     'gender' => $data['gender'],
                     'delete_flag' => 0,
                     'role_id' => 1,
-                    'remember_token' => $data['remember_token']
+                    'remember_token' => $data['remember_token'],
+                    'image_cover' => url() . '/assets/cover-facebook-1.jpg'
                 ));
                 $album = $this->albumService->create(array(
                     'user_id' => $user->id,
@@ -66,19 +71,23 @@ class UserService implements BaseService
                 ));
             } else {
                 $user = $this->userRepository->update('email', $data['email'], array(
-                    'remember_token' => $data['remember_token']
+                    'remember_token' => $data['remember_token'],
+                    'sw_id' => $data['sw_id']
                 ));
             }
         }
         return $user;
     }
 
+
     /**
      * @param array $data
+     * @return mixed
      */
-    public function update(array $data)
+    public function changeCover(array $data)
     {
         // TODO: Implement update() method.
+        return $this->userRepository->update('id', $data['id'], $data);
     }
 
 
@@ -86,7 +95,7 @@ class UserService implements BaseService
      * @param $column
      * @param $value
      */
-    public function delete($column, $value)
+    public function deleteLogoutUser($column, $value)
     {
         // TODO: Implement deleteWhere() method.
         $this->userRepository->deleteWhere($column, $value);
@@ -101,8 +110,8 @@ class UserService implements BaseService
     {
         $user = $this->userRepository->get($id);
         $user['album'] = $this->albumService->getAlbum($user->id);
-        foreach($user['album'] as $v){
-            $v['album_detail']=$this->albumService->getAlbumDetail($v->album_name,$user->id);
+        foreach ($user['album'] as $v) {
+            $v['album_detail'] = $this->albumService->getAlbumDetail($v->album_name, $user->id);
         }
         $user['following'] = $this->followService->FollowingByUser($user->id);
         $user['follower'] = $this->followService->FollowerByUser($id);
@@ -114,14 +123,19 @@ class UserService implements BaseService
      * @param $type
      * @return mixed
      */
-    public function searchFullText($type){
+    public function searchFullText($type)
+    {
         $users = $this->userRepository->getRecent()
-            ->where('username', 'LIKE', '%'.$type.'%')->get();
+            ->where('username', 'LIKE', '%' . $type . '%')->get();
 
         return $users;
     }
 
-    public function getAllUser(){
+    /**
+     * @return mixed
+     */
+    public function getAllUser()
+    {
         $users = $this->userRepository->all();
 
         return $users;

@@ -8,16 +8,18 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\GoogleMapHelper;
-use Repositories\ShopDetailRepository;
+use Repositories\interfaces\IShopDetailRepository;
+use Services\interfaces\IShopDetailService;
+use Services\interfaces\ILikeService;
+use Services\interfaces\ICommentService;
+use Services\interfaces\ITagPictureService;
 
 /**
  * Class ShopService
  * @package Services
  */
-class ShopDetailService implements BaseService
+class ShopDetailService implements IShopDetailService
 {
 
 
@@ -42,12 +44,13 @@ class ShopDetailService implements BaseService
 
 
     /**
-     * @param ShopDetailRepository $shopDetailRepository
+     * @param IShopDetailRepository $shopDetailRepository
      * @param GoogleMapHelper $googleMapHelper
-     * @param LikeService $likeService
-     * @param CommentService $commentService
+     * @param ILikeService $likeService
+     * @param ICommentService $commentService
+     * @param ITagPictureService $tagPictureService
      */
-    function __construct(ShopDetailRepository $shopDetailRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService,TagPictureService $tagPictureService)
+    function __construct(IShopDetailRepository $shopDetailRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService)
     {
         // TODO: Implement __construct() method.
         $this->shopDetailRepository= $shopDetailRepository;
@@ -62,7 +65,7 @@ class ShopDetailService implements BaseService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function saveShopDetailInfo(array $data)
     {
         // TODO: Implement create() method.
         if (!empty($data)) {
@@ -104,25 +107,6 @@ class ShopDetailService implements BaseService
 
         return $shopDetail;
 
-    }
-
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
     }
 
     /**

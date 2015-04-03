@@ -6,10 +6,10 @@
  * Time: 10:23 AM
  */
 
-use Repositories\UserRepository;
-use Services\UserService;
-use Services\ShopService;
-use Services\FollowService;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IFollowService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IUserService;
 
 /**
  * Class UserController
@@ -35,13 +35,14 @@ class UserController extends BaseController
      */
     private $followService;
 
+
     /**
-     * @param UserRepository $userRepository
-     * @param UserService $userService
-     * @param ShopService $shopService
-     * @param FollowService $followService
+     * @param IUserRepository $userRepository
+     * @param IUserService $userService
+     * @param IShopService $shopService
+     * @param IFollowService $followService
      */
-    public function __construct(UserRepository $userRepository, UserService $userService, ShopService $shopService, FollowService $followService)
+    public function __construct(IUserRepository $userRepository, IUserService $userService, IShopService $shopService, IFollowService $followService)
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
@@ -52,7 +53,7 @@ class UserController extends BaseController
     /**
      * @return mixed
      */
-    public function store()
+    public function createUser()
     {
         $data = Input::all();
 
@@ -82,7 +83,7 @@ class UserController extends BaseController
      */
     public function  deleteLogoutUser($id)
     {
-        $this->userService->delete('id', $id);
+        $this->userService->deleteLogoutUser('id', $id);
 
         return Response::json(array(
             'success' => true
@@ -93,12 +94,26 @@ class UserController extends BaseController
      * @param $id
      * @return mixed
      */
-    public function getUser($id)
+    public function getUserInfo($id)
     {
         $user = $this->userService->getUserInfo($id);
         return Response::json(array(
             'success' => true,
             'user' => $user
+        ));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function changeCover($id)
+    {
+        $data = Input::all();
+        $data['id'] = $id;
+        $this->userService->changeCover($data);
+        return Response::json(array(
+            'success' => true
         ));
     }
 
@@ -118,7 +133,7 @@ class UserController extends BaseController
                 'name' => $v->username,
                 'image' => $v->picture_profile,
                 'sub' => $count_follower . ' Follower',
-                'url' => 'user/' .$v->id
+                'url' => 'user/' . $v->id
             );
         }
 

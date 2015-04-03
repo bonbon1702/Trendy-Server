@@ -8,18 +8,18 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\CommentRepository;
-use Repositories\UserRepository;
-use Repositories\PostRepository;
-use Repositories\ShopRepository;
+use Repositories\interfaces\ICommentRepository;
+use Repositories\interfaces\IUserRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IShopRepository;
+use Services\interfaces\ICommentService;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class CommentService
  * @package Services
  */
-class CommentService implements BaseService{
+class CommentService implements ICommentService{
 
     /**
      * @var CommentRepository
@@ -46,14 +46,15 @@ class CommentService implements BaseService{
      */
     private $historyService;
 
+
     /**
-     * @param CommentRepository $commentRepository
-     * @param UserRepository $userRepository
-     * @param PostRepository $postRepository
-     * @param ShopRepository $shopRepository
-     * @param HistoryService $historyService
+     * @param ICommentRepository $commentRepository
+     * @param IUserRepository $userRepository
+     * @param IPostRepository $postRepository
+     * @param IShopRepository $shopRepository
+     * @param IHistoryService $historyService
      */
-    function __construct(CommentRepository $commentRepository, UserRepository $userRepository, PostRepository $postRepository, ShopRepository $shopRepository,HistoryService $historyService)
+    function __construct(ICommentRepository $commentRepository, IUserRepository $userRepository, IPostRepository $postRepository, IShopRepository $shopRepository, IHistoryService $historyService)
     {
         // TODO: Implement __construct() method.
         $this->commentRepository = $commentRepository;
@@ -98,24 +99,6 @@ class CommentService implements BaseService{
         $this->commentRepository->update('id', $data['id'], $data);
     }
 
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function deleteComment($id)
-    {
-        $this->commentRepository->delete($id);
-        return true;
-    }
 
     /**
      * @param $id
@@ -141,7 +124,41 @@ class CommentService implements BaseService{
         return $comment;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function deleteCommentInPost($id){
         return $this->commentRepository->deleteCommentInPost($id);
+    }
+
+    public function editPostComment($id, $content){
+        $this->commentRepository->getRecent()
+            ->where('id', $id)->where('type_comment', 0)
+            ->update(array(
+                'content' => $content
+            ));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteCommentInShop($id){
+        return $this->commentRepository->getRecent()
+            ->where('type_comment', 1)->where('id', $id)->delete();
+    }
+
+    /**
+     * @param $id
+     * @param $content
+     * @return mixed
+     */
+    public function editShopComment($id, $content){
+        $this->commentRepository->getRecent()
+            ->where('id', $id)->where('type_comment', 1)
+            ->update(array(
+                'content' => $content
+            ));
     }
 }

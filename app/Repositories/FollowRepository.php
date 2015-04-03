@@ -11,21 +11,15 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use Follow as Follow;
+use Repositories\interfaces\IFollowRepository;
 use User as User;
 
 /**
  * Class FollowRepository
  * @package Repositories
  */
-class FollowRepository implements BaseRepository
+class FollowRepository implements IFollowRepository
 {
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

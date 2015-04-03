@@ -8,25 +8,25 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\HistoryRepository;
+use Repositories\interfaces\IHistoryRepository;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class HistoryService
  * @package Services
  */
-class HistoryService implements BaseService{
+class HistoryService implements IHistoryService{
 
     /**
      * @var HistoryRepository
      */
     private $historyRepository;
 
+
     /**
-     * @param HistoryRepository $historyRepository
+     * @param IHistoryRepository $historyRepository
      */
-    function __construct(HistoryRepository $historyRepository)
+    function __construct(IHistoryRepository $historyRepository)
     {
         $this->historyRepository = $historyRepository;
     }
@@ -43,22 +43,6 @@ class HistoryService implements BaseService{
         return true;
     }
 
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 
     /**
      * @param $type_action

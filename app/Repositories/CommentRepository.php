@@ -11,19 +11,13 @@ namespace Repositories;
 
 use Core\BaseRepository;
 use \Comment;
+use Repositories\interfaces\ICommentRepository;
 
 /**
  * Class CommentRepository
  * @package Repositories
  */
-class CommentRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class CommentRepository implements ICommentRepository{
 
     /**
      * @param array $related
@@ -67,6 +61,9 @@ class CommentRepository implements BaseRepository{
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $comment = new Comment();
+
+        return $comment;
     }
 
     /**
@@ -126,8 +123,9 @@ class CommentRepository implements BaseRepository{
         return Comment::where('type_comment', $typeComment)->where('type_id', $typeId)->get();
     }
 
-    public  function deleteCommentInPost($typeId){
-        return Comment::where('type_comment', 0)->where('type_id', $typeId)->delete();
+    public  function deleteCommentInPost($id){
+        return Comment::where('type_comment', 0)->where('id', $id)->delete();
     }
+
 
 }

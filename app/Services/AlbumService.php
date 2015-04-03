@@ -8,18 +8,17 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\AlbumRepository;
-use Repositories\PostRepository;
-use Repositories\UserRepository;
-use Repositories\PostAlbumRepository;
+use Repositories\interfaces\IAlbumRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IUserRepository;
+use Repositories\interfaces\IPostAlbumRepository;
+use Services\interfaces\IAlbumService;
 
 /**
  * Class AlbumService
  * @package Services
  */
-class AlbumService implements BaseService
+class AlbumService implements IAlbumService
 {
 
     /**
@@ -42,13 +41,14 @@ class AlbumService implements BaseService
      */
     private $postAlbumRepository;
 
+
     /**
-     * @param AlbumRepository $albumRepository
-     * @param PostRepository $postRepository
-     * @param UserRepository $userRepository
-     * @param PostAlbumRepository $postAlbumRepository
+     * @param IAlbumRepository $albumRepository
+     * @param IPostRepository $postRepository
+     * @param IUserRepository $userRepository
+     * @param IPostAlbumRepository $postAlbumRepository
      */
-    function __construct(AlbumRepository $albumRepository, PostRepository $postRepository, UserRepository $userRepository,PostAlbumRepository $postAlbumRepository)
+    function __construct(IAlbumRepository $albumRepository, IPostRepository $postRepository, IUserRepository $userRepository,IPostAlbumRepository $postAlbumRepository)
     {
         // TODO: Implement __construct() method.
         $this->albumRepository = $albumRepository;

@@ -9,30 +9,15 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
-use \Like;
+use Like;
+use Repositories\interfaces\ILikeRepository;
 
 /**
  * Class LikeRepository
  * @package Repositories
  */
-class LikeRepository implements BaseRepository
+class LikeRepository implements ILikeRepository
 {
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
-
-    /**
-     * @param array $related
-     */
-    public function all(array $related = null)
-    {
-        // TODO: Implement all() method.
-    }
 
     /**
      * @param $id
@@ -64,6 +49,9 @@ class LikeRepository implements BaseRepository
     public function getRecent(array $related = null)
     {
         // TODO: Implement getRecent() method.
+        $like = new Like();
+
+        return $like;
     }
 
     /**
@@ -126,7 +114,8 @@ class LikeRepository implements BaseRepository
      * @param $type_id
      * @return mixed
      */
-    public function getLike($type_like, $type_id){
+    public function getLike($type_like, $type_id)
+    {
         $like = Like::where('type_like', $type_like)->where('type_id', $type_id);
 
         return $like;

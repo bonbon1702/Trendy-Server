@@ -8,16 +8,22 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\GoogleMapHelper;
-use Repositories\ShopRepository;
+use Repositories\interfaces\ILikeRepository;
+use Repositories\interfaces\IShopRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\ICommentService;
+use Services\interfaces\ILikeService;
+use Services\interfaces\IShopDetailService;
+use Services\interfaces\IShopService;
+use Services\interfaces\ITagPictureService;
+use Core\ItemToItem;
 
 /**
  * Class ShopService
  * @package Services
  */
-class ShopService implements BaseService
+class ShopService implements IShopService
 {
 
     /**
@@ -34,63 +40,63 @@ class ShopService implements BaseService
      */
     private $commentService;
 
+    /**
+     * @var ITagPictureService
+     */
     private $tagPictureService;
 
+    /**
+     * @var IShopDetailService
+     */
     private $shopDetailService;
 
     /**
-     * @param ShopRepository $shopRepository
-     * @param GoogleMapHelper $googleMapHelper
-     * @param LikeService $likeService
-     * @param CommentService $commentService
+     * @var
      */
-    function __construct(ShopRepository $shopRepository, GoogleMapHelper $googleMapHelper,LikeService $likeService,CommentService $commentService,TagPictureService $tagPictureService,ShopDetailService $shopDetailService)
+    private $likeRepository;
+
+    /**
+     * @var
+     */
+    private $userRepository;
+
+
+    /**
+     * @param IShopRepository $shopRepository
+     * @param GoogleMapHelper $googleMapHelper
+     * @param ILikeService $likeService
+     * @param ICommentService $commentService
+     * @param ITagPictureService $tagPictureService
+     * @param IShopDetailService $shopDetailService
+     * @param ILikeRepository $likeRepository
+     * @param IUserRepository $userRepository
+     */
+    function __construct(IShopRepository $shopRepository, GoogleMapHelper $googleMapHelper, ILikeService $likeService, ICommentService $commentService, ITagPictureService $tagPictureService, IShopDetailService $shopDetailService, ILikeRepository $likeRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->shopRepository = $shopRepository;
         $this->googleMapHelper = $googleMapHelper;
         $this->likeService = $likeService;
         $this->commentService = $commentService;
-        $this->tagPictureService= $tagPictureService;
-        $this->shopDetailService=$shopDetailService;
+        $this->tagPictureService = $tagPictureService;
+        $this->shopDetailService = $shopDetailService;
+        $this->likeRepository = $likeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * @param array $data
+     * @param $id
+     * @return mixed
      */
-    public function create(array $data)
-    {
-        // TODO: Implement create() method.
-
-    }
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
     public function getShopByShopId($id)
     {
         $shop = $this->shopRepository->get($id);
-        $shop['shop_detail'] =$this->shopDetailService->getShopDetail($id);
+        $shop['shop_detail'] = $this->shopDetailService->getShopDetail($id);
         $shop['like'] = $this->likeService->countLike(1, $id);
         $shop['comments'] = $this->commentService->showCommentByShopId($id);
         $shop['posts'] = $this->tagPictureService->getPostInShopByShopId($id);
         return $shop;
     }
-
 
 
     /**
@@ -142,9 +148,12 @@ class ShopService implements BaseService
         if ($check)
             return $check;
         else {
+            $cor = $this->googleMapHelper->findCoordinate($address);
             $shop = $this->shopRepository->create(array(
                 'address' => $address,
-                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg'
+                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg',
+                'lat' => $cor[0]['latitude'],
+                'long' => $cor[0]['longitude']
             ));
 
             return $shop;
@@ -171,5 +180,66 @@ class ShopService implements BaseService
     {
         $shop = $this->shopRepository->all();
         return $shop;
+    }
+
+    public function suggestShop($loginId, $shopId){
+        $shops = $this->shopRepository->getRecent()
+            ->select('shop.id')
+            ->get();
+        $users = $this->userRepository->getRecent()
+            ->select('users.id')
+            ->get();
+        $matrix = array();
+        foreach ($users as $v){
+            $matrix[$v->id] = array();
+            foreach ($shops as $v1){
+                $check = $this->likeRepository->getRecent()
+                    ->where('type_like', 1)
+                    ->where('type_id', $v1->id)
+                    ->where('user_id', $v->id)
+                    ->get();
+
+                if (count($check) > 0) {
+                    $matrix[$v->id][$v1->id] = 1;
+                } else {
+                    $matrix[$v->id][$v1->id] = 0;
+                }
+            }
+        }
+        $itemToItem = new ItemToItem();
+        $itemToItem->insert($matrix);
+        $results = $itemToItem->predict($shopId);
+
+
+        $suggestions = array();
+        foreach ($results as $k =>$v){
+            $shop = $this->shopRepository->get($k);
+            $shop['cosine'] = $v;
+            $suggestions[] = $shop;
+        }
+
+        usort($suggestions, function ($item1, $item2) {
+            $result = 0;
+            if ($item1['cosine'] < $item2['cosine']) {
+                $result = 1;
+            } else if ($item1['cosine'] > $item2['cosine']) {
+                $result = -1;
+            }
+            return $result;
+        });
+
+        $suggestions = array_slice($suggestions, 0, 3);
+
+        $likes = $this->likeRepository->getRecent()
+            ->where('user_id',$loginId)
+            ->where('type_like', 1)
+            ->get();
+        foreach ($suggestions as $k => $v){
+            foreach ($likes as $t){
+                if ($v->id == $t->type_id) unset($suggestions[$k]);
+            }
+        }
+
+        return $suggestions;
     }
 }

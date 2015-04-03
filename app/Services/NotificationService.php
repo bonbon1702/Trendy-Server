@@ -8,24 +8,44 @@
 
 namespace Services;
 
+use Repositories\interfaces\INotificationRepository;
+use Repositories\interfaces\INotificationWatchedRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IPostService;
+use Services\interfaces\INotificationService;
+use Services\interfaces\IShopService;
+use Services\interfaces\IUserService;
 
-use Core\BaseService;
-use Repositories\NotificationRepository;
-use Repositories\NotificationWatchedRepository;
-
-class NotificationService implements BaseService
+/**
+ * Class NotificationService
+ * @package Services
+ */
+class NotificationService implements INotificationService
 {
 
 
-    function __construct(NotificationRepository $notificationRepository, PostService $postService, ShopService $shopService, UserService $userService, NotificationWatchedRepository $notificationWatchedRepository)
+    /**
+     * @param INotificationRepository $notificationRepository
+     * @param IPostService $postService
+     * @param IShopService $shopService
+     * @param IUserService $userService
+     * @param INotificationWatchedRepository $notificationWatchedRepository
+     * @param IUserRepository $userRepository
+     */
+    function __construct(INotificationRepository $notificationRepository, IPostService $postService, IShopService $shopService, IUserService $userService, INotificationWatchedRepository $notificationWatchedRepository, IUserRepository $userRepository)
     {
         $this->notificationRepository = $notificationRepository;
         $this->postService = $postService;
         $this->shopService = $shopService;
         $this->userService = $userService;
         $this->notificationWatchedRepository = $notificationWatchedRepository;
+        $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         // TODO: Implement create() method.
@@ -45,16 +65,11 @@ class NotificationService implements BaseService
         return $notification;
     }
 
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
 
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
+    /**
+     * @param $user_id
+     * @return array
+     */
     public function getNotification($user_id)
     {
         $notification_unread = array();
@@ -63,7 +78,6 @@ class NotificationService implements BaseService
             ->where('user_id', $user_id)
             ->having('id_of_user_effected', '<>', $user_id)
             ->orderBy('created_at', 'desc')
-            ->take(5)
             ->get();
 
         $notification_eff = $this->notificationRepository->getRecent()
@@ -71,7 +85,6 @@ class NotificationService implements BaseService
             ->having('user_id', '<>', $user_id)
             ->groupBy('post_id')
             ->orderBy('created_at', 'desc')
-            ->take(5)
             ->get();
 
         if (count($notification_eff) > 0){
@@ -90,10 +103,14 @@ class NotificationService implements BaseService
         if (count($notification) > 0) {
             foreach ($notification as $v) {
                 $check = $this->notificationWatchedRepository->getWhere('notification_id', $v->id)->get();
-
+                $v['username'] = $this->userRepository->get($v['user_id'])->username;
                 if (count($check) == 0) {
                     $notification_unread[] = $v;
                 }
+            }
+
+            foreach ($notification_unread as $v){
+                $v['username'] = $this->userRepository->get($v['user_id'])->username;
             }
         }
         $results = array(
@@ -103,6 +120,10 @@ class NotificationService implements BaseService
         return $results;
     }
 
+    /**
+     * @param $post_id
+     * @return mixed
+     */
     public function userEffectedPost($post_id){
         $user_effected_id = $this->notificationRepository->getRecent()
             ->select('id_of_user_effected')

@@ -8,20 +8,33 @@
 
 namespace Services;
 
+use Repositories\interfaces\INotificationWatchedRepository;
+use Services\interfaces\INotificationWatchedService;
 
-use Core\BaseService;
-use Repositories\NotificationWatchedRepository;
+/**
+ * Class NotificationWatchedService
+ * @package Services
+ */
+class NotificationWatchedService implements INotificationWatchedService{
 
-class NotificationWatchedService implements BaseService{
-
+    /**
+     * @var INotificationWatchedRepository
+     */
     private $notificationWatchedRepository;
 
-    function __construct(NotificationWatchedRepository $notificationWatchedRepository)
+    /**
+     * @param INotificationWatchedRepository $notificationWatchedRepository
+     */
+    function __construct(INotificationWatchedRepository $notificationWatchedRepository)
     {
         $this->notificationWatchedRepository = $notificationWatchedRepository;
     }
 
-    public function create(array $data)
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function watchedNotification(array $data)
     {
         // TODO: Implement create() method.
         $check = $this->notificationWatchedRepository->getWhere('notification_id', $data['notification_id'])->get();
@@ -36,13 +49,4 @@ class NotificationWatchedService implements BaseService{
         return true;
     }
 
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 } 

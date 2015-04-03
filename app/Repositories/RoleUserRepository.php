@@ -10,22 +10,15 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\IRoleUserRepository;
 use \RoleUser;
 
 /**
  * Class RoleUserRepository
  * @package Repositories
  */
-class RoleUserRepository implements BaseRepository
+class RoleUserRepository implements IRoleUserRepository
 {
-
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     /**
      * @param array $related

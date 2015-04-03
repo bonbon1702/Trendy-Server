@@ -6,8 +6,8 @@
  * Time: 10:19 AM
  */
 
-use Repositories\FollowRepository;
-use Services\FollowService;
+use Repositories\interfaces\IFollowRepository;
+use Services\interfaces\IFollowService;
 
 /**
  * Class FollowController
@@ -24,11 +24,12 @@ class FollowController extends \BaseController
      */
     private $followRepository;
 
+
     /**
-     * @param FollowService $followService
-     * @param FollowRepository $followRepository
+     * @param IFollowService $followService
+     * @param IFollowRepository $followRepository
      */
-    public function __construct(FollowService $followService, FollowRepository $followRepository)
+    public function __construct(IFollowService $followService, IFollowRepository $followRepository)
     {
         $this->followService = $followService;
         $this->followRepository = $followRepository;
@@ -68,59 +69,48 @@ class FollowController extends \BaseController
     }
 
     /**
-     * Display all follow
-     * POST/follow
-     *
-     * @return Response
+     * @return mixed
      */
-    public function  store()
+    public function addFollowing()
     {
         $data = Input::all();
 
-        $this->followService->create($data);
+        $this->followService->addFollowing($data);
         return Response::json(array(
             'success' => true
         ));
     }
 
     /**
-     * Update the specified resource in storage.
-     * PUT/follow
-     *
-     * @return Response
+     * @param $user_id
+     * @param $follower_id
+     * @return mixed
      */
-    public function update($id)
+    public function deleteFollowing($user_id, $follower_id)
     {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->followService->update($data);
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
-
-    /**
-     * Remove the specified Follow from storage.
-     * DELETE/follow
-     *
-     * @return Response
-     */
-    public function deleteFollowing()
-    {
-        $data = Input::all();
+        $data = array(
+            'user_id' => $user_id,
+            'follower_id' => $follower_id
+        );
         $this->followService->deleteFollowing($data);
         return Response::json(array(
             'success' => true
         ));
     }
 
-    public function suggestionFollow($id, $type, $userId){
+    /**
+     * @param $id
+     * @param $type
+     * @param $userId
+     * @return mixed
+     */
+    public function suggestionFollow($id, $type, $userId)
+    {
         $suggests = array();
-        if ($type == 'popular'){
+        if ($type == 'popular') {
             $suggests = $this->followService->popularFollow($userId);
-        }elseif ($type == 'itemToItem'){
-            $suggests = $this->followService->itemToItemFollow($id,$userId);
+        } elseif ($type == 'itemToItem') {
+            $suggests = $this->followService->itemToItemFollow($id, $userId);
         }
 
 

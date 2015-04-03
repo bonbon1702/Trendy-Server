@@ -9,15 +9,11 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
-use \Album;
+use Album;
+use Repositories\interfaces\IAlbumRepository;
 
-class AlbumRepository implements BaseRepository
+class AlbumRepository implements IAlbumRepository
 {
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
 
     public function all(array $related = null)
     {
@@ -46,7 +42,7 @@ class AlbumRepository implements BaseRepository
     {
         // TODO: Implement getRecent() method.
         $album = new Album();
-        
+
         return $album;
     }
 
@@ -64,7 +60,7 @@ class AlbumRepository implements BaseRepository
     {
         // TODO: Implement update() method.
         if (!empty($data)) {
-            $album = $this->getWhere($column,$value)
+            $album = $this->getWhere($column, $value)
                 ->update($data);
         }
         return $album;
@@ -82,11 +78,11 @@ class AlbumRepository implements BaseRepository
         $this->getWhere($column, $value)->delete();
     }
 
-    public function joinPostAndAlbumAndPostAlbum(){
-        return Album::join('post_album', 'album.id', '=' , 'post_album.album_id')
-                        ->join('post','post_album.post_id','=','post.id');
+    public function joinPostAndAlbumAndPostAlbum()
+    {
+        return Album::join('post_album', 'album.id', '=', 'post_album.album_id')
+            ->join('post', 'post_album.post_id', '=', 'post.id');
     }
-
 
 
 }

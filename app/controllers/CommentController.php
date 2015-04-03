@@ -6,31 +6,73 @@
  * Time: 4:14 PM
  */
 
-use Repositories\CommentRepository;
-use Services\CommentService;
-use Repositories\PostRepository;
-use Services\PostService;
-use Repositories\ShopRepository;
-use Services\ShopService;
-use Services\NotificationService;
+use Repositories\interfaces\ICommentRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IShopRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\ICommentService;
+use Services\interfaces\INotificationService;
+use Services\interfaces\IPostService;
+use Services\interfaces\IShopService;
 
-class CommentController extends \BaseController {
+/**
+ * Class CommentController
+ */
+class CommentController extends \BaseController
+{
 
+    /**
+     * @var IPostRepository
+     */
     private $postRepository;
 
+    /**
+     * @var IPostService
+     */
     private $postService;
 
+    /**
+     * @var ICommentRepository
+     */
     private $commentRepository;
 
+    /**
+     * @var ICommentService
+     */
     private $commentService;
 
+    /**
+     * @var IShopRepository
+     */
     private $shopRepository;
 
+    /**
+     * @var IShopService
+     */
     private $shopService;
 
+    /**
+     * @var INotificationService
+     */
     private $notificationService;
 
-    public function __construct(PostRepository $postRepository, CommentRepository $commentRepository, PostService $postService, CommentService $commentService, ShopRepository $shopRepository, ShopService $shopService, NotificationService $notificationService) {
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @param IPostRepository $postRepository
+     * @param ICommentRepository $commentRepository
+     * @param IPostService $postService
+     * @param ICommentService $commentService
+     * @param IShopRepository $shopRepository
+     * @param IShopService $shopService
+     * @param INotificationService $notificationService
+     * @param IUserRepository $userRepository
+     */
+    public function __construct(IPostRepository $postRepository, ICommentRepository $commentRepository, IPostService $postService, ICommentService $commentService, IShopRepository $shopRepository, IShopService $shopService, INotificationService $notificationService, IUserRepository $userRepository)
+    {
         $this->commentRepository = $commentRepository;
         $this->commentService = $commentService;
         $this->postRepository = $postRepository;
@@ -38,17 +80,14 @@ class CommentController extends \BaseController {
         $this->shopRepository = $shopRepository;
         $this->shopService = $shopService;
         $this->notificationService = $notificationService;
+        $this->userRepository = $userRepository;
     }
 
-    public function index() {
-        $comment = $this->commentRepository->all();
-        return Response::json(array(
-            'success' => true,
-            'comment' => $comment
-        ));
-    }
-
-    public function store() {
+    /**
+     * @return mixed
+     */
+    public function saveComment()
+    {
         $data = Input::all();
 
         $comment = $this->commentService->create($data);
@@ -56,11 +95,16 @@ class CommentController extends \BaseController {
         $data['action'] = 'comment';
 
         $notification = $this->notificationService->create($data);
-        $user_effected_id =  $this->notificationService->userEffectedPost($notification->post_id);
+        $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+        $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
+
 
         Event::fire(NotificationEventHandler::EVENT, array(
             'notification' => $notification,
-            'user_effected_id' => $user_effected_id
+        ));
+
+        Event::fire(CommentEventHandler::EVENT, array(
+            'comment' => $comment
         ));
 
         return Response::json(array(
@@ -69,24 +113,12 @@ class CommentController extends \BaseController {
         ));
     }
 
-    public function update($id) {
-        $data = Input::all();
-        $data['id'] = $id;
-        $this->commentService->update($data);
-
-        return Response::json(array(
-            'success' => true
-        ));
-    }
-
-    public function destroy($id) {
-        $this->commentService->deleteComment($id);
-        return Response::json(array(
-            'success' => true,
-        ));
-    }
-
-    public function showPost($id) {
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function showPost($id)
+    {
         $comment = $this->commentService->showCommentByPostId($id);
         return Response::json(array(
             'success' => true,
@@ -94,12 +126,47 @@ class CommentController extends \BaseController {
         ));
     }
 
-    public function showShop($id) {
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function showShop($id)
+    {
         $comment = $this->commentService->showCommentByShopId($id);
 
         return Response::json(array(
             'success' => true,
             'comment' => $comment
+        ));
+    }
+
+    public function editPostComment($id, $content){
+        $this->commentService->editPostComment($id, $content);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function deletePostComment($id){
+        $comment = $this->commentService->deleteCommentInPost($id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function editShopComment($id, $content){
+        $this->commentService->editShopComment($id, $content);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function deleteShopComment($id){
+        $comment = $this->commentService->deleteCommentInShop($id);
+        return Response::json(array(
+            'success' => true
         ));
     }
 }

@@ -9,22 +9,15 @@
 namespace Repositories;
 
 
-use Core\BaseRepository;
 use Illuminate\Support\Facades\Auth;
 use \Post;
+use Repositories\interfaces\IPostRepository;
 
 /**
  * Class PostRepository
  * @package Repositories
  */
-class PostRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class PostRepository implements IPostRepository{
 
     /**
      * @param array $related

@@ -8,16 +8,16 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\LikeRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\ILikeRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\ILikeService;
+use Services\interfaces\IHistoryService;
 
 /**
  * Class LikeService
  * @package Services
  */
-class LikeService implements BaseService
+class LikeService implements ILikeService
 {
 
     /**
@@ -35,43 +35,19 @@ class LikeService implements BaseService
      */
     private $historyService;
 
+
     /**
-     * @param LikeRepository $likeRepository
-     * @param UserRepository $userRepository
-     * @param HistoryService $historyService
+     * @param ILikeRepository $likeRepository
+     * @param IUserRepository $userRepository
+     * @param IHistoryService $historyService
      */
-    function __construct(LikeRepository $likeRepository, UserRepository $userRepository, HistoryService $historyService)
+    function __construct(ILikeRepository $likeRepository, IUserRepository $userRepository, IHistoryService $historyService)
     {
         $this->likeRepository = $likeRepository;
         $this->userRepository = $userRepository;
         $this->historyService = $historyService;
     }
 
-    /**
-     * @param array $data
-     */
-    public function create(array $data)
-    {
-        // TODO: Implement create() method.
-
-    }
-
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
 
     /**
      * @param $type_like

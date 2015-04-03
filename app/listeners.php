@@ -7,3 +7,4 @@
  */
 Event::listen(UpdateScoreEventHandler::EVENT, 'UpdateScoreEventHandler');
 Event::listen(NotificationEventHandler::EVENT, 'NotificationEventHandler');
+Event::listen(CommentEventHandler::EVENT, 'CommentEventHandler');

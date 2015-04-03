@@ -8,18 +8,17 @@
 
 namespace Services;
 
-
-use Core\BaseService;
 use Core\Helper;
-use Repositories\UploadRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\IUploadRepository;
+use Repositories\interfaces\IUserRepository;
 use \Image;
+use Services\interfaces\IUploadService;
 
 /**
  * Class UploadService
  * @package Services
  */
-class UploadService implements BaseService{
+class UploadService implements IUploadService{
 
     /**
      * @var UploadRepository
@@ -31,11 +30,12 @@ class UploadService implements BaseService{
      */
     private $userRepository;
 
+
     /**
-     * @param UploadRepository $uploadRepository
-     * @param UserRepository $userRepository
+     * @param IUploadRepository $uploadRepository
+     * @param IUserRepository $userRepository
      */
-    function __construct(UploadRepository $uploadRepository, UserRepository $userRepository)
+    function __construct(IUploadRepository $uploadRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->uploadRepository = $uploadRepository;
@@ -51,16 +51,20 @@ class UploadService implements BaseService{
         // TODO: Implement create() method.
         $img = $data['img'];
         if ($img){
-//            $image = Image::make($img);
-            $image_name = Helper::get_rand_alphanumeric(8);
-//            $image_url = 'assets/images/' .$image_name.'.jpg';
-//
-//            $image->save($image_url);
-            \Cloudy::upload($img, $image_name);
+            $image = Image::make($img);
+            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
+            $image_url = 'assets/images/'.$image_name.'.jpg';
+
+            $image->save($image_url);
             $upload = $this->uploadRepository->create(array(
-                'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
+                'image_url' => url() . '/' . $image_url,
                 'name' => $image_name
             ));
+//            \Cloudy::upload($img, $image_name);
+//            $upload = $this->uploadRepository->create(array(
+//                'image_url' => 'http://res.cloudinary.com/danpj76kz/image/upload/' . $image_name,
+//                'name' => $image_name
+//            ));
         }
         return $upload;
     }
@@ -82,15 +86,6 @@ class UploadService implements BaseService{
         ));
 
         return $upload;
-    }
-
-    /**
-     * @param $column
-     * @param $value
-     */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
     }
 
     /**

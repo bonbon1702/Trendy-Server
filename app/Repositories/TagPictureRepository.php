@@ -10,20 +10,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\ITagPictureRepository;
 use \TagPicture;
 
 /**
  * Class TagPictureRepository
  * @package Repositories
  */
-class TagPictureRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class TagPictureRepository implements ITagPictureRepository{
 
     /**
      * @param array $related
@@ -114,6 +108,9 @@ class TagPictureRepository implements BaseRepository{
         $this->getWhere($column,$value)->delete();
     }
 
+    /**
+     * @return mixed
+     */
     public function joinPostAndTagPicture(){
         return TagPicture::join('post', 'tag_picture.post_id', '=' , 'post.id');
     }

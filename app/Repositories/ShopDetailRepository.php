@@ -9,20 +9,14 @@ namespace Repositories;
 
 
 use Core\BaseRepository;
+use Repositories\interfaces\IShopDetailRepository;
 use \ShopDetail;
 
 /**
  * Class ShopRepository
  * @package Repositories
  */
-class ShopDetailRepository implements BaseRepository{
-    /**
-     * @param $code
-     */
-    public function errors($code)
-    {
-        // TODO: Implement errors() method.
-    }
+class ShopDetailRepository implements IShopDetailRepository{
 
     /**
      * @param array $related

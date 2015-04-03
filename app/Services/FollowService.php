@@ -8,18 +8,16 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Core\Helper;
 use Core\ItemToItem;
-use Repositories\FollowRepository;
-use Repositories\UserRepository;
+use Repositories\interfaces\IFollowRepository;
+use Repositories\interfaces\IUserRepository;
+use Services\interfaces\IFollowService;
 
 /**
  * Class FollowService
  * @package Services
  */
-class FollowService implements BaseService
+class FollowService implements IFollowService
 {
 
     /**
@@ -27,28 +25,38 @@ class FollowService implements BaseService
      */
     private $followRepository;
 
+    /**
+     * @var IUserRepository
+     */
     private $userRepository;
 
-    function __construct(FollowRepository $followRepository, UserRepository $userRepository)
+    /**
+     * @param IFollowRepository $followRepository
+     * @param IUserRepository $userRepository
+     */
+    function __construct(IFollowRepository $followRepository, IUserRepository $userRepository)
     {
         // TODO: Implement __construct() method.
         $this->followRepository = $followRepository;
         $this->userRepository = $userRepository;
     }
 
+
     /**
      * @param array $data
+     * @return mixed
      */
-    public function create(array $data)
+    public function addFollowing(array $data)
     {
         // TODO: Implement create() method.
         $userId = $data['user_id'];
         $followerId = $data['follower_id'];
-        $this->followRepository->create(array(
+        $follow = $this->followRepository->create(array(
             'user_id' => $userId,
             'follower_id' => $followerId,
         ));
 
+        return $follow;
     }
 
     /**
@@ -103,7 +111,12 @@ class FollowService implements BaseService
             ->where('user_id', '=', $id)->get();
     }
 
-    public function itemToItemFollow($id, $user_id){
+    /**
+     * @param $id
+     * @param $user_id
+     * @return array
+     */
+    public function itemToItemFollow($loginId, $user_id){
         $users = $this->userRepository->getRecent()
                     ->select('users.id')
                     ->get();
@@ -125,7 +138,7 @@ class FollowService implements BaseService
         }
         $itemToItem = new ItemToItem();
         $itemToItem->insert($matrix);
-        $results = $itemToItem->predict($id);
+        $results = $itemToItem->predict($user_id);
 
 
         $suggestions = array();
@@ -147,9 +160,22 @@ class FollowService implements BaseService
 
         $suggestions = array_slice($suggestions, 0, 3);
 
+        $follows = $this->followRepository->getRecent()
+            ->where('follower_id',$loginId)->get();
+        foreach ($suggestions as $k => $v){
+            foreach ($follows as $t){
+                if ($v->id == $t->user_id) unset($suggestions[$k]);
+            }
+            if ($v->id == $loginId) unset($suggestions[$k]);
+        }
+
         return $suggestions;
     }
 
+    /**
+     * @param $user_id
+     * @return array
+     */
     public function popularFollow($user_id){
         $following = $this->FollowingByUser($user_id);
 

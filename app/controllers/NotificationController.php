@@ -6,33 +6,39 @@
  * Time: 4:14 PM
  */
 
-use Repositories\NotificationRepository;
-use Services\NotificationService;
-use Services\NotificationWatchedService;
+use Repositories\interfaces\INotificationRepository;
+use Services\interfaces\INotificationService;
+use Services\interfaces\INotificationWatchedService;
 
+/**
+ * Class NotificationController
+ */
 class NotificationController extends \BaseController {
 
+    /**
+     * @var INotificationService
+     */
+    private $notificationService;
 
-    public function __construct(NotificationService $notificationService, NotificationRepository $notificationRepository, NotificationWatchedService $notificationWatchedService) {
+    /**
+     * @var INotificationRepository
+     */
+    private $notificationRepository;
+
+    /**
+     * @var INotificationWatchedService
+     */
+    private $notificationWatchedService;
+
+    /**
+     * @param INotificationService $notificationService
+     * @param INotificationRepository $notificationRepository
+     * @param INotificationWatchedService $notificationWatchedService
+     */
+    public function __construct(INotificationService $notificationService, INotificationRepository $notificationRepository, INotificationWatchedService $notificationWatchedService) {
         $this->notificationService = $notificationService;
         $this->notificationRepository = $notificationRepository;
         $this->notificationWatchedService = $notificationWatchedService;
-    }
-
-    public function index() {
-
-    }
-
-    public function store() {
-
-    }
-
-    public function update($id) {
-
-    }
-
-    public function destroy($id) {
-
     }
 
     /**
@@ -42,7 +48,7 @@ class NotificationController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function getNotificationByUserId($id)
     {
         $notification = $this->notificationService->getNotification($id);
 
@@ -52,12 +58,15 @@ class NotificationController extends \BaseController {
         ));
     }
 
+    /**
+     * @return mixed
+     */
     public function watchedNotification()
     {
         $data = Input::all();
 
         foreach ($data as $v){
-            $this->notificationWatchedService->create($v);
+            $this->notificationWatchedService->watchedNotification($v);
         }
 
         return Response::json(array(

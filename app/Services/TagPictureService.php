@@ -8,25 +8,25 @@
 
 namespace Services;
 
-
-use Core\BaseService;
-use Repositories\TagPictureRepository;
+use Repositories\interfaces\ITagPictureRepository;
+use Services\interfaces\ITagPictureService;
 
 /**
  * Class TagPictureService
  * @package Services
  */
-class TagPictureService implements BaseService{
+class TagPictureService implements ITagPictureService{
 
     /**
      * @var TagPictureRepository
      */
     private $tagPictureRepository;
 
+
     /**
-     * @param TagPictureRepository $tagPictureRepository
+     * @param ITagPictureRepository $tagPictureRepository
      */
-    function __construct(TagPictureRepository $tagPictureRepository)
+    function __construct(ITagPictureRepository $tagPictureRepository)
     {
         $this->tagPictureRepository = $tagPictureRepository;
     }
@@ -43,23 +43,12 @@ class TagPictureService implements BaseService{
         return true;
     }
 
-    /**
-     * @param array $data
-     */
-    public function update(array $data)
-    {
-        // TODO: Implement update() method.
-    }
 
     /**
-     * @param $column
-     * @param $value
+     * @param $id
+     * @param $offSet
+     * @return mixed
      */
-    public function delete($column, $value)
-    {
-        // TODO: Implement delete() method.
-    }
-
     public function getPagingPostInShopByShopId($id,$offSet){
         return $this->tagPictureRepository->joinPostAndTagPicture()
                                             ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
@@ -69,6 +58,10 @@ class TagPictureService implements BaseService{
                                                             ->get();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getPostInShopByShopId($id){
         return $this->tagPictureRepository->joinPostAndTagPicture()
                                             ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
