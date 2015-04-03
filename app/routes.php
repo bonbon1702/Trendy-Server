@@ -74,6 +74,8 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('comment/editPostComment/id/{id}/content/{content}', 'CommentController@editPostComment');
     Route::get('comment/deletePostComment/id/{id}', 'CommentController@deletePostComment');
     Route::post('comment/saveComment', 'CommentController@saveComment');
+    Route::get('comment/editShopComment/id/{id}/content/{content}', 'CommentController@editShopComment');
+    Route::get('comment/deleteShopComment/id/{id}', 'CommentController@deleteShopComment');
 //    Route::resource('comment', 'CommentController');
 
 

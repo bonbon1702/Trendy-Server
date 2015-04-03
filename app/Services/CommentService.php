@@ -139,4 +139,26 @@ class CommentService implements ICommentService{
                 'content' => $content
             ));
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteCommentInShop($id){
+        return $this->commentRepository->getRecent()
+            ->where('type_comment', 1)->where('id', $id)->delete();
+    }
+
+    /**
+     * @param $id
+     * @param $content
+     * @return mixed
+     */
+    public function editShopComment($id, $content){
+        $this->commentRepository->getRecent()
+            ->where('id', $id)->where('type_comment', 1)
+            ->update(array(
+                'content' => $content
+            ));
+    }
 }

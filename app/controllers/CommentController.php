@@ -154,4 +154,19 @@ class CommentController extends \BaseController
             'success' => true
         ));
     }
+
+    public function editShopComment($id, $content){
+        $this->commentService->editShopComment($id, $content);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function deleteShopComment($id){
+        $comment = $this->commentService->deleteCommentInShop($id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 }

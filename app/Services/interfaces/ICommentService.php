@@ -45,5 +45,23 @@ interface ICommentService
      */
     public function deleteCommentInPost($id);
 
+    /**
+     * @param $id
+     * @param $content
+     * @return mixed
+     */
     public function editPostComment($id, $content);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteCommentInShop($id);
+
+    /**
+     * @param $id
+     * @param $content
+     * @return mixed
+     */
+    public function editShopComment($id, $content);
 }
