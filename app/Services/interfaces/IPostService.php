@@ -12,6 +12,10 @@ namespace Services\interfaces;
  * Interface IPostService
  * @package Services\interfaces
  */
+/**
+ * Interface IPostService
+ * @package Services\interfaces
+ */
 interface IPostService
 {
     /**
@@ -75,5 +79,10 @@ interface IPostService
      */
     public function getPostFavorite($id, $user_id);
 
+    /**
+     * @param $id
+     * @param $user_id
+     * @return mixed
+     */
     public function getPostNewFeed($id, $user_id);
 }
