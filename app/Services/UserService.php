@@ -84,7 +84,7 @@ class UserService implements IUserService
      * @param array $data
      * @return mixed
      */
-    public function update(array $data)
+    public function changeCover(array $data)
     {
         // TODO: Implement update() method.
         return $this->userRepository->update('id', $data['id'], $data);

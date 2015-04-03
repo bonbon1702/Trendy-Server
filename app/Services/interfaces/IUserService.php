@@ -27,7 +27,7 @@ interface IUserService
      * @param array $data
      * @return mixed
      */
-    public function update(array $data);
+    public function changeCover(array $data);
 
 
     /**
