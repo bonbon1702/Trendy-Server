@@ -53,10 +53,9 @@ class UploadService implements IUploadService{
         if ($img){
             $image = Image::make($img);
             $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
-            $path = public_path('assets/images/' . $image_name);
             $image_url = 'assets/images/'.$image_name.'.jpg';
 
-            $image->save($path);
+            $image->save($image_url);
             $upload = $this->uploadRepository->create(array(
                 'image_url' => url() . '/' . $image_url,
                 'name' => $image_name
