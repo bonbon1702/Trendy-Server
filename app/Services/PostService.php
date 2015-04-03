@@ -163,9 +163,10 @@ class PostService implements IPostService{
         if ($data['url'] != null) {
             $image = Image::make($data['url']);
             $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
+            $path = public_path('assets/images/' . $image_name);
             $image_url = 'assets/images/'.$image_name.'.jpg';
 
-            $image->save($image_url);
+            $image->save($path);
             $image_url_editor = url() . '/ '. $image_url;
         } else {
             $image_url_editor = $upload->image_url;
