@@ -94,18 +94,20 @@ class CommentController extends \BaseController
 
         $data['action'] = 'comment';
 
-        $notification = $this->notificationService->create($data);
-        $notification['username'] = $this->userRepository->get($notification->user_id)->username;
-        $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
+        if ($data['type_comment'] == 0) {
+            $notification = $this->notificationService->create($data);
+            $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+            $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
 
 
-        Event::fire(NotificationEventHandler::EVENT, array(
-            'notification' => $notification,
-        ));
+            Event::fire(NotificationEventHandler::EVENT, array(
+                'notification' => $notification,
+            ));
 
-        Event::fire(CommentEventHandler::EVENT, array(
-            'comment' => $comment
-        ));
+            Event::fire(CommentEventHandler::EVENT, array(
+                'comment' => $comment
+            ));
+        }
 
         return Response::json(array(
             'success' => true,
