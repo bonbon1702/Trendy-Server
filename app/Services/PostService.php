@@ -166,7 +166,7 @@ class PostService implements IPostService{
             $image_url = 'assets/images/'.$image_name.'.jpg';
 
             $image->save($image_url);
-            $image_url_editor = url() . '/ '. $image_url;
+            $image_url_editor = url() . '/'. $image_url;
         } else {
             $image_url_editor = $upload->image_url;
         }
