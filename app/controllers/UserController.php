@@ -70,7 +70,7 @@ class UserController extends BaseController
     public function getLoginUser()
     {
         $data = Input::all();
-        $user = $this->userRepository->getWhere('remember_token', $data['remember_token'])->first();
+        $user = $this->userService->getLoginUser($data['remember_token']);
         return Response::json(array(
             'success' => true,
             'user' => $user

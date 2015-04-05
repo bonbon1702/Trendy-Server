@@ -24,11 +24,11 @@ class ZScoreCommand extends ScheduledCommand {
 	 */
 	protected $description = 'Make my day';
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
+
+    /**
+     * @param IPostService $postService
+     * @param IHistoryService $historyService
+     */
 	public function __construct(IPostService $postService, IHistoryService $historyService)
 	{
 		parent::__construct();
@@ -45,7 +45,7 @@ class ZScoreCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler->daily()->hours(2)->minutes(22);
+		return $scheduler->daily()->hours(23)->minutes(59);
 	}
 
 	/**

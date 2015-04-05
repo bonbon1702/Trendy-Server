@@ -52,4 +52,10 @@ interface IUserService
      * @return mixed
      */
     public function getAllUser();
+
+    /**
+     * @param $remember_token
+     * @return mixed
+     */
+    public function getLoginUser($remember_token);
 }

@@ -335,6 +335,7 @@ class PostService implements IPostService{
             ->where('shop.lat' , '<>' , 'null')
             ->where('shop.long' , '<>' , 'null')
             ->Join('shop', 'shop.id', '=', 'tag_picture.shop_id')
+            ->groupBy('post.id')
             ->get();
         foreach ($posts as $v) {
             $v['user'] = $v->user;

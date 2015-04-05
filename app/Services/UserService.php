@@ -140,4 +140,10 @@ class UserService implements IUserService
 
         return $users;
     }
+
+    public function getLoginUser($remember_token)
+    {
+        $user = $this->userRepository->getWhere('remember_token', $remember_token)->first();
+        return $user;
+    }
 }
