@@ -406,7 +406,7 @@ class PostService implements IPostService{
             ->join('comment', 'follow.user_id', '=', 'comment.user_id')
             ->where('comment.type_comment',0)
             ->join('post', 'post.id', '=', 'comment.type_id')
-            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->orderBy('comment.created_at', 'DESC')
             ->get();
 
         foreach ($post_comment as $v){
@@ -420,7 +420,7 @@ class PostService implements IPostService{
             ->join('like', 'follow.user_id', '=', 'like.user_id')
             ->where('like.type_like',0)
             ->join('post', 'post.id', '=', 'like.type_id')
-            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->orderBy('like.created_at', 'DESC')
             ->get();
 
         foreach ($post_like as $v){
@@ -433,7 +433,7 @@ class PostService implements IPostService{
             ->where('follower_id', $user_id)
             ->join('favorite', 'follow.user_id', '=', 'favorite.user_id')
             ->join('post', 'post.id', '=', 'favorite.post_id')
-            ->orderBy('post.created_at', 'DESC')->groupBy('post.id')
+            ->orderBy('favorite.created_at', 'DESC')
             ->get();
 
         foreach ($post_favorite as $v){

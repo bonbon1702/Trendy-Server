@@ -24,6 +24,7 @@ App::bind('Services\\interfaces\\IUploadService', 'Services\\UploadService');
 App::bind('Services\\interfaces\\IUserService', 'Services\\UserService');
 App::bind('Services\\interfaces\\ITagService', 'Services\\TagService');
 App::bind('Services\\interfaces\\ITagContentService', 'Services\\TagContentService');
+App::bind('Services\\interfaces\\IAdminService', 'Services\\AdminService');
 
 //Repositories
 
@@ -45,5 +46,6 @@ App::bind('Repositories\\interfaces\\IUploadRepository', 'Repositories\\UploadRe
 App::bind('Repositories\\interfaces\\IUserRepository', 'Repositories\\UserRepository');
 App::bind('Repositories\\interfaces\\ITagRepository', 'Repositories\\TagRepository');
 App::bind('Repositories\\interfaces\\ITagContentRepository', 'Repositories\\TagContentRepository');
+App::bind('Repositories\\interfaces\\IAdminRepository', 'Repositories\\AdminRepository');
 
 

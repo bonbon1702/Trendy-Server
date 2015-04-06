@@ -105,6 +105,11 @@ Route::group(array('prefix' => 'api'), function() {
     Route::post('notification/watchedNotification', 'NotificationController@watchedNotification');
     Route::get('notification/getNotificationByUserId/{id}', 'NotificationController@getNotificationByUserId');
     Route::resource('notification', 'NotificationController');
+
+
+    //AdminController
+    Route::post('admin/adminLogin','AdminController@adminLogin');
+    Route::get('admin/getAllUser','AdminController@getAllUser');
 });
 
 App::missing(function($exception) {

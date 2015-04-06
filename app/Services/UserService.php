@@ -65,14 +65,12 @@ class UserService implements IUserService
                     'remember_token' => $data['remember_token'],
                     'image_cover' => url() . '/assets/cover-facebook-1.jpg'
                 ));
-                $album = $this->albumService->create(array(
-                    'user_id' => $user->id,
-                    'album_name' => 'favorite'
-                ));
             } else {
                 $user = $this->userRepository->update('email', $data['email'], array(
                     'remember_token' => $data['remember_token'],
-                    'sw_id' => $data['sw_id']
+                    'sw_id' => $data['sw_id'],
+                    'username' => $data['username'],
+                    'picture_profile' => $data['avatar'],
                 ));
             }
         }
