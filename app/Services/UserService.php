@@ -51,7 +51,7 @@ class UserService implements IUserService
         // TODO: Implement create() method.
         if (!empty($data)) {
 
-            $user = $this->userRepository->getWhere('email', $data['email'])->first();
+            $user = $this->userRepository->getWhere('sw_id', $data['sw_id'])->first();
 
             if (!$user) {
                 $user = $this->userRepository->create(array(
@@ -66,11 +66,15 @@ class UserService implements IUserService
                     'image_cover' => url() . '/assets/cover-facebook-1.jpg'
                 ));
             } else {
-                $user = $this->userRepository->update('email', $data['email'], array(
+                $user = $this->userRepository->update('sw_id', $data['sw_id'], array(
                     'remember_token' => $data['remember_token'],
-                    'sw_id' => $data['sw_id'],
+                    'gender' => $data['gender'],
                     'username' => $data['username'],
+                    'email' => $data['email'],
+                    'delete_flag' => 0,
+                    'role_id' => 1,
                     'picture_profile' => $data['avatar'],
+                    'image_cover' => url() . '/assets/cover-facebook-1.jpg'
                 ));
             }
         }
