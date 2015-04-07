@@ -29,7 +29,7 @@ class AlbumController extends \BaseController
     {
         $data = Input::all();
         $data['id'] = $id;
-        $this->albumService->update($data);
+        $this->albumService->editAlbumById($data);
         return Response::json(array(
             'success' => true
         ));

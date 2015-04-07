@@ -25,7 +25,7 @@ interface IAlbumService
      * @param array $data
      * @return bool
      */
-    public function update(array $data);
+    public function editAlbumById(array $data);
 
     /**
      * @param $column

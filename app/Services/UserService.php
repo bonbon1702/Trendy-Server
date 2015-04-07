@@ -46,7 +46,7 @@ class UserService implements IUserService
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function createUser(array $data)
     {
         // TODO: Implement create() method.
         if (!empty($data)) {
