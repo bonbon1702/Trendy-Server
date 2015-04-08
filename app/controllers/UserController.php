@@ -57,7 +57,7 @@ class UserController extends BaseController
     {
         $data = Input::all();
 
-        $user = $this->userService->create($data);
+        $user = $this->userService->createUser($data);
         return Response::json(array(
             'success' => true,
             'user' => $user

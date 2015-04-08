@@ -77,7 +77,7 @@ class AlbumService implements IAlbumService
      * @param array $data
      * @return bool
      */
-    public function update(array $data)
+    public function editAlbumById(array $data)
     {
         // TODO: Implement update() method.
         return $this->albumRepository->update('id',$data['id'],array('album_name' => $data['album_name']));
