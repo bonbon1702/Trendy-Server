@@ -117,6 +117,6 @@ class ShopDetailService implements IShopDetailService
         return $this->shopDetailRepository->getRecent()
                                             ->where('approve','=',1)
                                                 ->where('shop_id','=',$id)
-                                                    ->get();
+                                                    ->first();
     }
 }

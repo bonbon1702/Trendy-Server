@@ -39,4 +39,42 @@ class AdminController extends \BaseController
         ));
     }
 
+    public function banUser($user_id){
+        $this->adminService->banUser($user_id);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function unBanUser($user_id){
+        $this->adminService->unBanUser($user_id);
+
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function getAllShop(){
+        $shops = $this->adminService->getAllShop();
+        return Response::json(array(
+            'success' => true,
+            'shops' => $shops
+        ));
+    }
+
+    public function approveShop($shop_detail_id){
+        $this->adminService->approveShop($shop_detail_id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
+    public function unApproveShop($shop_detail_id){
+        $this->adminService->unApproveShop($shop_detail_id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
+
 }

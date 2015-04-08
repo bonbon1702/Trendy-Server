@@ -24,4 +24,14 @@ interface IAdminService {
      * @return mixed
      */
     public function getAllUser();
+
+    public function banUser($user_id);
+
+    public function unBanUser($user_id);
+
+    public function getAllShop();
+
+    public function approveShop($shop_detail_id);
+
+    public function unApproveShop($shop_detail_id);
 }

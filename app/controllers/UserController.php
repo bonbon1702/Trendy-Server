@@ -71,10 +71,17 @@ class UserController extends BaseController
     {
         $data = Input::all();
         $user = $this->userService->getLoginUser($data['remember_token']);
-        return Response::json(array(
-            'success' => true,
-            'user' => $user
-        ));
+        if ($user == 'Ban'){
+            return Response::json(array(
+                'status' => 1,
+                'user' => null
+            ));
+        } else {
+            return Response::json(array(
+                'success' => true,
+                'user' => $user
+            ));
+        }
     }
 
     /**

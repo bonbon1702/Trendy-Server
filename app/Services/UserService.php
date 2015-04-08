@@ -141,7 +141,22 @@ class UserService implements IUserService
 
     public function getLoginUser($remember_token)
     {
-        $user = $this->userRepository->getWhere('remember_token', $remember_token)->first();
-        return $user;
+        $user = $this->userRepository->getRecent()
+            ->where('remember_token', $remember_token)
+            ->first();
+
+        $check_flag = $this->userRepository->getRecent()
+            ->where('id', $user->id)
+            ->where('delete_flag' , 0)
+            ->first();
+        if ($user){
+            if ($check_flag){
+                return $user;
+            } else {
+                return 'Ban';
+            }
+        } else {
+            return null;
+        }
     }
 }

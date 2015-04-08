@@ -110,6 +110,11 @@ Route::group(array('prefix' => 'api'), function() {
     //AdminController
     Route::post('admin/adminLogin','AdminController@adminLogin');
     Route::get('admin/getAllUser','AdminController@getAllUser');
+    Route::get('admin/banUser/{user_id}','AdminController@banUser');
+    Route::get('admin/unBanUser/{user_id}','AdminController@unBanUser');
+    Route::get('admin/getAllShop','AdminController@getAllShop');
+    Route::get('admin/approveShop/{shop_detail_id}','AdminController@approveShop');
+    Route::get('admin/unApproveShop/{shop_detail_id}','AdminController@unApproveShop');
 });
 
 App::missing(function($exception) {
