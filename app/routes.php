@@ -19,7 +19,7 @@ Route::get('/', function()
 Route::group(array('prefix' => 'api'), function() {
     //PostController
     Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
-	Route::delete('post/deletePostById/{id}', 'PostController@deletePostById');
+    Route::delete('post/deletePostById/{id}', 'PostController@deletePostById');
     Route::get('post/getPostTrendy/paging/{id}/tag/{tag}', 'PostController@getPostTrendy');
     Route::get('post/getPostAround/paging/{id}/lat/{lat}/lng/{lng}', 'PostController@getPostAround');
     Route::get('post/getPostFavorite/paging/{id}/userId/{user_id}', 'PostController@getPostFavorite');

@@ -193,7 +193,7 @@ class PostService implements IPostService{
 
         if (!empty($data['points'])) {
             foreach ($data['points'] as $v) {
-                $shop = $this->shopService->checkExist($v['address']);
+                $shop = $this->shopService->checkExist($image_url_editor,$v['address']);
 
                 $this->tagPictureService->create(array(
                     'post_id' => $post->id,

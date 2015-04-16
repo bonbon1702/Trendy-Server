@@ -39,7 +39,7 @@ interface IShopService
      * @param $address
      * @return mixed
      */
-    public function checkExist($address);
+    public function checkExist($image_url_editor,$address);
 
     /**
      * @param $type

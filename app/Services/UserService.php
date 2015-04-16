@@ -71,7 +71,6 @@ class UserService implements IUserService
                     'gender' => $data['gender'],
                     'username' => $data['username'],
                     'email' => $data['email'],
-                    'delete_flag' => 0,
                     'role_id' => 1,
                     'picture_profile' => $data['avatar'],
                     'image_cover' => url() . '/assets/cover-facebook-1.jpg'
