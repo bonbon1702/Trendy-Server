@@ -66,6 +66,7 @@ class TagPictureService implements ITagPictureService{
         return $this->tagPictureRepository->joinPostAndTagPicture()
                                             ->select('post_id', 'post.name', 'image_url_editor', 'caption', 'post.created_at', 'post.updated_at')
                                                 ->where('shop_id','=',$id)
-                                                    ->get();
+                                                    ->groupBy('post_id')
+                                                        ->get();
     }
 }

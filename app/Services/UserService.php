@@ -150,16 +150,25 @@ class UserService implements IUserService
 
         $check_flag = $this->userRepository->getRecent()
             ->where('id', $user->id)
-            ->where('delete_flag' , 0)
+            ->where('delete_flag', 0)
             ->first();
-        if ($user){
-            if ($check_flag){
+        if ($user) {
+            if ($check_flag) {
                 return $user;
             } else {
                 return 'Ban';
             }
         } else {
             return null;
+        }
+    }
+
+    public  function checkLoginUser($remember_token){
+        $user = $this->userRepository->getRecent()
+            ->where('remember_token', $remember_token)
+            ->first();
+        if($user){
+            return true;
         }
     }
 }
