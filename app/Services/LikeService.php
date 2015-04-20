@@ -86,4 +86,11 @@ class LikeService implements ILikeService
         return $count;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteLikeInPost($id){
+        return $this->likeRepository->deleteLikeInPost($id);
+    }
 }

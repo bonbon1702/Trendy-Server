@@ -31,7 +31,8 @@ class AdminController extends \BaseController
         ));
     }
 
-    public function getAllUser(){
+    public function getAllUser()
+    {
         $users = $this->adminService->getAllUser();
         return Response::json(array(
             'success' => true,
@@ -39,7 +40,8 @@ class AdminController extends \BaseController
         ));
     }
 
-    public function banUser($user_id){
+    public function banUser($user_id)
+    {
         $this->adminService->banUser($user_id);
 
         return Response::json(array(
@@ -47,7 +49,8 @@ class AdminController extends \BaseController
         ));
     }
 
-    public function unBanUser($user_id){
+    public function unBanUser($user_id)
+    {
         $this->adminService->unBanUser($user_id);
 
         return Response::json(array(
@@ -55,7 +58,8 @@ class AdminController extends \BaseController
         ));
     }
 
-    public function getAllShop(){
+    public function getAllShop()
+    {
         $shops = $this->adminService->getAllShop();
         return Response::json(array(
             'success' => true,
@@ -63,18 +67,35 @@ class AdminController extends \BaseController
         ));
     }
 
-    public function approveShop($shop_detail_id){
+    public function approveShop($shop_detail_id)
+    {
         $this->adminService->approveShop($shop_detail_id);
         return Response::json(array(
             'success' => true
         ));
     }
 
-    public function unApproveShop($shop_detail_id){
+    public function unApproveShop($shop_detail_id)
+    {
         $this->adminService->unApproveShop($shop_detail_id);
         return Response::json(array(
             'success' => true
         ));
     }
 
+    public function getAllPost()
+    {
+        $post = $this->adminService->getAllPost();
+        return Response::json(array(
+            'success' => true,
+            'posts' => $post
+        ));
+    }
+
+    public function deletePost($post_id){
+        $this->adminService->deletePost($post_id);
+        return Response::json(array(
+            'success' => true
+        ));
+    }
 }

@@ -13,6 +13,10 @@ namespace Services\interfaces;
  * Interface IShopService
  * @package Services\interfaces
  */
+/**
+ * Interface IShopService
+ * @package Services\interfaces
+ */
 interface IShopService
 {
 
@@ -53,5 +57,10 @@ interface IShopService
      */
     public function getShopList();
 
+    /**
+     * @param $loginId
+     * @param $shopId
+     * @return mixed
+     */
     public function suggestShop($loginId, $shopId);
 }

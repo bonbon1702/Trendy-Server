@@ -13,6 +13,10 @@ namespace Services\interfaces;
  * Interface IFavoriteService
  * @package Services\interfaces
  */
+/**
+ * Interface IFavoriteService
+ * @package Services\interfaces
+ */
 interface IFavoriteService
 {
     /**
@@ -32,4 +36,10 @@ interface IFavoriteService
      * @return mixed
      */
     public function getUserFavorite($post_id);
+
+    /**
+     * @param $post_id
+     * @return mixed
+     */
+    public function deleteFavoriteInPost($post_id);
 }

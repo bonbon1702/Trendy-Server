@@ -62,7 +62,8 @@ class FavoriteService implements IFavoriteService
      * @param $user_id
      * @param $post_id
      */
-    public function unFavorite($user_id, $post_id){
+    public function unFavorite($user_id, $post_id)
+    {
         $this->favoriteRepository->getRecent()
             ->where('user_id', $user_id)
             ->where('post_id', $post_id)
@@ -73,10 +74,21 @@ class FavoriteService implements IFavoriteService
      * @param $post_id
      * @return mixed
      */
-    public function getUserFavorite($post_id){
+    public function getUserFavorite($post_id)
+    {
         $favorite = $this->favoriteRepository->getWhere('post_id', $post_id)->get();
 
         return $favorite;
+    }
+
+    /**
+     * @param $post_id
+     * @return bool
+     */
+    public function deleteFavoriteInPost($post_id)
+    {
+        $this->favoriteRepository->getWhere('post_id', $post_id)->delete();
+        return true;
     }
 
 }

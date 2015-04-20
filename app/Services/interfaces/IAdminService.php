@@ -12,6 +12,10 @@ namespace Services\interfaces;
  * Interface IAdminService
  * @package Services\interfaces
  */
+/**
+ * Interface IAdminService
+ * @package Services\interfaces
+ */
 interface IAdminService {
 
     /**
@@ -25,13 +29,32 @@ interface IAdminService {
      */
     public function getAllUser();
 
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function banUser($user_id);
 
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function unBanUser($user_id);
 
+    /**
+     * @return mixed
+     */
     public function getAllShop();
 
+    /**
+     * @param $shop_detail_id
+     * @return mixed
+     */
     public function approveShop($shop_detail_id);
 
+    /**
+     * @param $shop_detail_id
+     * @return mixed
+     */
     public function unApproveShop($shop_detail_id);
 }

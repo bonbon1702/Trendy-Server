@@ -97,14 +97,29 @@ class PostService implements IPostService{
      */
     private $followService;
 
+    /**
+     * @var IFavoriteRepository
+     */
     private $favoriteRepository;
 
+    /**
+     * @var
+     */
     private $tagService;
 
+    /**
+     * @var
+     */
     private $tagContentService;
 
+    /**
+     * @var ITagRepository
+     */
     private $tagRepository;
 
+    /**
+     * @var ITagContentRepository
+     */
     private $tagContentRepository;
 
     /**
@@ -469,8 +484,15 @@ class PostService implements IPostService{
         $this->postRepository->delete($id);
         $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
         $this->commentService->deleteCommentInPost($id);
+        $this->favoriteService->deleteFavoriteInPost($id);
+        $this->likeService->deleteLikeInPost($id);
     }
 
+    /**
+     * @param $id
+     * @param $caption
+     * @return bool
+     */
     public function editPostCaption($id, $caption){
         $post = $this->postRepository->update('id', $id , array(
             'caption' => $caption

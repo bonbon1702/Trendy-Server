@@ -13,6 +13,10 @@ namespace Services\interfaces;
  * Interface ILikeService
  * @package Services\interfaces
  */
+/**
+ * Interface ILikeService
+ * @package Services\interfaces
+ */
 interface ILikeService
 {
 
@@ -31,4 +35,10 @@ interface ILikeService
      * @return mixed
      */
     public function countLike($type_like, $type_id);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteLikeInPost($id);
 }
