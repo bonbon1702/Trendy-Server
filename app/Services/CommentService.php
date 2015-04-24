@@ -70,24 +70,26 @@ class CommentService implements ICommentService{
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
-        $content = $data['content'];
-        $type_comment = $data['type_comment'];
-        $type_id = $data['type_id'];
-        $user_id = $data['user_id'];
-        $comment = $this->commentRepository->create(array(
-            'user_id' => $user_id,
-            'type_comment' => $type_comment,
-            'type_id' => $type_id,
-            'content' => $content,
-        ));
-        $comment['user'] = $comment->user;
-        $this->historyService->create(array(
-            'user_id' => $user_id,
-            'type_action' => 'comment',
-            'action_id' => $type_id
-        ));
-        return $comment;
+        if ($this->userRepository->get($data['user_id'])){
+            // TODO: Implement create() method.
+            $content = $data['content'];
+            $type_comment = $data['type_comment'];
+            $type_id = $data['type_id'];
+            $user_id = $data['user_id'];
+            $comment = $this->commentRepository->create(array(
+                'user_id' => $user_id,
+                'type_comment' => $type_comment,
+                'type_id' => $type_id,
+                'content' => $content,
+            ));
+            $comment['user'] = $comment->user;
+            $this->historyService->create(array(
+                'user_id' => $user_id,
+                'type_action' => 'comment',
+                'action_id' => $type_id
+            ));
+            return $comment;
+        }
     }
 
     /**

@@ -148,11 +148,12 @@ class UserService implements IUserService
             ->where('remember_token', $remember_token)
             ->first();
 
-        $check_flag = $this->userRepository->getRecent()
-            ->where('id', $user->id)
-            ->where('delete_flag', 0)
-            ->first();
+
         if ($user) {
+            $check_flag = $this->userRepository->getRecent()
+                ->where('id', $user->id)
+                ->where('delete_flag', 0)
+                ->first();
             if ($check_flag) {
                 return $user;
             } else {

@@ -10,6 +10,8 @@ namespace Services;
 
 
 use Repositories\interfaces\IFavoriteRepository;
+use Repositories\interfaces\IPostRepository;
+use Repositories\interfaces\IUserRepository;
 use Services\interfaces\IFavoriteService;
 use Services\interfaces\IHistoryService;
 
@@ -30,13 +32,27 @@ class FavoriteService implements IFavoriteService
     private $historyService;
 
     /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var IPostRepository
+     */
+    private $postRepository;
+
+    /**
      * @param IFavoriteRepository $favoriteRepository
      * @param IHistoryService $historyService
+     * @param IUserRepository $userRepository
+     * @param IPostRepository $postRepository
      */
-    function __construct(IFavoriteRepository $favoriteRepository, IHistoryService $historyService)
+    function __construct(IFavoriteRepository $favoriteRepository, IHistoryService $historyService, IUserRepository $userRepository, IPostRepository $postRepository)
     {
         $this->favoriteRepository = $favoriteRepository;
         $this->historyService = $historyService;
+        $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -45,17 +61,18 @@ class FavoriteService implements IFavoriteService
      */
     public function addFavorite(array $data)
     {
-        // TODO: Implement create() method.
-        $favorite = $this->favoriteRepository->create(array(
-            'user_id' => $data['user_id'],
-            'post_id' => $data['post_id']
-        ));
-        $this->historyService->create(array(
-            'user_id' => $data['user_id'],
-            'type_action' => 'favorite',
-            'action_id' => $data['post_id']
-        ));
-        return $favorite;
+        if ($this->userRepository->get($data['user_id'])){
+            $favorite = $this->favoriteRepository->create(array(
+                'user_id' => $data['user_id'],
+                'post_id' => $data['post_id']
+            ));
+            $this->historyService->create(array(
+                'user_id' => $data['user_id'],
+                'type_action' => 'favorite',
+                'action_id' => $data['post_id']
+            ));
+            return $favorite;
+        }
     }
 
     /**
@@ -64,10 +81,12 @@ class FavoriteService implements IFavoriteService
      */
     public function unFavorite($user_id, $post_id)
     {
-        $this->favoriteRepository->getRecent()
-            ->where('user_id', $user_id)
-            ->where('post_id', $post_id)
-            ->first()->delete();
+        if ($this->userRepository->get($user_id) && $this->postRepository->get($post_id)) {
+            $this->favoriteRepository->getRecent()
+                ->where('user_id', $user_id)
+                ->where('post_id', $post_id)
+                ->first()->delete();
+        }
     }
 
     /**
