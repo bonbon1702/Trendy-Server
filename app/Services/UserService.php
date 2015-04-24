@@ -164,7 +164,7 @@ class UserService implements IUserService
         }
     }
 
-    public  function checkLoginUser($remember_token){
+    public function checkLoginUser($remember_token){
         $user = $this->userRepository->getRecent()
             ->where('remember_token', $remember_token)
             ->first();
