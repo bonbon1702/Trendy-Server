@@ -90,7 +90,7 @@ class ShopService implements IShopService
      */
     public function getShopByShopId($id)
     {
-        $shop = $this->shopRepository->getRecent->where('id',$id)->first();
+        $shop = $this->shopRepository->getRecent()->where('id',$id)->first();
         $shop['shop_detail'] = $this->shopDetailService->getShopDetail($id);
         $shop['like'] = $this->likeService->countLike(1, $id);
         $shop['comments'] = $this->commentService->showCommentByShopId($id);
