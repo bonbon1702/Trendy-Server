@@ -13,6 +13,10 @@ namespace Repositories\interfaces;
  * Interface ILikeRepository
  * @package Repositories\interfaces
  */
+/**
+ * Interface ILikeRepository
+ * @package Repositories\interfaces
+ */
 interface ILikeRepository
 {
 
@@ -73,4 +77,10 @@ interface ILikeRepository
      * @return mixed
      */
     public function getLike($type_like, $type_id);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public  function deleteLikeInPost($id);
 }

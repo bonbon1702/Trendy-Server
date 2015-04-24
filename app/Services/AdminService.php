@@ -10,30 +10,97 @@ namespace Services;
 
 
 use Repositories\interfaces\IAdminRepository;
+use Repositories\interfaces\IPostAlbumRepository;
+use Repositories\interfaces\IPostRepository;
 use Repositories\interfaces\IShopDetailRepository;
 use Repositories\interfaces\IShopRepository;
 use Repositories\interfaces\IUserRepository;
 use Services\interfaces\IAdminService;
+use Services\interfaces\ICommentService;
+use Services\interfaces\IFavoriteService;
+use Services\interfaces\ILikeService;
 
-class AdminService implements IAdminService{
+/**
+ * Class AdminService
+ * @package Services
+ */
+class AdminService implements IAdminService
+{
 
+    /**
+     * @var IAdminRepository
+     */
     private $adminRepository;
 
+    /**
+     * @var IUserRepository
+     */
     private $userRepository;
 
+    /**
+     * @var IShopRepository
+     */
     private $shopRepository;
 
+    /**
+     * @var IShopDetailRepository
+     */
     private $shopDetailRepository;
 
-    function __construct(IAdminRepository $adminRepository, IUserRepository $userRepository, IShopRepository $shopRepository, IShopDetailRepository $shopDetailRepository)
+    /**
+     * @var IPostRepository
+     */
+    private $postRepository;
+
+    /**
+     * @var PostAlbumRepository
+     */
+    private $postAlbumRepository;
+
+    /**
+     * @var CommentService
+     */
+    private $commentService;
+
+    /**
+     * @var IFavoriteService
+     */
+    private $favoriteService;
+
+    /**
+     * @var ILikeService
+     */
+    private $likeService;
+
+    /**
+     * @param IAdminRepository $adminRepository
+     * @param IUserRepository $userRepository
+     * @param IShopRepository $shopRepository
+     * @param IShopDetailRepository $shopDetailRepository
+     * @param IPostRepository $postRepository
+     * @param IPostAlbumRepository $postAlbumRepository
+     * @param ICommentService $commentService
+     * @param IFavoriteService $favoriteService
+     */
+    function __construct(IAdminRepository $adminRepository, IUserRepository $userRepository, IShopRepository $shopRepository, IShopDetailRepository $shopDetailRepository, IPostRepository $postRepository, IPostAlbumRepository $postAlbumRepository, ICommentService $commentService, IFavoriteService $favoriteService,ILikeService $likeService)
     {
         $this->adminRepository = $adminRepository;
         $this->userRepository = $userRepository;
         $this->shopRepository = $shopRepository;
         $this->shopDetailRepository = $shopDetailRepository;
+        $this->postRepository = $postRepository;
+        $this->postAlbumRepository = $postAlbumRepository;
+        $this->commentService = $commentService;
+        $this->favoriteService = $favoriteService;
+        $this->likeService=$likeService;
     }
 
-    public function adminLogin($data){
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function adminLogin($data)
+    {
         $result = $this->adminRepository->getRecent()
             ->where('username', $data['username'])
             ->where('password', $data['password'])
@@ -51,50 +118,94 @@ class AdminService implements IAdminService{
         return $users;
     }
 
+    /**
+     * @param $user_id
+     * @return bool
+     */
     public function banUser($user_id)
     {
         // TODO: Implement banUser() method.
-        $this->userRepository->update('id', $user_id,array(
+        $this->userRepository->update('id', $user_id, array(
             'delete_flag' => 1
         ));
 
         return true;
     }
 
+    /**
+     * @param $user_id
+     * @return bool
+     */
     public function unBanUser($user_id)
     {
         // TODO: Implement unBanUser() method.
-        $this->userRepository->update('id', $user_id,array(
+        $this->userRepository->update('id', $user_id, array(
             'delete_flag' => 0
         ));
 
         return true;
     }
 
-    public function getAllShop(){
+    /**
+     * @return mixed
+     */
+    public function getAllShop()
+    {
         $shops = $this->shopRepository->getRecent()
-                    ->select('shop_detail.*')
-                    ->join('shop_detail', 'shop_detail.shop_id', '=', 'shop.id')
-                    ->get();
+            ->select('shop_detail.*')
+            ->join('shop_detail', 'shop_detail.shop_id', '=', 'shop.id')
+            ->get();
 
         return $shops;
     }
 
+    /**
+     * @param $shop_detail_id
+     * @return bool
+     */
     public function approveShop($shop_detail_id)
     {
-        $this->shopDetailRepository->update('id',$shop_detail_id, array(
+        $this->shopDetailRepository->update('id', $shop_detail_id, array(
             'approve' => 1
         ));
-        return true;
-    }
-
-    public function unApproveShop($shop_detail_id)
-    {
-        $this->shopDetailRepository->update('id',$shop_detail_id, array(
+        $this->shopDetailRepository->getRecent()->where('id', '<>', $shop_detail_id)->update(array(
             'approve' => 0
         ));
         return true;
     }
 
+    /**
+     * @param $shop_detail_id
+     * @return bool
+     */
+    public function unApproveShop($shop_detail_id)
+    {
+        $this->shopDetailRepository->update('id', $shop_detail_id, array(
+            'approve' => 0
+        ));
+        return true;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getAllPost()
+    {
+        $post = $this->postRepository->all();
+        return $post;
+    }
+
+    /**
+     * @param $post_id
+     * @return bool
+     */
+    public function deletePost($post_id)
+    {
+        $this->postRepository->delete($post_id);
+        $this->postAlbumRepository->getRecent()->where('post_id', $post_id)->delete();
+        $this->commentService->deleteCommentInPost($post_id);
+        $this->favoriteService->deleteFavoriteInPost($post_id);
+        $this->likeService->deleteLikeInPost($post_id);
+        return true;
+    }
 }

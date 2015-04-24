@@ -142,7 +142,7 @@ class ShopService implements IShopService
      * @param $address
      * @return mixed
      */
-    public function checkExist($address)
+    public function checkExist($image_url_editor,$address)
     {
         $check = $this->shopRepository->getWhere('address', $address);
         if ($check)
@@ -151,7 +151,7 @@ class ShopService implements IShopService
             $cor = $this->googleMapHelper->findCoordinate($address);
             $shop = $this->shopRepository->create(array(
                 'address' => $address,
-                'image_url' => 'http://images.fashiontimes.com/data/images/full/4853/versace.jpg',
+                'image_url' => $image_url_editor,
                 'lat' => $cor[0]['latitude'],
                 'long' => $cor[0]['longitude']
             ));

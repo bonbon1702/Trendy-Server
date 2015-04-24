@@ -71,7 +71,6 @@ class UserService implements IUserService
                     'gender' => $data['gender'],
                     'username' => $data['username'],
                     'email' => $data['email'],
-                    'delete_flag' => 0,
                     'role_id' => 1,
                     'picture_profile' => $data['avatar'],
                     'image_cover' => url() . '/assets/cover-facebook-1.jpg'
@@ -150,21 +149,27 @@ class UserService implements IUserService
             ->first();
 
 
-        if ($user){
+        if ($user) {
             $check_flag = $this->userRepository->getRecent()
                 ->where('id', $user->id)
-                ->where('delete_flag' , 0)
-                ->first();$check_flag = $this->userRepository->getRecent()
-                ->where('id', $user->id)
-                ->where('delete_flag' , 0)
+                ->where('delete_flag', 0)
                 ->first();
-            if ($check_flag){
+            if ($check_flag) {
                 return $user;
             } else {
                 return 'Ban';
             }
         } else {
             return null;
+        }
+    }
+
+    public  function checkLoginUser($remember_token){
+        $user = $this->userRepository->getRecent()
+            ->where('remember_token', $remember_token)
+            ->first();
+        if($user){
+            return true;
         }
     }
 }

@@ -121,4 +121,11 @@ class LikeRepository implements ILikeRepository
         return $like;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public  function deleteLikeInPost($id){
+        return Like::where('type_like', 0)->where('type_id', $id)->delete();
+    }
 }

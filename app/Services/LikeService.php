@@ -57,22 +57,24 @@ class LikeService implements ILikeService
      * @return bool
      */
     public function likeOrDislike($type_like, $type_id, $type, $user_id){
-        if ($type == 0){
-            $this->likeRepository->getUserLike($user_id,$type_like, $type_id)->delete();
-        } else {
-            $this->likeRepository->create(array(
-                'user_id' => $user_id,
-                'type_like' => $type_like,
-                'type_id' => $type_id
-            ));
-            $this->historyService->create(array(
-                'user_id' => $user_id,
-                'type_action' => 'like',
-                'action_id' => $type_id
-            ));
-        }
+        if ($this->userRepository->get($user_id)){
+            if ($type == 0){
+                $this->likeRepository->getUserLike($user_id,$type_like, $type_id)->delete();
+            } else {
+                $this->likeRepository->create(array(
+                    'user_id' => $user_id,
+                    'type_like' => $type_like,
+                    'type_id' => $type_id
+                ));
+                $this->historyService->create(array(
+                    'user_id' => $user_id,
+                    'type_action' => 'like',
+                    'action_id' => $type_id
+                ));
+            }
 
-        return true;
+            return true;
+        }
     }
 
     /**
@@ -86,4 +88,11 @@ class LikeService implements ILikeService
         return $count;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteLikeInPost($id){
+        return $this->likeRepository->deleteLikeInPost($id);
+    }
 }

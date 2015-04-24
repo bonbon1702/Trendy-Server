@@ -17,9 +17,10 @@ Route::get('/', function()
 });
 
 Route::group(array('prefix' => 'api'), function() {
+
     //PostController
     Route::get('post/favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'PostController@favoritePost');
-	Route::delete('post/deletePostById/{id}', 'PostController@deletePostById');
+    Route::delete('post/deletePostById/{id}', 'PostController@deletePostById');
     Route::get('post/getPostTrendy/paging/{id}/tag/{tag}', 'PostController@getPostTrendy');
     Route::get('post/getPostAround/paging/{id}/lat/{lat}/lng/{lng}', 'PostController@getPostAround');
     Route::get('post/getPostFavorite/paging/{id}/userId/{user_id}', 'PostController@getPostFavorite');
@@ -27,16 +28,16 @@ Route::group(array('prefix' => 'api'), function() {
     Route::post('post/createPost', 'PostController@createPost');
     Route::get('post/editPostCaption/id/{id}/caption/{caption}', 'PostController@editPostCaption');
     Route::get('post/getPostById/{id}', 'PostController@getPostById');
-//	Route::resource('post', 'PostController');
+
 
     //FavoriteController
     Route::get('favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'FavoriteController@favoritePost');
     Route::resource('favorite', 'FavoriteController');
 
+
     //UploadController
 	Route::post('uploadEditor', 'UploadController@uploadEditor');
     Route::post('upload/uploadPicture', 'UploadController@uploadPicture');
-//	Route::resource('upload', 'UploadController');
 
 
     //ShopController
@@ -46,7 +47,6 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('shop/getShop/{id}/paging/{offSet}','ShopController@getShopPaging');
     Route::get('shop/suggestShop/loginId/{loginId}/shopId/{shopId}','ShopController@suggestShop');
     Route::post('shop/saveShopInfo','ShopController@saveShopDetailInfo');
-//	Route::resource('shop', 'ShopController');
 
 
     //UserController
@@ -55,17 +55,14 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::post('user/getLoginUser', 'UserController@getLoginUser');
 	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');
     Route::post('user/createUser', 'UserController@createUser');
-//	Route::resource('user', 'UserController');
 
 
     //FollowController
 	Route::get('follower/{user_id}', 'FollowController@followerByUser');
 	Route::get('following/{follower_id}', 'FollowController@followingByUser');
     Route::post('follow/addFollowing', 'FollowController@addFollowing');
-//	Route::delete('following/delete', 'FollowController@deleteFollowing');
     Route::get('following/delete/userID/{user_id}/followerID/{follower_id}', 'FollowController@deleteFollowing');
     Route::get('follow/suggestionFollow/loginId/{loginId}/type/{type}/userId/{userId}', 'FollowController@suggestionFollow');
-//    Route::resource('follow', 'FollowController');
 
 
     //CommentController
@@ -76,21 +73,17 @@ Route::group(array('prefix' => 'api'), function() {
     Route::post('comment/saveComment', 'CommentController@saveComment');
     Route::get('comment/editShopComment/id/{id}/content/{content}', 'CommentController@editShopComment');
     Route::get('comment/deleteShopComment/id/{id}', 'CommentController@deleteShopComment');
-//    Route::resource('comment', 'CommentController');
 
 
     //AlbumController
     Route::get('album/albumDetail/{id}', 'AlbumController@getAlbumDetail');
     Route::put('album/editAlbumById/{id}', 'AlbumController@editAlbumById');
     Route::resource('album', 'AlbumController');
-//	Route::delete('album/deleteAlbumByName/{name}', 'AlbumController@deleteAlbumByName');
 
 
     //TagController
-//	Route::resource('tag', 'TagController');
     Route::get('tagContent/queryTag/{query}', 'TagContentController@queryTag');
     Route::get('tagContent/getAllTag', 'TagContentController@getAllTag');
-//    Route::resource('tagContent', 'TagContentController');
 
 
     //LikeController
@@ -98,7 +91,6 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::get('like/likeShop/{id}/type/{type}/user/{user_id}', 'LikeController@likeShop');
 	Route::get('like/countLikePost/{id}', 'LikeController@countLikePost');
 	Route::get('like/countLikeShop/{id}', 'LikeController@countLikeShop');
-//	Route::resource('like', 'LikeController');
 
 
     //NotificationController
@@ -115,6 +107,8 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('admin/getAllShop','AdminController@getAllShop');
     Route::get('admin/approveShop/{shop_detail_id}','AdminController@approveShop');
     Route::get('admin/unApproveShop/{shop_detail_id}','AdminController@unApproveShop');
+    Route::get('admin/getAllPost','AdminController@getAllPost');
+    Route::get('admin/deletePost/{post_id}','AdminController@deletePost');
 });
 
 App::missing(function($exception) {
