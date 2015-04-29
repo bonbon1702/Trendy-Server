@@ -10,6 +10,7 @@ namespace Services;
 
 
 use Repositories\interfaces\IAdminRepository;
+use Repositories\interfaces\ILikeRepository;
 use Repositories\interfaces\IPostAlbumRepository;
 use Repositories\interfaces\IPostRepository;
 use Repositories\interfaces\IShopDetailRepository;
@@ -18,6 +19,7 @@ use Repositories\interfaces\IUserRepository;
 use Services\interfaces\IAdminService;
 use Services\interfaces\ICommentService;
 use Services\interfaces\IFavoriteService;
+use Services\interfaces\IHistoryService;
 use Services\interfaces\ILikeService;
 
 /**
@@ -73,6 +75,16 @@ class AdminService implements IAdminService
     private $likeService;
 
     /**
+     * @var ILikeRepository
+     */
+    private $likeRepository;
+
+    /**
+     * @var IHistoryService
+     */
+    private $historyService;
+
+    /**
      * @param IAdminRepository $adminRepository
      * @param IUserRepository $userRepository
      * @param IShopRepository $shopRepository
@@ -81,8 +93,11 @@ class AdminService implements IAdminService
      * @param IPostAlbumRepository $postAlbumRepository
      * @param ICommentService $commentService
      * @param IFavoriteService $favoriteService
+     * @param ILikeService $likeService
+     * @param ILikeRepository $likeRepository
+     * @param IHistoryService $historyService
      */
-    function __construct(IAdminRepository $adminRepository, IUserRepository $userRepository, IShopRepository $shopRepository, IShopDetailRepository $shopDetailRepository, IPostRepository $postRepository, IPostAlbumRepository $postAlbumRepository, ICommentService $commentService, IFavoriteService $favoriteService,ILikeService $likeService)
+    function __construct(IAdminRepository $adminRepository, IUserRepository $userRepository, IShopRepository $shopRepository, IShopDetailRepository $shopDetailRepository, IPostRepository $postRepository, IPostAlbumRepository $postAlbumRepository, ICommentService $commentService, IFavoriteService $favoriteService,ILikeService $likeService, ILikeRepository $likeRepository, IHistoryService $historyService)
     {
         $this->adminRepository = $adminRepository;
         $this->userRepository = $userRepository;
@@ -93,6 +108,8 @@ class AdminService implements IAdminService
         $this->commentService = $commentService;
         $this->favoriteService = $favoriteService;
         $this->likeService=$likeService;
+        $this->likeRepository = $likeRepository;
+        $this->historyService = $historyService;
     }
 
     /**
@@ -207,5 +224,81 @@ class AdminService implements IAdminService
         $this->favoriteService->deleteFavoriteInPost($post_id);
         $this->likeService->deleteLikeInPost($post_id);
         return true;
+    }
+
+
+    public function getInteractionLike(){
+        $posts = $this->postRepository->getRecent()
+        ->orderBy("zScore", "DESC")->take(5)->get();
+        $matrix = array();
+        $i = 0;
+        while(true){
+            if ($i == 10) break;
+            $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
+            $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
+            $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
+            foreach ($posts as $v){
+                $like_count = $this->historyService->actionCount('like', $v->id, $start_day, $end_day);
+
+                $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
+            }
+
+            $i++;
+        }
+        foreach ($posts as $v){
+            $matrix['posts'][] = $v->id;
+        }
+
+        return $matrix;
+    }
+
+    public function getFavoriteInteraction(){
+        $posts = $this->postRepository->getRecent()
+            ->orderBy("zScore", "DESC")->take(5)->get();
+        $matrix = array();
+        $i = 0;
+        while(true){
+            if ($i == 10) break;
+            $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
+            $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
+            $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
+            foreach ($posts as $v){
+                $like_count = $this->historyService->actionCount('favorite', $v->id, $start_day, $end_day);
+
+                $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
+            }
+
+            $i++;
+        }
+        foreach ($posts as $v){
+            $matrix['posts'][] = $v->id;
+        }
+
+        return $matrix;
+    }
+
+    public function getCommentInteraction(){
+        $posts = $this->postRepository->getRecent()
+            ->orderBy("zScore", "DESC")->take(5)->get();
+        $matrix = array();
+        $i = 0;
+        while(true){
+            if ($i == 10) break;
+            $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
+            $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
+            $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
+            foreach ($posts as $v){
+                $like_count = $this->historyService->actionCount('comment', $v->id, $start_day, $end_day);
+
+                $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
+            }
+
+            $i++;
+        }
+        foreach ($posts as $v){
+            $matrix['posts'][] = $v->id;
+        }
+
+        return $matrix;
     }
 }

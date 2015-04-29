@@ -109,6 +109,9 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('admin/unApproveShop/{shop_detail_id}','AdminController@unApproveShop');
     Route::get('admin/getAllPost','AdminController@getAllPost');
     Route::get('admin/deletePost/{post_id}','AdminController@deletePost');
+    Route::get('admin/getInteractionLike','AdminController@getInteractionLike');
+    Route::get('admin/getFavoriteInteraction','AdminController@getFavoriteInteraction');
+    Route::get('admin/getCommentInteraction','AdminController@getCommentInteraction');
 });
 
 App::missing(function($exception) {
