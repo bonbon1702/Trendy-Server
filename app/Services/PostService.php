@@ -483,11 +483,11 @@ class PostService implements IPostService{
      */
     public function deletePost($id)
     {
-        $this->postRepository->delete($id);
-        $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
-        $this->commentService->deleteCommentInPost($id);
-        $this->favoriteService->deleteFavoriteInPost($id);
-        $this->likeService->deleteLikeInPost($id);
+//        $this->postRepository->delete($id);
+//        $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
+//        $this->commentService->deleteCommentInPost($id);
+//        $this->favoriteService->deleteFavoriteInPost($id);
+//        $this->likeService->deleteLikeInPost($id);
     }
 
     /**
