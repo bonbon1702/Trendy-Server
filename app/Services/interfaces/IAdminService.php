@@ -57,4 +57,19 @@ interface IAdminService {
      * @return mixed
      */
     public function unApproveShop($shop_detail_id);
+
+    /**
+     * @return mixed
+     */
+    public function getInteractionLike();
+
+    /**
+     * @return mixed
+     */
+    public function getFavoriteInteraction();
+
+    /**
+     * @return mixed
+     */
+    public function getCommentInteraction();
 }

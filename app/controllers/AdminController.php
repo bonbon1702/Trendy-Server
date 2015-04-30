@@ -98,4 +98,28 @@ class AdminController extends \BaseController
             'success' => true
         ));
     }
+
+    public function getInteractionLike(){
+        $likeData = $this->adminService->getInteractionLike();
+        return Response::json(array(
+            'success' => true,
+            'likeData' => $likeData
+        ));
+    }
+
+    public function getFavoriteInteraction(){
+        $favoriteData = $this->adminService->getFavoriteInteraction();
+        return Response::json(array(
+            'success' => true,
+            'favoriteData' => $favoriteData
+        ));
+    }
+
+    public function getCommentInteraction(){
+        $commentData = $this->adminService->getCommentInteraction();
+        return Response::json(array(
+            'success' => true,
+            'commentData' => $commentData
+        ));
+    }
 }
