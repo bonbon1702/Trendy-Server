@@ -483,7 +483,7 @@ class PostService implements IPostService{
      */
     public function deletePost($id)
     {
-        $this->postRepository->delete($id);
+        $this->postRepository->getRecent()->where("id", $id)->delete();
 //        $this->postAlbumRepository->getRecent()->where('post_id', $id)->delete();
 //        $this->commentService->deleteCommentInPost($id);
 //        $this->favoriteService->deleteFavoriteInPost($id);
