@@ -231,9 +231,9 @@ class AdminService implements IAdminService
         $posts = $this->postRepository->getRecent()
         ->orderBy("zScore", "DESC")->take(5)->get();
         $matrix = array();
-        $i = 0;
+        $i = 9;
         while(true){
-            if ($i == 10) break;
+            if ($i == -1) break;
             $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
             $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
             $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
@@ -243,12 +243,12 @@ class AdminService implements IAdminService
                 $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
             }
 
-            $i++;
+            $i--;
         }
         foreach ($posts as $v){
             $matrix['posts'][] = $v->id;
         }
-
+        array_reverse($matrix['vector'],true);
         return $matrix;
     }
 
@@ -256,9 +256,9 @@ class AdminService implements IAdminService
         $posts = $this->postRepository->getRecent()
             ->orderBy("zScore", "DESC")->take(5)->get();
         $matrix = array();
-        $i = 0;
+        $i = 9;
         while(true){
-            if ($i == 10) break;
+            if ($i == -1) break;
             $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
             $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
             $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
@@ -268,7 +268,7 @@ class AdminService implements IAdminService
                 $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
             }
 
-            $i++;
+            $i--;
         }
         foreach ($posts as $v){
             $matrix['posts'][] = $v->id;
@@ -281,9 +281,9 @@ class AdminService implements IAdminService
         $posts = $this->postRepository->getRecent()
             ->orderBy("zScore", "DESC")->take(5)->get();
         $matrix = array();
-        $i = 0;
+        $i = 9;
         while(true){
-            if ($i == 10) break;
+            if ($i == -1) break;
             $start_day = date("Y-m-d", time() - 86400 * $i) . " 00:00:00";
             $end_day = date("Y-m-d", time() - 86400 * $i) . " 23:59:59";
             $matrix['vector'][date("m-d", time() - 86400 * $i)] = array();
@@ -293,7 +293,7 @@ class AdminService implements IAdminService
                 $matrix['vector'][date("m-d", time() - 86400 * $i)][] = $like_count;
             }
 
-            $i++;
+            $i--;
         }
         foreach ($posts as $v){
             $matrix['posts'][] = $v->id;
