@@ -55,6 +55,7 @@ Route::group(array('prefix' => 'api'), function() {
 	Route::post('user/getLoginUser', 'UserController@getLoginUser');
 	Route::delete('user/deleteLogoutUser/{id}', 'UserController@deleteLogoutUser');
     Route::post('user/createUser', 'UserController@createUser');
+    Route::post('user/updateCover', 'UserController@changeCover');
 
 
     //FollowController

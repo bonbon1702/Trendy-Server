@@ -111,14 +111,13 @@ class UserController extends BaseController
     }
 
     /**
-     * @param $id
      * @return mixed
      */
-    public function changeCover($id)
+    public function changeCover()
     {
         $data = Input::all();
-        $data['id'] = $id;
         $this->userService->changeCover($data);
+        
         return Response::json(array(
             'success' => true
         ));
