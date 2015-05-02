@@ -70,7 +70,10 @@ class CommentService implements ICommentService{
      */
     public function create(array $data)
     {
-        if ($this->userRepository->get($data['user_id'])){
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check){
             // TODO: Implement create() method.
             $content = $data['content'];
             $type_comment = $data['type_comment'];

@@ -38,26 +38,32 @@ class LikeController extends \BaseController
     }
 
     /**
-     * @param $id
-     * @param $type
-     * @param $user_id
      * @return mixed
      */
-    public function likePost($id, $type, $user_id)
+    public function likePost()
     {
-        $this->likeService->likeOrDislike(0, $id, $type, $user_id);
-        if ($type == 1) {
-            $notification = $this->notificationService->create(array(
-                'type_id' => $id,
-                'user_id' => $user_id,
-                'action' => 'like'
-            ));
-            $notification['username'] = $this->userRepository->get($notification->user_id)->username;
-            $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
+        $data = Input::all();
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check) {
+            $id = $data['id'];
+            $type = $data['type'];
+            $user_id = $check->id;
+            $this->likeService->likeOrDislike(0, $id, $type, $user_id);
+            if ($type == 1) {
+                $notification = $this->notificationService->create(array(
+                    'type_id' => $id,
+                    'user_id' => $user_id,
+                    'action' => 'like'
+                ));
+                $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+                $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
 
-            Event::fire(NotificationEventHandler::EVENT, array(
-                'notification' => $notification,
-            ));
+                Event::fire(NotificationEventHandler::EVENT, array(
+                    'notification' => $notification,
+                ));
+            }
         }
         return Response::json(array(
             'success' => true
@@ -65,14 +71,20 @@ class LikeController extends \BaseController
     }
 
     /**
-     * @param $id
-     * @param $type
-     * @param $user_id
      * @return mixed
      */
-    public function likeShop($id, $type, $user_id)
+    public function likeShop()
     {
-        $this->likeService->likeOrDislike(1, $id, $type, $user_id);
+        $data = Input::all();
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check) {
+            $id = $data['id'];
+            $type = $data['type'];
+            $user_id = $check->id;
+            $this->likeService->likeOrDislike(1, $id, $type, $user_id);
+        }
         return Response::json(array(
             'success' => true
         ));

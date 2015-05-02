@@ -31,8 +31,7 @@ Route::group(array('prefix' => 'api'), function() {
 
 
     //FavoriteController
-    Route::get('favorite/userId/{user_id}/postId/{post_id}/type/{type}', 'FavoriteController@favoritePost');
-    Route::resource('favorite', 'FavoriteController');
+    Route::post('favorite/fvPost', 'FavoriteController@favoritePost');
 
 
     //UploadController
@@ -88,8 +87,8 @@ Route::group(array('prefix' => 'api'), function() {
 
 
     //LikeController
-	Route::get('like/likePost/{id}/type/{type}/user/{user_id}', 'LikeController@likePost');
-	Route::get('like/likeShop/{id}/type/{type}/user/{user_id}', 'LikeController@likeShop');
+	Route::post('like/likePost', 'LikeController@likePost');
+	Route::post('like/likeShop', 'LikeController@likeShop');
 	Route::get('like/countLikePost/{id}', 'LikeController@countLikePost');
 	Route::get('like/countLikeShop/{id}', 'LikeController@countLikeShop');
 
