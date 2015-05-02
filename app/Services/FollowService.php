@@ -51,12 +51,16 @@ class FollowService implements IFollowService
         // TODO: Implement create() method.
         $userId = $data['user_id'];
         $followerId = $data['follower_id'];
-        $follow = $this->followRepository->create(array(
-            'user_id' => $userId,
-            'follower_id' => $followerId,
-        ));
-
-        return $follow;
+        $check = $this->followRepository->getRecent()
+            ->where('user_id', $userId)->where("follower_id", $followerId)
+            ->first();
+        if (!$check){
+            $follow = $this->followRepository->create(array(
+                'user_id' => $userId,
+                'follower_id' => $followerId,
+            ));
+            return $follow;
+        }
     }
 
     /**
