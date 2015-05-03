@@ -9,6 +9,7 @@
 use Services\interfaces\INotificationService;
 use Services\interfaces\IFavoriteService;
 use Repositories\interfaces\IUserRepository;
+use Repositories\interfaces\IFavoriteRepository;
 
 /**
  * Class FavoriteController
@@ -36,11 +37,12 @@ class FavoriteController extends \BaseController
      * @param IFavoriteService $favoriteService
      * @param IUserRepository $userRepository
      */
-    public function __construct(INotificationService $notificationService, IFavoriteService $favoriteService, IUserRepository $userRepository)
+    public function __construct(INotificationService $notificationService, IFavoriteService $favoriteService, IUserRepository $userRepository, IFavoriteRepository $favoriteRepository)
     {
         $this->notificationService = $notificationService;
         $this->favoriteService = $favoriteService;
         $this->userRepository = $userRepository;
+        $this->favoriteRepository = $favoriteRepository;
     }
 
     /**
@@ -57,22 +59,28 @@ class FavoriteController extends \BaseController
             $user_id = $check->id;
             $post_id = $data['post_id'];
             if ($type == 'favorite') {
-                $favorite = $this->favoriteService->addFavorite(array(
-                    'user_id' => $user_id,
-                    'post_id' => $post_id
-                ));
-                $data = array(
-                    'user_id' => $user_id,
-                    'type_id' => $post_id,
-                    'action' => 'favorite'
-                );
-                $notification = $this->notificationService->create($data);
-                $notification['username'] = $this->userRepository->get($notification->user_id)->username;
-                $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
+                $check = $this->favoriteRepository->getRecent()
+                    ->where("user_id",$user_id)
+                    ->where("post_id", $post_id)
+                    ->first();
+                if (!$check){
+                    $favorite = $this->favoriteService->addFavorite(array(
+                        'user_id' => $user_id,
+                        'post_id' => $post_id
+                    ));
+                    $data = array(
+                        'user_id' => $user_id,
+                        'type_id' => $post_id,
+                        'action' => 'favorite'
+                    );
+                    $notification = $this->notificationService->create($data);
+                    $notification['username'] = $this->userRepository->get($notification->user_id)->username;
+                    $notification['list_user'] = $this->notificationService->userEffectedPost($notification->post_id);
 
-                Event::fire(NotificationEventHandler::EVENT, array(
-                    'notification' => $notification
-                ));
+                    Event::fire(NotificationEventHandler::EVENT, array(
+                        'notification' => $notification
+                    ));
+                }
             } elseif ($type == 'unFavorite') {
                 $this->favoriteService->unFavorite($user_id, $post_id);
             }
