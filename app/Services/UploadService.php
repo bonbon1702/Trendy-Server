@@ -56,8 +56,12 @@ class UploadService implements IUploadService{
             $image_url = 'assets/images/'.$image_name.'.jpg';
 
             $image->save($image_url);
+//            $upload = $this->uploadRepository->create(array(
+//                'image_url' => url() . '/' . $image_url,
+//                'name' => $image_name
+//            ));
             $upload = $this->uploadRepository->create(array(
-                'image_url' => url() . '/' . $image_url,
+                'image_url' => 'http://trendyplus.org' . '/' . $image_url,
                 'name' => $image_name
             ));
 //            \Cloudy::upload($img, $image_name);
