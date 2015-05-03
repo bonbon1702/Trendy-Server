@@ -80,7 +80,13 @@ class AlbumService implements IAlbumService
     public function editAlbumById(array $data)
     {
         // TODO: Implement update() method.
-        return $this->albumRepository->update('album_name',$data['old_name'],array('album_name' => $data['album_name']));
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        return $this->albumRepository->getRecent()
+            ->where("album_name", $data['old_name'])
+            ->where('user_id', $check->id)
+            ->update("album_name", $data['album_name']);
     }
 
     /**
@@ -129,17 +135,23 @@ class AlbumService implements IAlbumService
 
     /**
      * @param $album_name
+     * @param $user_id
+     * @return bool
      */
-    public function deleteAlbum($album_name)
+    public function deleteAlbum($album_name, $user_id)
     {
         $albums =$this->albumRepository->joinPostAndAlbumAndPostAlbum()
                                             ->select('post_id')
                                                 ->where('album_name',$album_name)
+                                                    ->where('album.user_id', $user_id)
                                                     ->get();
         foreach($albums as $v){
             $this->postRepository->delete($v->post_id);
             $this->postAlbumRepository->getRecent()->where('post_id', $v->post_id)->delete();
         }
+        $this->albumRepository->getRecent()->where("album_name", $album_name)
+            ->where('user_id', $user_id)->delete();
+        return true;
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Services\interfaces\IAlbumService;
+use Repositories\interfaces\IUserRepository;
 
 /**
  * Class AlbumController
@@ -14,11 +15,19 @@ class AlbumController extends \BaseController
     private $albumService;
 
     /**
-     * @param IAlbumService $albumService
+     * @var IUserRepository
      */
-    function __construct(IAlbumService $albumService)
+    private $userRepository;
+
+
+    /**
+     * @param IAlbumService $albumService
+     * @param IUserRepository $userRepository
+     */
+    function __construct(IAlbumService $albumService, IUserRepository $userRepository)
     {
         $this->albumService = $albumService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -29,19 +38,32 @@ class AlbumController extends \BaseController
     {
         $data = Input::all();
         $data['id'] = $id;
-        $this->albumService->editAlbumById($data);
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check) {
+            $this->albumService->editAlbumById($data);
+        }
+
         return Response::json(array(
             'success' => true
         ));
     }
 
     /**
-     * @param $album_name
      * @return mixed
      */
-    public function deleteAlbumByName($album_name)
+    public function deleteAlbumByName()
     {
-        $this->albumService->deleteAlbum($album_name);
+        $data = Input::all();
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check) {
+            $album_name = $data['albName'];
+            $this->albumService->deleteAlbum($album_name, $check->id);
+        }
+
         return Response::json(array(
             'success' => true
         ));

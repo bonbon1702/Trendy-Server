@@ -54,6 +54,8 @@ interface IAlbumService
 
     /**
      * @param $album_name
+     * @param $user_id
+     * @return mixed
      */
-    public function deleteAlbum($album_name);
+    public function deleteAlbum($album_name, $user_id);
 }
