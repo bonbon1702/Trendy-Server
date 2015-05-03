@@ -170,64 +170,69 @@ class PostService implements IPostService{
      */
     public function createPost(array $data)
     {
-        // TODO: Implement create() method.
-        $upload = $this->uploadRepository->getWhere('name', $data['name']);
-        $image_url_editor = null;
+        $check = $this->userRepository->getRecent()
+            ->where('remember_token', $data['token'])
+            ->first();
+        if ($check) {
+            // TODO: Implement create() method.
+            $upload = $this->uploadRepository->getWhere('name', $data['name']);
+            $image_url_editor = null;
 
-        //check if user editor image
-        if ($data['url'] != null) {
-            $image = Image::make($data['url']);
-            $image_name = date('Y') . '_' . date('m') . '_' .date('d'). '_' . Helper::get_rand_alphanumeric(8);
-            $image_url = 'assets/images/'.$image_name.'.jpg';
+            //check if user editor image
+            if ($data['url'] != null) {
+                $image = Image::make($data['url']);
+                $image_name = date('Y') . '_' . date('m') . '_' . date('d') . '_' . Helper::get_rand_alphanumeric(8);
+                $image_url = 'assets/images/' . $image_name . '.jpg';
 
-            $image->save($image_url);
-            $image_url_editor = url() . '/'. $image_url;
-        } else {
-            $image_url_editor = $upload->image_url;
-        }
+                $image->save($image_url);
+                $image_url_editor = url() . '/' . $image_url;
+            } else {
+                $image_url_editor = $upload->image_url;
+            }
 
-        $post = $this->postRepository->create(array(
-            'name' => Helper::get_rand_alphanumeric(8),
-            'user_id' => $data['user_id'],
-            'image_url' => $upload->image_url,
-            'image_url_editor' => $image_url_editor,
-            'caption' => $data['caption'] ? $data['caption'] : '',
-        ));
-
-        if ($data['album'] && $post) {
-            $album = $this->albumService->create(array(
-                'album_name' => $data['album'],
-                'user_id' => $data['user_id']
+            $post = $this->postRepository->create(array(
+                'name' => Helper::get_rand_alphanumeric(8),
+                'user_id' => $data['user_id'],
+                'image_url' => $upload->image_url,
+                'image_url_editor' => $image_url_editor,
+                'caption' => $data['caption'] ? $data['caption'] : '',
             ));
 
-            $this->postAlbumRepository->create(array(
-                'post_id' => $post->id,
-                'album_id' => $album->id
-            ));
-        }
+            if ($data['album'] && $post) {
+                $album = $this->albumService->create(array(
+                    'album_name' => $data['album'],
+                    'user_id' => $data['user_id']
+                ));
 
-        if (!empty($data['points'])) {
-            foreach ($data['points'] as $v) {
-                $shop = $this->shopService->checkExist($image_url_editor,$v['address']);
-
-                $this->tagPictureService->create(array(
+                $this->postAlbumRepository->create(array(
                     'post_id' => $post->id,
-                    'name' => $v['name'],
-                    'price' => $v['price'],
-                    'top' => $v['top'],
-                    'left' => $v['left'],
-                    'shop_id' => $shop->id
+                    'album_id' => $album->id
                 ));
             }
-        }
 
-        if (!empty($data['tags'])) {
-            foreach ($data['tags'] as $v) {
-                $tagContent = $this->tagContentRepository->get($v['id']);
-                $this->tagRepository->create(array(
-                    'post_id' => $post->id,
-                    'tag_content_id' => $tagContent->id
-                ));
+            if (!empty($data['points'])) {
+                foreach ($data['points'] as $v) {
+                    $shop = $this->shopService->checkExist($image_url_editor, $v['address']);
+
+                    $this->tagPictureService->create(array(
+                        'post_id' => $post->id,
+                        'name' => $v['name'],
+                        'price' => $v['price'],
+                        'top' => $v['top'],
+                        'left' => $v['left'],
+                        'shop_id' => $shop->id
+                    ));
+                }
+            }
+
+            if (!empty($data['tags'])) {
+                foreach ($data['tags'] as $v) {
+                    $tagContent = $this->tagContentRepository->get($v['id']);
+                    $this->tagRepository->create(array(
+                        'post_id' => $post->id,
+                        'tag_content_id' => $tagContent->id
+                    ));
+                }
             }
         }
     }
