@@ -179,6 +179,9 @@ class ShopService implements IShopService
     public function getShopList()
     {
         $shop = $this->shopRepository->all();
+        foreach ($shop as $v){
+            $v['shop_details'] = $this->shopDetailService->getShopDetail($v->id);
+        }
         return $shop;
     }
 
