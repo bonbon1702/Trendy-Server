@@ -86,7 +86,9 @@ class AlbumService implements IAlbumService
         return $this->albumRepository->getRecent()
             ->where("album_name", $data['old_name'])
             ->where('user_id', $check->id)
-            ->update("album_name", $data['album_name']);
+            ->update(array(
+                "album_name", $data['album_name']
+            ));
     }
 
     /**
