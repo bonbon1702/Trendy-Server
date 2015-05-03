@@ -218,7 +218,7 @@ class AdminService implements IAdminService
      */
     public function deletePost($post_id)
     {
-        $this->postRepository->getRecent()->where("id", $post_id);
+        $this->postRepository->getRecent()->where("id", $post_id)->delete();
         $this->postAlbumRepository->getRecent()->where('post_id', $post_id)->delete();
         $this->commentService->deleteCommentInPost($post_id);
         $this->favoriteService->deleteFavoriteInPost($post_id);
