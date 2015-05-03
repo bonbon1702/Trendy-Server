@@ -87,7 +87,7 @@ class AlbumService implements IAlbumService
             ->where("album_name", $data['old_name'])
             ->where('user_id', $check->id)
             ->update(array(
-                "album_name", $data['album_name']
+                "album_name" => $data['album_name']
             ));
     }
 
