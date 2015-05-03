@@ -61,6 +61,9 @@ class LikeService implements ILikeService
             if ($type == 0){
                 $this->likeRepository->getUserLike($user_id,$type_like, $type_id)->delete();
             } else {
+                if ($this->likeRepository->getUserLike($user_id,$type_like,$type_id)){
+                    return true;
+                }
                 $this->likeRepository->create(array(
                     'user_id' => $user_id,
                     'type_like' => $type_like,
