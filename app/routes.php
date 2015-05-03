@@ -78,7 +78,7 @@ Route::group(array('prefix' => 'api'), function() {
     //AlbumController
     Route::get('album/albumDetail/{id}', 'AlbumController@getAlbumDetail');
     Route::put('album/editAlbumById/{id}', 'AlbumController@editAlbumById');
-    Route::resource('album', 'AlbumController');
+    Route::delete('album/deleteAlbumByName/{album_name}', 'AlbumController@deleteAlbumByName');
 
 
     //TagController
