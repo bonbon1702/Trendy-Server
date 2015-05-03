@@ -124,7 +124,7 @@ class CommentRepository implements ICommentRepository{
     }
 
     public  function deleteCommentInPost($id){
-        return Comment::where('type_comment', 0)->where('type_id', $id)->delete();
+        return Comment::where('type_comment', 0)->where('id', $id)->delete();
     }
 
 
