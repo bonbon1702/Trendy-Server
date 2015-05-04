@@ -145,7 +145,7 @@ class UserController extends BaseController
 
         foreach ($shop as $v) {
             $results[] = array(
-                'name' => $v->name,
+                'name' => $v->name ? $v->name : $v->address,
                 'image' => $v->image_url,
                 'sub' => $v->address,
                 'url' => 'shop/' . $v->id
