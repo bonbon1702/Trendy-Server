@@ -148,7 +148,7 @@ class UserController extends BaseController
                 'name' => $v->name ? $v->name : $v->address,
                 'image' => $v->image_url,
                 'sub' => $v->address,
-                'url' => 'shop/' . $v->id
+                'url' => 'shop/' . $v->sId
             );
         }
         return Response::json(array(

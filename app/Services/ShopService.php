@@ -167,6 +167,7 @@ class ShopService implements IShopService
     public function searchFullText($type)
     {
         $shop = $this->shopRepository->getRecent()
+            ->select("*", 'shop.id as sId')
             ->Leftjoin('shop_detail', 'shop_detail.shop_id', '=', 'shop.id')
             ->where('shop.name', 'LIKE', '%' . $type . '%')
             ->orWhere('shop.address', 'LIKE', '%' .$type . '%')
